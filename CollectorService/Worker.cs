@@ -1,25 +1,25 @@
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using Core.Clients;
+using Core.Repositories;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
-using MongoDB.Bson;
-using MongoDB.Driver;
 
 namespace CollectorService
 {
     public class Worker : IHostedService
     {
         private readonly ILogger<Worker> _logger;
-        private readonly EventFetcher _eventFetcher;
+        private readonly IPoliceApiClient _policeApiClient;
+        private readonly IPoliceEventRepository _policeEventRepository;
         private Timer _timer;
 
-        public Worker(ILogger<Worker> logger, EventFetcher eventFetcher)
+        public Worker(ILogger<Worker> logger, IPoliceApiClient policeApiClient, IPoliceEventRepository policeEventRepository)
         {
             _logger = logger;
-            _eventFetcher = eventFetcher;
+            _policeApiClient = policeApiClient;
+            _policeEventRepository = policeEventRepository;
         }
 
         public Task StartAsync(CancellationToken cancellationToken)
@@ -36,18 +36,8 @@ namespace CollectorService
 
         private async void CollectData(object state)
         {
-            var events = await _eventFetcher.Fetch();
-            MongoClient dbClient = new MongoClient("mongodb://192.168.1.186:27017");
-
-            var database = dbClient.GetDatabase("Police");
-            var collection = database.GetCollection<BsonDocument>("police_events");
-            foreach (var pe in events)
-            {
-                var filter = Builders<BsonDocument>.Filter.Eq("_id", pe.Id);
-                var replaceOptions = new ReplaceOptions();
-                replaceOptions.IsUpsert = true;
-                collection.ReplaceOne(filter, pe.ToBsonDocument(), replaceOptions);
-            }
+            var events = await _policeApiClient.GetLatestEvents();
+            await _policeEventRepository.UpsertCollection(events);
         }
 
     }

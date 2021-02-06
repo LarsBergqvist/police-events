@@ -1,28 +1,32 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Net.Http;
 using System.Threading.Tasks;
+using Core.Clients;
+using Core.Models;
+using Core.Settings;
+using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
 
-namespace CollectorService
+namespace Infrastructure.Clients
 {
-    public class EventFetcher
+    public class PoliceApiClient : IPoliceApiClient
     {
-        public EventFetcher()
+        private readonly Settings _settings;
+        public PoliceApiClient(IOptions<Settings> options)
         {
+            _settings = options.Value;
         }
 
-        public async Task<List<PoliceEvent>> Fetch()
+        public async Task<IEnumerable<PoliceEvent>> GetLatestEvents()
         {
             var policeEventCollection = new List<PoliceEvent>();
             var client = new HttpClient();
-            //            client.BaseAddress = new Uri("https://polisen.se/api/events");
-            var res = await client.GetAsync("https://polisen.se/api/events"); //?DateTime=2021-02-03"); // &locationname=Upplands-Bro");
+            var res = await client.GetAsync(_settings.PoliceApiUrl);
             if (res.IsSuccessStatusCode)
             {
                 var result = await res.Content.ReadAsStringAsync();
                 var externalData = JsonConvert.DeserializeObject<PoliceEventExternal[]>(result);
-                foreach(var ext in externalData)
+                foreach (var ext in externalData)
                 {
                     var policeEvent = ext.GetPoliceEvent();
                     policeEventCollection.Add(policeEvent);

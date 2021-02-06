@@ -1,7 +1,8 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+using Core.Clients;
+using Core.Repositories;
+using Core.Settings;
+using Infrastructure.Clients;
+using Infrastructure.Repositories;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 
@@ -18,9 +19,12 @@ namespace CollectorService
             Host.CreateDefaultBuilder(args)
                 .ConfigureServices((hostContext, services) =>
                 {
-                    services.
-                    AddTransient<EventFetcher>().
-                    AddHostedService<Worker>()
+                    services
+                        .AddOptions()
+                        .Configure<Settings>(hostContext.Configuration.GetSection("Settings"))
+                        .AddTransient<IPoliceApiClient, PoliceApiClient>()
+                        .AddTransient<IPoliceEventRepository, PoliceEventRepository>()
+                        .AddHostedService<Worker>()
                     ;
                 });
     }
