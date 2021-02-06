@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Threading.Tasks;
 using Core.Models;
 using Core.Repositories;
@@ -15,6 +17,18 @@ namespace Infrastructure.Repositories
         public PoliceEventRepository(IOptions<Settings> options)
         {
             _settings = options.Value;
+        }
+
+        public async Task<IEnumerable<PoliceEvent>> GetEventsForDate(DateTime dateTime)
+        {
+            MongoClient dbClient = new MongoClient(_settings.MongoDBConnectionString);
+            var database = dbClient.GetDatabase(_settings.PoliceDBName);
+            var collection = database.GetCollection<BsonDocument>(_settings.PoliceEventCollectionName);
+            var filter = Builders<BsonDocument>.Filter.Gte("UtcDateTime", new BsonDateTime(dateTime.Date)) &
+                         Builders<BsonDocument>.Filter.Lt("UtcDateTime", new BsonDateTime(dateTime.Date.AddDays(1)));
+            var asyncCursor = await collection.FindAsync<PoliceEvent>(filter);
+            var events = asyncCursor.ToList<PoliceEvent>();
+            return await Task.FromResult(events);
         }
 
         public async Task UpsertCollection(IEnumerable<PoliceEvent> policeEvents)

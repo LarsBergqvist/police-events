@@ -1,0 +1,1 @@
+db.police_events.find( {"Location.Name":{ "$eq": "Uppsala"}} ).count()

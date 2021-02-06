@@ -1,0 +1,1 @@
+db.getCollection('police_events').find().count()
