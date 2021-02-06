@@ -18,6 +18,8 @@ namespace Api
 {
     public class Startup
     {
+        private readonly string CorsPolicy = "appCorsPolicy";
+
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
@@ -28,6 +30,15 @@ namespace Api
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddCors(options =>
+            {
+                options.AddPolicy(CorsPolicy,
+                builder =>
+                {
+                    builder.WithOrigins(Configuration["AllowedOrigins"].Split(";")).AllowAnyHeader().AllowAnyMethod();
+                });
+            });
+
             services
                 .AddOptions()
                 .Configure<Settings>(Configuration.GetSection("Settings"))
@@ -49,6 +60,8 @@ namespace Api
             app.UseRouting();
 
             app.UseAuthorization();
+
+            app.UseCors(CorsPolicy);
 
             app.UseEndpoints(endpoints =>
             {
