@@ -33,6 +33,9 @@ export class MapSidebarComponent implements OnInit, OnDestroy {
                 input.geoJson = message.geoJson;
                 this.mapInput = input;
                 this.title = message.title;
+                if (this.title.includes(' län')) {
+                    input.showCounty = true;
+                }
                 this.details = message.details;
                 this.isVisible = true;
             });

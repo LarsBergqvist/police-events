@@ -25,12 +25,10 @@ export class EventListComponent implements OnInit {
     }
 
     async onFetchAll() {
-        const toDate = new Date();
-        const fromDate = getDateTimeNDaysFromNow(toDate, -3);
-        const utcToDateString = getUTCDateStringFromLocalDateTime(toDate);
-        const utcFromDateString = getUTCDateStringFromLocalDateTime(fromDate);
-        this.events = await this.service.fetchEventsForDate(utcFromDateString, utcToDateString);
+        const utcStrings = this.getUtcFromToStrings();
+        this.events = await this.service.fetchEventsForDate(utcStrings[0], utcStrings[1]);
     }
+
     fetchMessageClose(distance: number) {
         navigator.geolocation.getCurrentPosition(
             async (position) => {
@@ -38,13 +36,10 @@ export class EventListComponent implements OnInit {
                     lat: position.coords.latitude,
                     lng: position.coords.longitude
                 };
-                const toDate = new Date();
-                const fromDate = getDateTimeNDaysFromNow(toDate, -3);
-                const utcToDateString = getUTCDateStringFromLocalDateTime(toDate);
-                const utcFromDateString = getUTCDateStringFromLocalDateTime(fromDate);
+                const utcStrings = this.getUtcFromToStrings();
                 this.events = await this.service.fetchEventsForDateWithinRadius(
-                    utcFromDateString,
-                    utcToDateString,
+                    utcStrings[0],
+                    utcStrings[1],
                     userPos,
                     distance
                 );
@@ -53,5 +48,13 @@ export class EventListComponent implements OnInit {
                 this.broker.sendMessage(new ErrorOccurredMessage(error.message));
             }
         );
+    }
+
+    private getUtcFromToStrings(): [string, string] {
+        const toDate = new Date();
+        const fromDate = getDateTimeNDaysFromNow(toDate, -3);
+        const utcToDateString = getUTCDateStringFromLocalDateTime(toDate);
+        const utcFromDateString = getUTCDateStringFromLocalDateTime(fromDate);
+        return [utcFromDateString, utcToDateString];
     }
 }

@@ -18,6 +18,7 @@ export class MapInput {
     markerPositions: GeoPosition[];
     userPos: GeoPosition;
     geoJson: {};
+    showCounty = false;
 }
 
 @Component({
@@ -28,10 +29,10 @@ export class MapInput {
 export class MapComponent {
     map: Map;
     geoJsonVectorSource: VectorSource;
+    showCounty = false;
 
-    private static readonly MaxNumMarkers = 200;
-    private static readonly ZoomLevelSingleMarker = 10;
-    private static readonly ZoomLevelSeveralMarkers = 6;
+    private static readonly ZoomLevelMunicipality = 9;
+    private static readonly ZoomLevelCounty = 6;
     private userMarker: Feature;
     private positions: GeoPosition[];
     private userPos: GeoPosition;
@@ -45,6 +46,7 @@ export class MapComponent {
     private setupMap(input: MapInput) {
         this.positions = input.markerPositions;
         this.userPos = input.userPos;
+        this.showCounty = input.showCounty;
 
         if (!this.map) {
             this.initilizeMap();
@@ -67,8 +69,7 @@ export class MapComponent {
             view.setCenter(fromLonLat([this.userPos.lng, this.userPos.lat]));
         }
 
-        const zoomLevel =
-            this.positions.length < 2 ? MapComponent.ZoomLevelSingleMarker : MapComponent.ZoomLevelSeveralMarkers;
+        const zoomLevel = this.showCounty ? MapComponent.ZoomLevelCounty : MapComponent.ZoomLevelMunicipality;
         view.setZoom(zoomLevel);
 
         this.updateUserMarker(this.userPos);
@@ -120,7 +121,7 @@ export class MapComponent {
             ],
             view: new View({
                 center: fromLonLat([0, 0]),
-                zoom: MapComponent.ZoomLevelSingleMarker
+                zoom: MapComponent.ZoomLevelMunicipality
             })
         });
     }

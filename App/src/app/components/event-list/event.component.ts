@@ -16,7 +16,14 @@ export class EventComponent implements OnInit {
     constructor(private readonly broker: MessageBrokerService, private readonly areaService: AreaService) {}
 
     async onClickMessage(event: PoliceEventViewModel) {
-        const areaResult = await this.areaService.fetchGeoJsonForMunicpality(event.location.name);
+        let areaResult: any;
+        if (event.location.name.toLowerCase().includes('län')) {
+            // The location is a county
+            areaResult = await this.areaService.fetchGeoJsonForCounty(event.location.name);
+        } else {
+            // The location is a likely municipality
+            areaResult = await this.areaService.fetchGeoJsonForMunicpality(event.location.name);
+        }
         const positions: GeoPosition[] = [];
         positions.push(event.location.pos);
         const header = `${event.location.name}, ${event.type}`;

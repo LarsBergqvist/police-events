@@ -15,37 +15,29 @@ export class AreaService {
         const res = await this.http.get<any>(`${url}`).toPromise();
         if (res.nhits !== 1) return null;
 
+        return this.createGeoJsonObject(res);
+    }
+
+    async fetchGeoJsonForCounty(county: string): Promise<any> {
+        const BaseUrl =
+            'https://public.opendatasoft.com/api/records/1.0/search/?dataset=sverige-lan-counties-of-sweden';
+        let url = `${BaseUrl}&q=${county}`;
+        const res = await this.http.get<any>(`${url}`).toPromise();
+        if (res.nhits !== 1) return null;
+
+        return this.createGeoJsonObject(res);
+    }
+
+    private createGeoJsonObject(data: any): any {
         const geoJson = {
             type: 'FeatureCollection',
             features: [
                 {
                     type: 'Feature',
-                    geometry: res.records[0].fields['geo_shape']
+                    geometry: data.records[0].fields['geo_shape']
                 }
             ]
         };
         return geoJson;
     }
 }
-
-/*
-
-{
-    "nhits": 1,
-    "parameters": {
-        "dataset": "sverige-kommuner-municipalities-of-sweden",
-        "timezone": "UTC",
-        "q": "Upplands-Bro",
-        "rows": 10,
-        "start": 0,
-        "format": "json"
-    },
-    "records": [
-        {
-            "datasetid": "sverige-kommuner-municipalities-of-sweden",
-            "recordid": "bb7183e79012042ad370f67cc702c155e22ca156",
-            "fields": {
-                "geo_shape": {
-                    "type": "Polygon",
-
-*/
