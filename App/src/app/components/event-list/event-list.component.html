@@ -6,6 +6,9 @@
     <button pButton class="sr-button-wide" (click)="onFetchPositionClose()" icon="pi pi-compass" iconPos="right"
         label="Hämta händelser i ett större närområde (35km)">
     </button>
+    <p></p>
+    <button pButton class="sr-button-wide" (click)="onFetchAll()" label="Hämta händelser i hela landet">
+    </button>
 </div>
 <div *ngIf="events">
     <div *ngFor="let e of events;">

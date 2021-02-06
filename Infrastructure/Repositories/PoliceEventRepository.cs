@@ -25,7 +25,8 @@ namespace Infrastructure.Repositories
             MongoClient dbClient = new MongoClient(_settings.ConnectionString);
             var database = dbClient.GetDatabase(_settings.PoliceDBName);
             var collection = database.GetCollection<BsonDocument>(_settings.PoliceEventCollectionName);
-            var filter = Builders<BsonDocument>.Filter.Gte("UtcDateTime", new BsonDateTime(fromDate.Date)) &
+            var filter = Builders<BsonDocument>.Filter.Ne("Type", "Övrigt") &
+                         Builders<BsonDocument>.Filter.Gte("UtcDateTime", new BsonDateTime(fromDate.Date)) &
                          Builders<BsonDocument>.Filter.Lt("UtcDateTime", new BsonDateTime(toDate.Date.AddDays(1)));
             if (locationName != null)
             {

@@ -19,8 +19,17 @@ export class EventListComponent implements OnInit {
     onFetchPositionVeryClose() {
         this.fetchMessageClose(15);
     }
+
     onFetchPositionClose() {
         this.fetchMessageClose(35);
+    }
+
+    async onFetchAll() {
+        const toDate = new Date();
+        const fromDate = getDateTimeNDaysFromNow(toDate, -3);
+        const utcToDateString = getUTCDateStringFromLocalDateTime(toDate);
+        const utcFromDateString = getUTCDateStringFromLocalDateTime(fromDate);
+        this.events = await this.service.fetchEventsForDate(utcFromDateString, utcToDateString);
     }
     fetchMessageClose(distance: number) {
         navigator.geolocation.getCurrentPosition(

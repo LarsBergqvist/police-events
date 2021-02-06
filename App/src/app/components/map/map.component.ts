@@ -1,4 +1,5 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
+import GeoJSON from 'ol/format/GeoJSON';
 import { Attribution, defaults as defaultControls } from 'ol/control';
 import Feature from 'ol/Feature';
 import Point from 'ol/geom/Point';
@@ -6,14 +7,17 @@ import { Tile as TileLayer, Vector as VectorLayer } from 'ol/layer';
 import Map from 'ol/Map';
 import { fromLonLat } from 'ol/proj.js';
 import OSM from 'ol/source/OSM';
+import VectorSource from 'ol/source/Vector';
 import Vector from 'ol/source/Vector';
 import View from 'ol/View';
 import { GeoPosition } from 'src/app/view-models/geo-position';
-import { setupMarkerClickHandler, styleMarker, styleUser } from './map-functions';
+import { styleUser } from './map-functions';
+import { Fill, Stroke, Style } from 'ol/style';
 
 export class MapInput {
-    markerPosisitons: GeoPosition[];
+    markerPositions: GeoPosition[];
     userPos: GeoPosition;
+    geoJson: {};
 }
 
 @Component({
@@ -23,11 +27,11 @@ export class MapInput {
 })
 export class MapComponent {
     map: Map;
+    geoJsonVectorSource: VectorSource;
 
     private static readonly MaxNumMarkers = 200;
-    private static readonly ZoomLevelSingleMarker = 13;
+    private static readonly ZoomLevelSingleMarker = 10;
     private static readonly ZoomLevelSeveralMarkers = 6;
-    private markers: Feature[] = [];
     private userMarker: Feature;
     private positions: GeoPosition[];
     private userPos: GeoPosition;
@@ -39,11 +43,21 @@ export class MapComponent {
     @Output() onMarkerClicked = new EventEmitter<number>();
 
     private setupMap(input: MapInput) {
-        this.positions = input.markerPosisitons;
+        this.positions = input.markerPositions;
         this.userPos = input.userPos;
 
         if (!this.map) {
             this.initilizeMap();
+        }
+
+        if (input.geoJson) {
+            this.geoJsonVectorSource.clear();
+            this.geoJsonVectorSource.addFeatures(
+                new GeoJSON().readFeatures(input.geoJson, {
+                    dataProjection: 'EPSG:4326',
+                    featureProjection: 'EPSG:3857'
+                })
+            );
         }
 
         const view = this.map.getView();
@@ -57,7 +71,6 @@ export class MapComponent {
             this.positions.length < 2 ? MapComponent.ZoomLevelSingleMarker : MapComponent.ZoomLevelSeveralMarkers;
         view.setZoom(zoomLevel);
 
-        this.updateMarkers(this.positions, true);
         this.updateUserMarker(this.userPos);
     }
 
@@ -70,36 +83,7 @@ export class MapComponent {
         styleUser(this.userMarker);
     }
 
-    private updateMarkers(positions: GeoPosition[], resetZoom: boolean) {
-        // Clear all marker placeholders
-        for (let i = 0; i < MapComponent.MaxNumMarkers; i++) {
-            this.markers[i].setGeometry(null);
-        }
-        this.positions = positions;
-        if (!positions) return;
-
-        //
-        // Create a marker for each geo-position
-        //
-        for (let i = 0; i < Math.min(positions.length, MapComponent.MaxNumMarkers); i++) {
-            const pos = positions[i];
-            const marker = this.markers[i];
-            marker.setId(pos.id);
-            marker.setGeometry(new Point(fromLonLat([pos.lng, pos.lat])));
-            marker.setProperties({ info: pos.info });
-            styleMarker(marker, false);
-        }
-    }
-
     private initilizeMap(): void {
-        //
-        // Create placeholders for markers
-        //
-        this.markers = [];
-        for (let i = 0; i < MapComponent.MaxNumMarkers; i++) {
-            this.markers.push(new Feature({}));
-        }
-
         this.userMarker = new Feature();
 
         //
@@ -110,25 +94,34 @@ export class MapComponent {
             // to an element outside of the map
             target: 'attribution'
         });
-        const markersLayer = new VectorLayer({
-            source: new Vector({ features: this.markers })
+        this.geoJsonVectorSource = new VectorSource({});
+        let geoJsonLayer = new VectorLayer({
+            source: this.geoJsonVectorSource,
+            style: new Style({
+                stroke: new Stroke({
+                    color: 'blue',
+                    lineDash: [4],
+                    width: 3
+                }),
+                fill: new Fill({
+                    color: 'rgba(0, 0, 255, 0.1)'
+                })
+            })
         });
         this.map = new Map({
             controls: defaultControls({ attribution: false }).extend([attribution]),
             target: 'map',
             layers: [
                 new TileLayer({ source: new OSM() }),
-                markersLayer,
                 new VectorLayer({
                     source: new Vector({ features: [this.userMarker] })
-                })
+                }),
+                geoJsonLayer
             ],
             view: new View({
                 center: fromLonLat([0, 0]),
                 zoom: MapComponent.ZoomLevelSingleMarker
             })
         });
-
-        setupMarkerClickHandler(this.map, markersLayer, this.markers, (id) => this.onMarkerClicked.emit(id));
     }
 }

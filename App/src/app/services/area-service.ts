@@ -20,7 +20,6 @@ export class AreaService {
             features: [
                 {
                     type: 'Feature',
-                    properties: {},
                     geometry: res.records[0].fields['geo_shape']
                 }
             ]

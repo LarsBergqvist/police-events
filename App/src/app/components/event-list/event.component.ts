@@ -16,12 +16,11 @@ export class EventComponent implements OnInit {
     constructor(private readonly broker: MessageBrokerService, private readonly areaService: AreaService) {}
 
     async onClickMessage(event: PoliceEventViewModel) {
-        //        const areaResult = await this.areaService.fetchGeoJsonForMunicpality(event.location.name);
-        //        console.log(areaResult);
+        const areaResult = await this.areaService.fetchGeoJsonForMunicpality(event.location.name);
         const positions: GeoPosition[] = [];
         positions.push(event.location.pos);
         const header = `${event.location.name}, ${event.type}`;
-        this.broker.sendMessage(new ShowMapMessage(positions, null, `${header}`, event.summary));
+        this.broker.sendMessage(new ShowMapMessage(positions, null, `${header}`, event.summary, areaResult));
     }
 
     ngOnInit(): void {}
