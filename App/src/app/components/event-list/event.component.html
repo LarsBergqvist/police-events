@@ -1,0 +1,13 @@
+<div *ngIf="event" class="event-ctn">
+    <div>
+        <b>{{event.location.name}}, {{event.datetime | date:'d MMM HH:mm'}}, {{event.type}}</b>
+        <span class="open-button" (click)="onClickMessage(event)">
+            <span>Karta</span>
+            <i class="pi pi-globe map-icon"></i>
+        </span>
+    </div>
+    <div>
+        {{event.summary}}
+    </div>
+    <p>Länk till polisen <a href={{event.url}} target="_blank" rel="noopener noreferrer">{{event.url}}</a>.</p>
+</div>
