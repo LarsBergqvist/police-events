@@ -19,7 +19,7 @@ namespace RepositoryTests.Console
 
             var fromDate = new DateTime(2021, 02, 06);
             var toDate = new DateTime(2021, 02, 06);
-            var res = await repo.GetEventsForDate(fromDate, toDate);
+            var res = await repo.GetEventsForDate(fromDate, toDate, "Uppsala");
             foreach(var pe in res)
             {
                 System.Console.WriteLine($"{pe.UtcDateTime}: {pe.Summary}");

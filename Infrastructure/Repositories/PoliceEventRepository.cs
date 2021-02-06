@@ -18,13 +18,19 @@ namespace Infrastructure.Repositories
             _settings = options.Value;
         }
 
-        public async Task<IEnumerable<PoliceEvent>> GetEventsForDate(DateTime fromDate, DateTime toDate)
+        public async Task<IEnumerable<PoliceEvent>> GetEventsForDate(DateTime fromDate,
+                                                                     DateTime toDate,
+                                                                     string locationName = null)
         {
             MongoClient dbClient = new MongoClient(_settings.ConnectionString);
             var database = dbClient.GetDatabase(_settings.PoliceDBName);
             var collection = database.GetCollection<BsonDocument>(_settings.PoliceEventCollectionName);
             var filter = Builders<BsonDocument>.Filter.Gte("UtcDateTime", new BsonDateTime(fromDate.Date)) &
                          Builders<BsonDocument>.Filter.Lt("UtcDateTime", new BsonDateTime(toDate.Date.AddDays(1)));
+            if (locationName != null)
+            {
+                filter &= Builders<BsonDocument>.Filter.Eq("Location.Name", locationName);
+            }
             var asyncCursor = await collection.FindAsync<PoliceEvent>(filter);
             var events = asyncCursor.ToList<PoliceEvent>();
             return await Task.FromResult(events);

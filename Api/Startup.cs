@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Core.Repositories;
 using Core.Settings;
 using Infrastructure.Repositories;
+using MediatR;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -42,6 +43,7 @@ namespace Api
             services
                 .AddOptions()
                 .Configure<RepositorySettings>(Configuration.GetSection("RepositorySettings"))
+                .AddMediatR(typeof(Core.AssemblyClass))
                 .AddTransient<IPoliceEventRepository, PoliceEventRepository>()
                 .AddControllers()
                 ;
