@@ -3,6 +3,7 @@ import { ErrorOccurredMessage } from 'src/app/messages/error-occurred.message';
 import { PoliceEventViewModel } from 'src/app/models/police-event-viewmodel';
 import { MessageBrokerService } from 'src/app/services/message-broker.service';
 import { PoliceEventService } from 'src/app/services/police-event.service';
+import { getDateTimeNDaysFromNow, getUTCDateStringFromLocalDateTime } from 'src/app/utils/date-helper';
 import { GeoPosition } from 'src/app/view-models/geo-position';
 
 @Component({
@@ -28,7 +29,16 @@ export class EventListComponent implements OnInit {
                     lat: position.coords.latitude,
                     lng: position.coords.longitude
                 };
-                this.events = await this.service.fetchEventsForDateWithinRadius('2021-02-03', userPos, distance);
+                const toDate = new Date();
+                const fromDate = getDateTimeNDaysFromNow(toDate, -3);
+                const utcToDateString = getUTCDateStringFromLocalDateTime(toDate);
+                const utcFromDateString = getUTCDateStringFromLocalDateTime(fromDate);
+                this.events = await this.service.fetchEventsForDateWithinRadius(
+                    utcFromDateString,
+                    utcToDateString,
+                    userPos,
+                    distance
+                );
             },
             (error) => {
                 this.broker.sendMessage(new ErrorOccurredMessage(error.message));

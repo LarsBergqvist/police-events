@@ -41,7 +41,7 @@ namespace Api
 
             services
                 .AddOptions()
-                .Configure<Settings>(Configuration.GetSection("Settings"))
+                .Configure<RepositorySettings>(Configuration.GetSection("RepositorySettings"))
                 .AddTransient<IPoliceEventRepository, PoliceEventRepository>()
                 .AddControllers()
                 ;

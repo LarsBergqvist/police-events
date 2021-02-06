@@ -21,7 +21,8 @@ namespace CollectorService
                 {
                     services
                         .AddOptions()
-                        .Configure<Settings>(hostContext.Configuration.GetSection("Settings"))
+                        .Configure<PoliceApiSettings>(hostContext.Configuration.GetSection("PoliceApiSettings"))
+                        .Configure<RepositorySettings>(hostContext.Configuration.GetSection("RepositorySettings"))
                         .AddTransient<IPoliceApiClient, PoliceApiClient>()
                         .AddTransient<IPoliceEventRepository, PoliceEventRepository>()
                         .AddHostedService<Worker>()

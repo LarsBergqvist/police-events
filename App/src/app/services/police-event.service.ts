@@ -15,13 +15,12 @@ export class PoliceEventService {
     constructor(private readonly http: HttpClient, private readonly logger: LoggingService) {}
 
     async fetchEventsForDateWithinRadius(
-        dateParam: string,
+        fromUtcDate: string,
+        toUtcDate: string,
         userPos: GeoPosition,
         radiusKm: number
     ): Promise<PoliceEventViewModel[]> {
-        let url = `${this.BaseUrl}?DateTime=${dateParam}`;
-        const res = await this.http.get<PoliceEvent[]>(`${url}`).toPromise();
-        const vm = this.convertToViewModel(res);
+        const vm = await this.fetchEventsForDate(fromUtcDate, toUtcDate);
         vm.forEach((event) => {
             event.location.distance = calcPosDistanceKm(userPos, event.location.pos);
         });
@@ -34,8 +33,8 @@ export class PoliceEventService {
         return withinRadius;
     }
 
-    async fetchEventsForDate(dateParam: string): Promise<PoliceEventViewModel[]> {
-        let url = `${this.BaseUrl}?DateTime=${dateParam}`;
+    async fetchEventsForDate(fromUtcDate: string, toUtcDate: string): Promise<PoliceEventViewModel[]> {
+        let url = `${this.BaseUrl}?fromDate=${fromUtcDate}&toDate=${toUtcDate}`;
         const res = await this.http.get<PoliceEvent[]>(`${url}`).toPromise();
         return this.convertToViewModel(res);
     }

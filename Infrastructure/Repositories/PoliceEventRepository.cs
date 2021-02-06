@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.Threading.Tasks;
 using Core.Models;
 using Core.Repositories;
@@ -13,19 +12,19 @@ namespace Infrastructure.Repositories
 {
     public class PoliceEventRepository : IPoliceEventRepository
     {
-        private readonly Settings _settings;
-        public PoliceEventRepository(IOptions<Settings> options)
+        private readonly RepositorySettings _settings;
+        public PoliceEventRepository(IOptions<RepositorySettings> options)
         {
             _settings = options.Value;
         }
 
-        public async Task<IEnumerable<PoliceEvent>> GetEventsForDate(DateTime dateTime)
+        public async Task<IEnumerable<PoliceEvent>> GetEventsForDate(DateTime fromDate, DateTime toDate)
         {
-            MongoClient dbClient = new MongoClient(_settings.MongoDBConnectionString);
+            MongoClient dbClient = new MongoClient(_settings.ConnectionString);
             var database = dbClient.GetDatabase(_settings.PoliceDBName);
             var collection = database.GetCollection<BsonDocument>(_settings.PoliceEventCollectionName);
-            var filter = Builders<BsonDocument>.Filter.Gte("UtcDateTime", new BsonDateTime(dateTime.Date)) &
-                         Builders<BsonDocument>.Filter.Lt("UtcDateTime", new BsonDateTime(dateTime.Date.AddDays(1)));
+            var filter = Builders<BsonDocument>.Filter.Gte("UtcDateTime", new BsonDateTime(fromDate.Date)) &
+                         Builders<BsonDocument>.Filter.Lt("UtcDateTime", new BsonDateTime(toDate.Date.AddDays(1)));
             var asyncCursor = await collection.FindAsync<PoliceEvent>(filter);
             var events = asyncCursor.ToList<PoliceEvent>();
             return await Task.FromResult(events);
@@ -33,7 +32,7 @@ namespace Infrastructure.Repositories
 
         public async Task UpsertCollection(IEnumerable<PoliceEvent> policeEvents)
         {
-            MongoClient dbClient = new MongoClient(_settings.MongoDBConnectionString);
+            MongoClient dbClient = new MongoClient(_settings.ConnectionString);
             var database = dbClient.GetDatabase(_settings.PoliceDBName);
             var collection = database.GetCollection<BsonDocument>(_settings.PoliceEventCollectionName);
             foreach (var pe in policeEvents)

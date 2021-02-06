@@ -11,16 +11,12 @@
   "profiles": {
     "IIS Express": {
       "commandName": "IISExpress",
-      "launchBrowser": true,
-      "launchUrl": "events",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
       }
     },
     "Api": {
       "commandName": "Project",
-      "launchBrowser": true,
-      "launchUrl": "events",
       "applicationUrl": "https://localhost:59006;http://localhost:1185",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"

@@ -22,9 +22,33 @@ namespace Api.Controllers
         }
 
         [HttpGet]
-        public async Task<IEnumerable<PoliceEvent>> Get()
+        public async Task<IEnumerable<PoliceEvent>> Get([FromQuery] string fromDate = "", [FromQuery] string toDate = "")
         {
-            return await _repository.GetEventsForDate(DateTime.Now.Date);
+            var from = DateTime.Now.Date;
+            var to = DateTime.Now.Date;
+            if (!string.IsNullOrEmpty(fromDate))
+            {
+                if (DateTime.TryParseExact(fromDate,
+                           "yyyy-MM-dd",
+                           System.Globalization.CultureInfo.InvariantCulture,
+                           System.Globalization.DateTimeStyles.None,
+                           out var parsedDate))
+                {
+                    from = parsedDate;
+                }
+            }
+            if (!string.IsNullOrEmpty(toDate))
+            {
+                if (DateTime.TryParseExact(toDate,
+                           "yyyy-MM-dd",
+                           System.Globalization.CultureInfo.InvariantCulture,
+                           System.Globalization.DateTimeStyles.None,
+                           out var parsedDate))
+                {
+                    to = parsedDate;
+                }
+            }
+            return await _repository.GetEventsForDate(from, to);
         }
     }
 }

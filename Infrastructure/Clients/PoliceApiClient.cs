@@ -11,8 +11,8 @@ namespace Infrastructure.Clients
 {
     public class PoliceApiClient : IPoliceApiClient
     {
-        private readonly Settings _settings;
-        public PoliceApiClient(IOptions<Settings> options)
+        private readonly PoliceApiSettings _settings;
+        public PoliceApiClient(IOptions<PoliceApiSettings> options)
         {
             _settings = options.Value;
         }
