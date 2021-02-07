@@ -3,7 +3,6 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { AppComponent } from './app.component';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { MessageService } from 'primeng/api';
-import { TranslatePipe } from './translations/translate.pipe';
 
 describe('AppComponent', () => {
     let service: any;
@@ -16,7 +15,7 @@ describe('AppComponent', () => {
             };
             TestBed.configureTestingModule({
                 imports: [RouterTestingModule],
-                declarations: [AppComponent, TranslatePipe],
+                declarations: [AppComponent],
                 schemas: [CUSTOM_ELEMENTS_SCHEMA],
                 providers: [{ provide: MessageService, useValue: messageService }]
             }).compileComponents();

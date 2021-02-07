@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 import { PoliceEvent } from '../models/police-event';
 import { PoliceEventViewModel } from '../models/police-event-viewmodel';
 import { calcPosDistanceKm } from '../utils/distance-helper';
-import { GeoPosition } from '../view-models/geo-position';
+import { GeoPosition } from '../models/geo-position';
 import { LoggingService } from './logging.service';
 
 @Injectable({

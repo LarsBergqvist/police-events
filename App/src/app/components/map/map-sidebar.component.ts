@@ -1,7 +1,6 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Subject } from 'rxjs';
 import { filter, takeUntil } from 'rxjs/operators';
-import { ShowInfoSidebarMessage } from 'src/app/messages/show-info-sidebar.message';
 import { ShowMapMessage } from 'src/app/messages/show-map.message';
 import { PoliceEventViewModel } from 'src/app/models/police-event-viewmodel';
 import { MessageBrokerService } from 'src/app/services/message-broker.service';
@@ -28,8 +27,7 @@ export class MapSidebarComponent implements OnInit, OnDestroy {
             )
             .subscribe((message: ShowMapMessage) => {
                 const input = new MapInput();
-                input.markerPositions = message.positions;
-                input.userPos = message.userPos;
+                input.centerPos = message.event.location.pos;
                 input.geoJson = message.geoJson;
                 this.mapInput = input;
                 this.event = message.event;
@@ -47,9 +45,5 @@ export class MapSidebarComponent implements OnInit, OnDestroy {
 
     close() {
         this.isVisible = false;
-    }
-
-    onMapMarkerClicked(id: number) {
-        this.broker.sendMessage(new ShowInfoSidebarMessage(id));
     }
 }

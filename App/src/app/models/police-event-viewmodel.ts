@@ -1,4 +1,4 @@
-import { GeoPosition } from '../view-models/geo-position';
+import { GeoPosition } from './geo-position';
 
 export interface PoliceEventViewModel {
     id: number;

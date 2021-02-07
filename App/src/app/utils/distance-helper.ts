@@ -1,4 +1,4 @@
-import { GeoPosition } from '../view-models/geo-position';
+import { GeoPosition } from '../models/geo-position';
 
 function toRad(x: number): number {
     return (x * Math.PI) / 180;

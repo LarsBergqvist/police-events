@@ -4,7 +4,7 @@ import { PoliceEventViewModel } from 'src/app/models/police-event-viewmodel';
 import { MessageBrokerService } from 'src/app/services/message-broker.service';
 import { PoliceEventService } from 'src/app/services/police-event.service';
 import { getDateTimeNDaysFromNow, getUTCDateStringFromLocalDateTime } from 'src/app/utils/date-helper';
-import { GeoPosition } from 'src/app/view-models/geo-position';
+import { GeoPosition } from 'src/app/models/geo-position';
 
 @Component({
     selector: 'app-event-list',

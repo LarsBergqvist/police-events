@@ -3,7 +3,7 @@ import { ShowMapMessage } from 'src/app/messages/show-map.message';
 import { PoliceEventViewModel } from 'src/app/models/police-event-viewmodel';
 import { AreaService } from 'src/app/services/area-service';
 import { MessageBrokerService } from 'src/app/services/message-broker.service';
-import { GeoPosition } from 'src/app/view-models/geo-position';
+import { GeoPosition } from 'src/app/models/geo-position';
 
 @Component({
     selector: 'app-event',
@@ -22,11 +22,11 @@ export class EventComponent implements OnInit {
             areaResult = await this.areaService.fetchGeoJsonForCounty(event.location.name);
         } else {
             // The location is a likely municipality
-            areaResult = await this.areaService.fetchGeoJsonForMunicpality(event.location.name);
+            areaResult = await this.areaService.fetchGeoJsonForMunicipality(event.location.name);
         }
         const positions: GeoPosition[] = [];
         positions.push(event.location.pos);
-        this.broker.sendMessage(new ShowMapMessage(positions, null, event, areaResult));
+        this.broker.sendMessage(new ShowMapMessage(event, areaResult));
     }
 
     ngOnInit(): void {}

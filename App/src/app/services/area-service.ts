@@ -8,7 +8,7 @@ import { LoggingService } from './logging.service';
 export class AreaService {
     constructor(private readonly http: HttpClient, private readonly logger: LoggingService) {}
 
-    async fetchGeoJsonForMunicpality(municipality: string): Promise<any> {
+    async fetchGeoJsonForMunicipality(municipality: string): Promise<any> {
         const BaseUrl =
             'https://public.opendatasoft.com/api/records/1.0/search/?dataset=sverige-kommuner-municipalities-of-sweden';
         let url = `${BaseUrl}&q=${municipality}`;

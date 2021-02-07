@@ -23,10 +23,6 @@
     width: 100%;
 }
 
-.sr-bottomsidebar.p-sidebar {
-    height: 50%;
-}
-
 .close-button {
     font-size: 2.5em;
     font-weight: bold;
@@ -53,6 +49,7 @@
 .p-button-icon {
     font-size: 1.5rem;
 }
+
 .sr-button.p-button {
     width: 100%;
     border-radius: 10px;
@@ -66,15 +63,4 @@
     max-width: base.$ctlwidth-wide;
     margin-left: base.$marginlr;
     margin-right: base.$marginlr;
-}
-
-.p-dropdown {
-    max-width: base.$ctlwidth-wide;
-    min-width: base.$ctlwidth;
-    width: 100%;
-    margin-left: 8px;
-    margin-right: -8px;
-}
-.center {
-    margin: auto;
 }

@@ -4,7 +4,6 @@ import { MessageBrokerService } from './services/message-broker.service';
 import { filter, takeUntil } from 'rxjs/operators';
 import { SuccessInfoMessage } from './messages/success-info.message';
 import { Subject } from 'rxjs';
-import { TranslationService } from './services/translation.service';
 import { ErrorOccurredMessage } from './messages/error-occurred.message';
 
 @Component({
@@ -19,14 +18,10 @@ export class AppComponent implements OnInit, OnDestroy {
 
     constructor(
         private readonly broker: MessageBrokerService,
-        private readonly primeNGmessageService: MessageService,
-        private readonly translationService: TranslationService
+        private readonly primeNGmessageService: MessageService
     ) {}
 
     async ngOnInit() {
-        this.translationService.defaultLangCode = 'en';
-        this.translationService.currentLocale = navigator.language;
-
         const messages = this.broker.getMessage();
         messages
             .pipe(
