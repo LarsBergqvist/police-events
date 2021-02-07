@@ -25,38 +25,54 @@ namespace Infrastructure.Repositories
                                                                      DateTime toDate,
                                                                      string locationName = null)
         {
-            MongoClient dbClient = new MongoClient(_settings.ConnectionString);
-            var database = dbClient.GetDatabase(_settings.PoliceDBName);
-            var collection = database.GetCollection<BsonDocument>(_settings.PoliceEventCollectionName);
-            var filter = Builders<BsonDocument>.Filter.Ne("Type", "Övrigt") &
-                         Builders<BsonDocument>.Filter.Gte("UtcDateTime", new BsonDateTime(fromDate.Date)) &
-                         Builders<BsonDocument>.Filter.Lt("UtcDateTime", new BsonDateTime(toDate.Date.AddDays(1)));
-            if (locationName != null)
+            try
             {
-                filter &= Builders<BsonDocument>.Filter.Eq("Location.Name", locationName);
+                MongoClient dbClient = new MongoClient(_settings.ConnectionString);
+                var database = dbClient.GetDatabase(_settings.PoliceDBName);
+                var collection = database.GetCollection<BsonDocument>(_settings.PoliceEventCollectionName);
+                var filter = Builders<BsonDocument>.Filter.Ne("Type", "Övrigt") &
+                             Builders<BsonDocument>.Filter.Gte("UtcDateTime", new BsonDateTime(fromDate.Date)) &
+                             Builders<BsonDocument>.Filter.Lt("UtcDateTime", new BsonDateTime(toDate.Date.AddDays(1)));
+                if (locationName != null)
+                {
+                    filter &= Builders<BsonDocument>.Filter.Eq("Location.Name", locationName);
+                }
+                var asyncCursor = await collection.FindAsync<PoliceEvent>(filter);
+                var events = asyncCursor.ToList<PoliceEvent>();
+                return events;
             }
-            var asyncCursor = await collection.FindAsync<PoliceEvent>(filter);
-            var events = asyncCursor.ToList<PoliceEvent>();
-            return events;
+            catch (Exception e)
+            {
+                _logger.LogError(e.ToString());
+                throw (e);
+            }
         }
 
         public async Task UpsertCollection(IEnumerable<PoliceEvent> policeEvents)
         {
-            MongoClient dbClient = new MongoClient(_settings.ConnectionString);
-            var database = dbClient.GetDatabase(_settings.PoliceDBName);
-            var collection = database.GetCollection<BsonDocument>(_settings.PoliceEventCollectionName);
-            var count = 0;
-            foreach (var pe in policeEvents)
+            try
             {
-                var filter = Builders<BsonDocument>.Filter.Eq("_id", pe.Id);
-                var replaceOptions = new ReplaceOptions
+                MongoClient dbClient = new MongoClient(_settings.ConnectionString);
+                var database = dbClient.GetDatabase(_settings.PoliceDBName);
+                var collection = database.GetCollection<BsonDocument>(_settings.PoliceEventCollectionName);
+                var count = 0;
+                foreach (var pe in policeEvents)
                 {
-                    IsUpsert = true
-                };
-                await collection.ReplaceOneAsync(filter, pe.ToBsonDocument(), replaceOptions);
-                count++;
+                    var filter = Builders<BsonDocument>.Filter.Eq("_id", pe.Id);
+                    var replaceOptions = new ReplaceOptions
+                    {
+                        IsUpsert = true
+                    };
+                    await collection.ReplaceOneAsync(filter, pe.ToBsonDocument(), replaceOptions);
+                    count++;
+                }
+                _logger.LogInformation($"Upserted {count} police events to the MongoDB database");
             }
-            _logger.LogInformation($"Upserted {count} police events to the MongoDB database");
+            catch (Exception e)
+            {
+                _logger.LogError(e.ToString());
+                throw (e);
+            }
         }
     }
 }
