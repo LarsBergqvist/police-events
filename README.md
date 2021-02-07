@@ -1,10 +1,10 @@
 # police-events
 This repository consists of:  
 * a CollectorService that fetches the latest event data from the Open Api of the Swedish Police every 10 minutes and stores it in a local MongoDB database  
-* a .NET Core REST API that provide queries from the MongoDB database  
+* a .NET Core REST API that provides queries from the MongoDB database  
 * an Angular front-end app that uses the REST API for searching and displaying nearby events (based on geolocation)  
 
-The Angular application uses OpenLayers/OpenStreeMap and fetches county and municipality geoJson polygons from public.opendatasoft.com  
+The Angular application has a map view with OpenLayers/OpenStreeMap and fetches county and municipality geoJson polygons from public.opendatasoft.com  
 
 # Pre-reqs  
 Install a MongoDB instance and create a database called 'Police'  
