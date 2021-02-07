@@ -43,8 +43,11 @@ namespace CollectorService
 
         private async void CollectData(object state)
         {
+            _logger.LogInformation("Start fetching data");
             var events = await _policeApiClient.GetLatestEvents();
+            _logger.LogInformation("Start upserting events in database");
             await _policeEventRepository.UpsertCollection(events);
+            _logger.LogInformation("Finished upserting events in database");
         }
 
     }

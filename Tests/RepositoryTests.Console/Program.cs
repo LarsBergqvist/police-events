@@ -1,21 +1,29 @@
 ﻿using System;
+using System.IO;
 using System.Threading.Tasks;
+using Core.Repositories;
 using Infrastructure.Repositories;
-using Microsoft.Extensions.Options;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
+
 namespace RepositoryTests.Console
 {
     class Program
     {
         static async Task Main(string[] args)
         {
-            var settings = new Core.Settings.RepositorySettings
-            {
-                ConnectionString = "mongodb://192.168.1.186:27017",
-                PoliceDBName = "Police",
-                PoliceEventCollectionName = "police_events"
-            };
-            var options = Options.Create<Core.Settings.RepositorySettings>(settings);
-            var repo = new PoliceEventRepository(options);
+            var configuration = new ConfigurationBuilder()
+                    .SetBasePath(Directory.GetCurrentDirectory())
+                    .AddJsonFile("appsettings.json", optional: false)
+                    .AddEnvironmentVariables()
+                    .Build();
+            var serviceCollection = new ServiceCollection();
+            ConfigureServices(serviceCollection, configuration);
+
+            var serviceProvider = serviceCollection.BuildServiceProvider();
+
+            var repo = serviceProvider.GetService<IPoliceEventRepository>();
 
             var fromDate = new DateTime(2021, 02, 06);
             var toDate = new DateTime(2021, 02, 06);
@@ -24,6 +32,15 @@ namespace RepositoryTests.Console
             {
                 System.Console.WriteLine($"{pe.UtcDateTime}: {pe.Summary}");
             }
+        }
+
+        private static void ConfigureServices(IServiceCollection services, IConfiguration configuration)
+        {
+            services
+                .Configure<Core.Settings.RepositorySettings>(configuration.GetSection("RepositorySettings"))
+                .AddLogging(configure => configure.AddConsole())
+                .AddTransient<IPoliceEventRepository, PoliceEventRepository>()
+                ;
         }
     }
 }
