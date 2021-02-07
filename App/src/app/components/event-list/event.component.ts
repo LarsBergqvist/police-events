@@ -26,8 +26,7 @@ export class EventComponent implements OnInit {
         }
         const positions: GeoPosition[] = [];
         positions.push(event.location.pos);
-        const header = `${event.location.name}, ${event.type}`;
-        this.broker.sendMessage(new ShowMapMessage(positions, null, `${header}`, event.summary, areaResult));
+        this.broker.sendMessage(new ShowMapMessage(positions, null, event, areaResult));
     }
 
     ngOnInit(): void {}

@@ -1,17 +1,37 @@
-<div>
-    <button pButton class="sr-button-wide" (click)="onFetchPositionVeryClose()" icon="pi pi-compass" iconPos="right"
-        label="Hämta händelser i ditt närområde (15km)">
-    </button>
-    <p></p>
-    <button pButton class="sr-button-wide" (click)="onFetchPositionClose()" icon="pi pi-compass" iconPos="right"
-        label="Hämta händelser i ett större närområde (35km)">
-    </button>
-    <p></p>
-    <button pButton class="sr-button-wide" (click)="onFetchAll()" label="Hämta händelser i hela landet">
-    </button>
-</div>
-<div *ngIf="events">
-    <div *ngFor="let e of events;">
-        <app-event [event]=e></app-event>
+<div class="outer">
+    <div class="headline">Polishändelser i Sverige</div>
+    <div class="controls-container">
+        <div class="p-grid thegrid">
+            <div class="p-col-12 p-md-6 p-lg-4">
+                <button pButton class="sr-button-wide" (click)="onFetchPositionVeryClose()" icon="pi pi-compass"
+                    iconPos="right" label="Hämta händelser i ditt närområde (15km)">
+                </button>
+            </div>
+            <div class="p-col-12 p-md-6 p-lg-4">
+                <button pButton class="sr-button-wide" (click)="onFetchPositionClose()" icon="pi pi-compass"
+                    iconPos="right" label="Hämta händelser i ett större närområde (35km)">
+                </button>
+            </div>
+            <div class="p-col-12 p-md-6 p-lg-4">
+                <button pButton class="sr-button-wide" (click)="onFetchAll()" label="Hämta händelser i hela landet">
+                </button>
+            </div>
+            <div class="p-col-12 p-md-6 p-lg-4">
+                <div class="search-ctn">
+                    <div class="p-input-icon-left">
+                        <i class="pi pi-search"></i>
+                        <input type="text" pInputText placeholder="Filtrera" [(ngModel)]="keyword" />
+                    </div>
+                    <span class="clear-btn">
+                        <button pButton (click)="onClear()" [disabled]="isLoading" iconPos="right" label="Töm"></button>
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div *ngIf="events">
+        <div *ngFor="let e of events;">
+            <app-event *ngIf="matchesKeyword(e)" [event]=e></app-event>
+        </div>
     </div>
 </div>

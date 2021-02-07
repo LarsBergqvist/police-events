@@ -1,0 +1,71 @@
+@use '../../../base.scss';
+
+.headline {
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: base.$margintop;
+    margin-bottom: base.$margintop;
+    max-width: 300px;
+    font-weight: bolder;
+    font-size: 1.5em;
+    color: rgb(126, 126, 126);
+}
+
+.controls-container {
+    width: 100%;
+    margin-left: auto;
+    margin-right: auto;
+    max-width: base.$ctlwidth-wide;
+    padding-bottom: 0px;
+}
+
+@media only screen and (min-width: 800px) {
+    .controls-container {
+        max-width: 2 * base.$ctlwidth-wide;
+    }
+}
+
+.showmap-ctn {
+    margin-top: base.$margintop;
+    width: base.$ctlwidth-wide;
+}
+
+.sort-filt-label {
+    font-weight: bold;
+    margin-top: base.$margintop;
+    margin-bottom: base.$margintop;
+}
+
+:host::ng-deep {
+    .sortfilt-ctn {
+        width: 100%;
+        margin: auto;
+        margin-left: 4px;
+    }
+}
+
+.refresh-btn {
+    margin-left: 20px;
+    font-size: 2em;
+    color: rgb(126, 126, 126);
+}
+
+.thegrid {
+    align-items: center;
+}
+
+.clear-btn {
+    border-radius: 10px;
+    width: 20px;
+}
+.num-msg-ctn {
+    margin-left: 16px;
+    margin-right: -16px;
+}
+.area-dd {
+    padding-right: 10px;
+    padding-left: 6px;
+}
+.outer {
+    margin-right: 8px;
+}

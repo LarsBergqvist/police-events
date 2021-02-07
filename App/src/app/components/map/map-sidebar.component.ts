@@ -3,6 +3,7 @@ import { Subject } from 'rxjs';
 import { filter, takeUntil } from 'rxjs/operators';
 import { ShowInfoSidebarMessage } from 'src/app/messages/show-info-sidebar.message';
 import { ShowMapMessage } from 'src/app/messages/show-map.message';
+import { PoliceEventViewModel } from 'src/app/models/police-event-viewmodel';
 import { MessageBrokerService } from 'src/app/services/message-broker.service';
 import { MapInput } from './map.component';
 
@@ -12,8 +13,7 @@ import { MapInput } from './map.component';
 })
 export class MapSidebarComponent implements OnInit, OnDestroy {
     private unsubscribe$ = new Subject();
-    title: string;
-    details: string;
+    event: PoliceEventViewModel;
     isVisible = false;
     mapInput: MapInput = null;
 
@@ -32,11 +32,10 @@ export class MapSidebarComponent implements OnInit, OnDestroy {
                 input.userPos = message.userPos;
                 input.geoJson = message.geoJson;
                 this.mapInput = input;
-                this.title = message.title;
-                if (this.title.includes(' län')) {
+                this.event = message.event;
+                if (this.event.location.name.includes(' län')) {
                     input.showCounty = true;
                 }
-                this.details = message.details;
                 this.isVisible = true;
             });
     }

@@ -1,15 +1,15 @@
-<p-sidebar *ngIf="mapInput" [(visible)]="isVisible" position="right" styleClass="sr-sidebar" [showCloseIcon]="false">
+<p-sidebar *ngIf="mapInput && event" [(visible)]="isVisible" position="right" styleClass="sr-sidebar"
+    [showCloseIcon]="false">
 
     <div class="details-header-text">
         <i (click)="close()" class="pi pi-chevron-left close-button clickable"></i>
-        {{title}}
+        <b>{{event.location.name}}, {{event.datetime | date:'d MMM HH:mm'}}, {{event.type}}</b>
     </div>
     <div>
         <div>
-            {{details}}
+            {{event.summary}}
         </div>
     </div>
     <hr>
     <app-map [mapInput]="mapInput" (onMarkerClicked)="onMapMarkerClicked($event)"></app-map>
 </p-sidebar>
-<!-- app-info-sidebar></app-info-sidebar-->

@@ -34,7 +34,7 @@ namespace Infrastructure.Repositories
             }
             var asyncCursor = await collection.FindAsync<PoliceEvent>(filter);
             var events = asyncCursor.ToList<PoliceEvent>();
-            return await Task.FromResult(events);
+            return events;
         }
 
         public async Task UpsertCollection(IEnumerable<PoliceEvent> policeEvents)

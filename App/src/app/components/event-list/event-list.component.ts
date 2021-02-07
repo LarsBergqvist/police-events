@@ -8,13 +8,32 @@ import { GeoPosition } from 'src/app/view-models/geo-position';
 
 @Component({
     selector: 'app-event-list',
-    templateUrl: './event-list.component.html'
+    templateUrl: './event-list.component.html',
+    styleUrls: ['event-list.component.scss']
 })
 export class EventListComponent implements OnInit {
     events: PoliceEventViewModel[];
+    keyword: string = '';
+    isLoading = false;
+
     constructor(private readonly service: PoliceEventService, private readonly broker: MessageBrokerService) {}
 
     async ngOnInit() {}
+
+    onClear() {
+        this.keyword = '';
+    }
+
+    matchesKeyword(vm: PoliceEventViewModel): boolean {
+        if (!this.keyword || this.keyword.length < 2) return true;
+
+        var re = new RegExp(this.keyword, 'gi');
+        if (vm.summary.match(re) || vm.location.name.match(re) || vm.type.match(re)) {
+            return true;
+        } else {
+            return false;
+        }
+    }
 
     onFetchPositionVeryClose() {
         this.fetchMessageClose(15);
