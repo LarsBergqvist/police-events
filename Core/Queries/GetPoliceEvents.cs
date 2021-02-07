@@ -34,34 +34,27 @@ namespace Core.Queries
 
             public async Task<IEnumerable<PoliceEvent>> Handle(Request request, CancellationToken cancellationToken)
             {
-                var from = DateTime.Now.Date;
-                var to = DateTime.Now.Date;
-                if (!string.IsNullOrEmpty(request.Parameters.FromDate))
-                {
-                    if (DateTime.TryParseExact(request.Parameters.FromDate,
-                               "yyyy-MM-dd",
-                               System.Globalization.CultureInfo.InvariantCulture,
-                               System.Globalization.DateTimeStyles.None,
-                               out var parsedDate))
-                    {
-                        from = parsedDate;
-                    }
-                }
-                if (!string.IsNullOrEmpty(request.Parameters.ToDate))
-                {
-                    if (DateTime.TryParseExact(request.Parameters.ToDate,
-                               "yyyy-MM-dd",
-                               System.Globalization.CultureInfo.InvariantCulture,
-                               System.Globalization.DateTimeStyles.None,
-                               out var parsedDate))
-                    {
-                        to = parsedDate;
-                    }
-                }
+                var from = GetParsedDateOrDefault(request.Parameters.FromDate);
+                var to = GetParsedDateOrDefault(request.Parameters.ToDate);
                 return await _repository.GetEventsForDate(from, to, request.Parameters.LocationName);
             }
+
+            private DateTime GetParsedDateOrDefault(string dateString)
+            {
+                var date = DateTime.Now.Date;
+                if (!string.IsNullOrEmpty(dateString))
+                {
+                    if (DateTime.TryParseExact(dateString,
+                               "yyyy-MM-dd",
+                               System.Globalization.CultureInfo.InvariantCulture,
+                               System.Globalization.DateTimeStyles.None,
+                               out var parsedDate))
+                    {
+                        date = parsedDate;
+                    }
+                }
+                return date;
+            }
         }
-
-
     }
 }
