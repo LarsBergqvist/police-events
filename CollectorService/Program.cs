@@ -12,6 +12,7 @@ namespace CollectorService
     {
         public static void Main(string[] args)
         {
+            SetCurrentDirectory();
             CreateHostBuilder(args).Build().Run();
         }
 
@@ -28,5 +29,12 @@ namespace CollectorService
                         .AddHostedService<Worker>()
                     ;
                 });
+
+        private static void SetCurrentDirectory()
+        {
+            var assemblyLocation = System.IO.Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location);
+            System.IO.Directory.SetCurrentDirectory(assemblyLocation);
+        }
+
     }
 }
