@@ -24,6 +24,7 @@ namespace Api.Controllers
         [HttpGet]
         public async Task<IEnumerable<PoliceEvent>> Get([FromQuery] string fromDate = "", [FromQuery] string toDate = "")
         {
+            _logger.LogInformation("Get request");
             var queryParams = new GetPoliceEvents.QueryParameters
             {
                 FromDate = fromDate,
