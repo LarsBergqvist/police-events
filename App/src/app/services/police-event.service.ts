@@ -10,7 +10,7 @@ import { LoggingService } from './logging.service';
     providedIn: 'root'
 })
 export class PoliceEventService {
-    private readonly BaseUrl = 'https://192.168.1.186:5331/events'; //'https://localhost:59006/events';
+    private readonly BaseUrl = 'http://192.168.1.186:5330/events'; //'https://localhost:5001/events'; // 'https://192.168.1.186:5001/events';
 
     constructor(private readonly http: HttpClient, private readonly logger: LoggingService) {}
 

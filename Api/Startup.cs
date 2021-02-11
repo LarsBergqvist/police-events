@@ -51,11 +51,11 @@ namespace Api
                 app.UseDeveloperExceptionPage();
             }
 
-            //            app.UseHttpsRedirection();
-            app.UseForwardedHeaders(new ForwardedHeadersOptions
-            {
-                ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto
-            });
+            //app.UseHttpsRedirection();
+            //app.UseForwardedHeaders(new ForwardedHeadersOptions
+            //{
+            //    ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto
+            //});
             app.UseRouting();
 
             app.UseAuthorization();
