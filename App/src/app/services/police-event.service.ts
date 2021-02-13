@@ -5,14 +5,20 @@ import { PoliceEventViewModel } from '../models/police-event-viewmodel';
 import { calcPosDistanceKm } from '../utils/distance-helper';
 import { GeoPosition } from '../models/geo-position';
 import { LoggingService } from './logging.service';
-
+import { AppConfigService } from './app-config.service';
 @Injectable({
     providedIn: 'root'
 })
 export class PoliceEventService {
-    private readonly BaseUrl = 'http://192.168.1.186:5330/events'; //'https://localhost:5001/events'; // 'https://192.168.1.186:5001/events';
+    private readonly BaseUrl;
 
-    constructor(private readonly http: HttpClient, private readonly logger: LoggingService) {}
+    constructor(
+        private readonly http: HttpClient,
+        private readonly logger: LoggingService,
+        private readonly configService: AppConfigService
+    ) {
+        this.BaseUrl = `${configService.apiUrl}:${configService.apiPort}/events`;
+    }
 
     async fetchEventsForDateWithinRadius(
         fromUtcDate: string,

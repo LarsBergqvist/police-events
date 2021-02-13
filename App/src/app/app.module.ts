@@ -1,5 +1,5 @@
 import { BrowserModule } from '@angular/platform-browser';
-import { NgModule } from '@angular/core';
+import { APP_INITIALIZER, NgModule } from '@angular/core';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -21,6 +21,17 @@ import { FormsModule } from '@angular/forms';
 import { MapSidebarComponent } from './components/map/map-sidebar.component';
 import { EventListComponent } from './components/event-list/event-list.component';
 import { EventComponent } from './components/event-list/event.component';
+import { AppConfigService } from './services/app-config.service';
+
+export function appConfigInit(configService: AppConfigService, logging: LoggingService) {
+    return () => {
+        return new Promise<void>((resolve) => {
+            configService.load().then(() => {
+                resolve();
+            });
+        });
+    };
+}
 
 @NgModule({
     declarations: [MapComponent, AppComponent, MapSidebarComponent, EventListComponent, EventComponent],
@@ -42,6 +53,13 @@ import { EventComponent } from './components/event-list/event.component';
     providers: [
         MessageService,
         LoggingService,
+        AppConfigService,
+        {
+            provide: APP_INITIALIZER,
+            useFactory: appConfigInit,
+            multi: true,
+            deps: [AppConfigService, LoggingService]
+        },
         {
             provide: HTTP_INTERCEPTORS,
             useClass: HttpInterceptorService,

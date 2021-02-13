@@ -3,8 +3,22 @@
 version: "3.4"
 
 services:
+  app:
+    image: police-events-app
+    build:
+      context: .
+      dockerfile: App/Dockerfile
+    ports:
+      - 8080:80
+      - 8081:443
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+    volumes:
+      - ~/.aspnet/https:/https:ro
+      - ~/.vsdbg:/remote_debugger:rw
+
   api:
-    image: api
+    image: police-events-api
     build:
       context: .
       dockerfile: Api/Dockerfile

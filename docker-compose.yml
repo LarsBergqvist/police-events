@@ -3,8 +3,21 @@
 version: "3.4"
 
 services:
+  app:
+    image: police-events-app
+    build:
+      context: App
+      dockerfile: Dockerfile
+    ports:
+      - 8080:80
+      - 8081:443
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Production
+    volumes:
+      - ~/.aspnet/https:/https:ro
+
   api:
-    image: api
+    image: police-events-api
     build:
       context: .
       dockerfile: Api/Dockerfile
@@ -15,7 +28,6 @@ services:
       - ASPNETCORE_ENVIRONMENT=Production
       - ASPNETCORE_URLS=http://+:5000;https://+:5001
       - ASPNETCORE_Kestrel__Certificates__Default__Password=${HTTPS_CERT_PWD}
-
       - ASPNETCORE_Kestrel__Certificates__Default__Path=/https/aspnetapp.pfx
     volumes:
       - ~/.aspnet/https:/https:ro
