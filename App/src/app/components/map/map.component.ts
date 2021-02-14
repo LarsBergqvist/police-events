@@ -40,10 +40,10 @@ export class MapComponent {
 
     @Input('mapInput') set setInputData(input: MapInput) {
         if (!input) return;
-        this.setupMap(input);
+        this.updateMap(input);
     }
 
-    private setupMap(input: MapInput) {
+    private updateMap(input: MapInput) {
         this.showCounty = input.showCounty;
 
         if (!this.map) {
@@ -80,14 +80,12 @@ export class MapComponent {
         this.detailedLocation.setGeometry(null);
         if (!locationObject) return;
 
-        let bbox = locationObject.boundingBox;
-
-        let be = boundingExtent([
+        const bbox = locationObject.boundingBox;
+        const be = boundingExtent([
             [bbox.lon1, bbox.lat1],
             [bbox.lon2, bbox.lat2]
         ]);
-        var locationPolygon = fromExtent(be).clone().transform('EPSG:4326', 'EPSG:3857');
-
+        const locationPolygon = fromExtent(be).clone().transform('EPSG:4326', 'EPSG:3857');
         this.detailedLocation.setGeometry(locationPolygon);
     }
 
@@ -96,13 +94,13 @@ export class MapComponent {
         // Create a map with an OpenStreetMap-layer,
         // a geoJson-polygon layer, a detailed location layer and a view
         //
-        var attribution = new Attribution({
+        const attribution = new Attribution({
             // Attach the attribution information
             // to an element outside of the map
             target: 'attribution'
         });
         this.geoJsonVectorSource = new VectorSource({});
-        let geoJsonLayer = new VectorLayer({
+        const geoJsonLayer = new VectorLayer({
             source: this.geoJsonVectorSource,
             style: new Style({
                 stroke: new Stroke({
@@ -128,11 +126,11 @@ export class MapComponent {
                     style: new Style({
                         stroke: new Stroke({
                             color: 'red',
-                            lineDash: [1],
+                            lineDash: [5],
                             width: 2
                         }),
                         fill: new Fill({
-                            color: 'rgba(0, 0, 255, 0.1)'
+                            color: 'rgba(200, 2000, 200, 0.2)'
                         })
                     })
                 })

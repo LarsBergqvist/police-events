@@ -1,7 +1,7 @@
 const sentencesToSkip = ['SOS Alarm', 'Skadeläget', 'Polislagen'];
 
 export function locationQueryFromTextAndAreaName(text: string, areaname: string) {
-    let locationWords = locationWordsFromText(text);
+    const locationWords = locationWordsFromText(text);
     if (locationWords.length === 0) return '';
 
     let query = '';
@@ -15,6 +15,7 @@ export function locationQueryFromTextAndAreaName(text: string, areaname: string)
     }
 
     if (query.toLowerCase().indexOf(areaname.toLowerCase()) < 0) {
+        // use area name in query if it is not already present
         query = query + ' ' + areaname;
     }
 
@@ -27,7 +28,7 @@ export function locationWordsFromText(text: string): string[] {
         text = text.replace(s, '');
     });
     // Remove the first word of any secondary sentences
-    text = text.replace(/\.\W[A-ZÅÄÖ0-9].[A-Za-zÅÄÖåäö0-9]*/g, ''); // (/\b\.\s[A-Z].*?\b/g, '');
+    text = text.replace(/\.\s*[A-ZÅÄÖ0-9].[A-Za-zÅÄÖåäö0-9]*/g, '');
     let res: string[] = [];
     let words = text.split(/[\s,."]+/);
     for (let i = 0; i < words.length; i++) {

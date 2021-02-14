@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { ShowMapMessage } from 'src/app/messages/show-map.message';
 import { PoliceEventViewModel } from 'src/app/models/police-event-viewmodel';
 import { AreaService } from 'src/app/services/area-service';
@@ -12,7 +12,7 @@ import { LocationObjectViewModel } from 'src/app/models/location-object-viewmode
     templateUrl: './event.component.html',
     styleUrls: ['./event.component.scss']
 })
-export class EventComponent implements OnInit {
+export class EventComponent {
     @Input('event') event: PoliceEventViewModel;
 
     constructor(
@@ -40,6 +40,4 @@ export class EventComponent implements OnInit {
         positions.push(event.location.pos);
         this.broker.sendMessage(new ShowMapMessage(event, areaResult, locationObject));
     }
-
-    ngOnInit(): void {}
 }

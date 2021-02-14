@@ -12,15 +12,11 @@ export class AppConfigService {
 
     async load(): Promise<any> {
         const configPath = this.configFile;
-        return new Promise<any>((resolve) => {
-            this.http
-                .get<AppConfig>(configPath)
-                .toPromise()
-                .then((res) => {
-                    this.logging.logInfo('loaded app-config.json');
-                    this.config = res;
-                    resolve();
-                });
+        return new Promise<void>(async (resolve) => {
+            let res = await this.http.get<AppConfig>(configPath).toPromise();
+            this.logging.logInfo('loaded app-config.json');
+            this.config = res;
+            resolve();
         });
     }
 

@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
 import { LocationObjectViewModel } from '../models/location-object-viewmodel';
 import { LoggingService } from './logging.service';
 import { locationQueryFromTextAndAreaName } from './word-query-heuristics';
+
 @Injectable({
     providedIn: 'root'
 })
@@ -18,7 +19,7 @@ export class NominatimService {
         if (query === '') return;
 
         this.logger.logInfo(`nominatim query: ${query}`);
-        let url = `${this.BaseUrl}?q=${query}&format=json`;
+        const url = `${this.BaseUrl}?q=${query}&format=json`;
         const res = await this.http.get<any[]>(`${url}`).toPromise();
         return this.convertToViewModel(res);
     }
@@ -26,7 +27,7 @@ export class NominatimService {
     private convertToViewModel(data: any[]): LocationObjectViewModel {
         if (data.length === 0) return;
         let viewModel: LocationObjectViewModel;
-        let e = data[0];
+        const e = data[0];
         if (e.boundingbox && e.display_name) {
             viewModel = {
                 displayName: e.display_name,
@@ -39,20 +40,25 @@ export class NominatimService {
                 lat: e.lat,
                 lon: e.lon
             };
+            return this.scaleUpSmallArea(viewModel);
         }
+    }
+
+    private scaleUpSmallArea(viewModel: LocationObjectViewModel): LocationObjectViewModel {
         //
         // Make very small areas slightly larger
         //
         let xdiff = viewModel.boundingBox.lon2 - viewModel.boundingBox.lon1;
-        const add: number = 0.005;
-        if (xdiff < 0.005) {
-            viewModel.boundingBox.lon1 -= add;
-            viewModel.boundingBox.lon2 += add;
+        const scaleUp: number = 0.005;
+        const minDiff: number = 0.005;
+        if (xdiff < minDiff) {
+            viewModel.boundingBox.lon1 -= scaleUp;
+            viewModel.boundingBox.lon2 += scaleUp;
         }
         let ydiff = viewModel.boundingBox.lat2 - viewModel.boundingBox.lat1;
-        if (ydiff < 0.005) {
-            viewModel.boundingBox.lat1 -= add;
-            viewModel.boundingBox.lat2 += add;
+        if (ydiff < minDiff) {
+            viewModel.boundingBox.lat1 -= scaleUp;
+            viewModel.boundingBox.lat2 += scaleUp;
         }
         return viewModel;
     }

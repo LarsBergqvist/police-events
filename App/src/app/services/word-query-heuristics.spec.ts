@@ -3,30 +3,30 @@ import { locationQueryFromTextAndAreaName, locationWordsFromText } from './word-
 describe('word-query-heuristics', () => {
     describe('locationWordsFromText', () => {
         it('Should not include first word', () => {
-            let text = 'First Plats Plats2 ingen';
+            const text = 'First Plats Plats2 ingen';
             const words = locationWordsFromText(text);
             expect(words.length).toBe(2);
             expect(words).toContain('Plats');
             expect(words).toContain('Plats2');
         });
         it('Should not include one-letter words', () => {
-            let text = 'First P P2 ingen';
+            const text = 'First P P2 ingen';
             const words = locationWordsFromText(text);
             expect(words.length).toBe(1);
             expect(words).toContain('P2');
         });
         it('Should not include reserved words', () => {
-            let text = 'First Skadeläget Polislagen SOS Alarm';
+            const text = 'First Skadeläget Polislagen SOS Alarm';
             const words = locationWordsFromText(text);
             expect(words.length).toBe(0);
         });
         it('Should not include words starting with number', () => {
-            let text = 'First 5apa';
+            const text = 'First 5apa';
             const words = locationWordsFromText(text);
             expect(words.length).toBe(0);
         });
         it('Should not include first word of next sentence', () => {
-            let text = 'First Plats Plats2. Ingen apa på Vägen. Ingen varg på Gatan.';
+            const text = 'First Plats Plats2.  Ingen apa på Vägen. Ingen varg på Gatan.Ingen';
             const words = locationWordsFromText(text);
             expect(words.length).toBe(4);
             expect(words).toContain('Plats');
