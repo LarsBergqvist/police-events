@@ -32,9 +32,6 @@ export class MapSidebarComponent implements OnInit, OnDestroy {
                 input.locationObject = message.locationObject;
                 this.mapInput = input;
                 this.event = message.event;
-                if (this.event.location.name.includes(' län')) {
-                    input.showCounty = true;
-                }
                 this.isVisible = true;
             });
     }

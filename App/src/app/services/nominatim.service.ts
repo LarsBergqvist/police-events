@@ -34,11 +34,11 @@ export class NominatimService {
                 boundingBox: {
                     lat1: parseFloat(e.boundingbox[0]),
                     lat2: parseFloat(e.boundingbox[1]),
-                    lon1: parseFloat(e.boundingbox[2]),
-                    lon2: parseFloat(e.boundingbox[3])
+                    lng1: parseFloat(e.boundingbox[2]),
+                    lng2: parseFloat(e.boundingbox[3])
                 },
                 lat: e.lat,
-                lon: e.lon
+                lng: e.lon
             };
             return this.scaleUpSmallArea(viewModel);
         }
@@ -48,12 +48,12 @@ export class NominatimService {
         //
         // Make very small areas slightly larger
         //
-        let xdiff = viewModel.boundingBox.lon2 - viewModel.boundingBox.lon1;
+        let xdiff = viewModel.boundingBox.lng2 - viewModel.boundingBox.lng1;
         const scaleUp: number = 0.005;
         const minDiff: number = 0.005;
         if (xdiff < minDiff) {
-            viewModel.boundingBox.lon1 -= scaleUp;
-            viewModel.boundingBox.lon2 += scaleUp;
+            viewModel.boundingBox.lng1 -= scaleUp;
+            viewModel.boundingBox.lng2 += scaleUp;
         }
         let ydiff = viewModel.boundingBox.lat2 - viewModel.boundingBox.lat1;
         if (ydiff < minDiff) {
