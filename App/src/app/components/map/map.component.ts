@@ -9,11 +9,16 @@ import VectorSource from 'ol/source/Vector';
 import View from 'ol/View';
 import { GeoPosition } from 'src/app/models/geo-position';
 import { Fill, Stroke, Style } from 'ol/style';
+import { LocationObjectViewModel } from 'src/app/models/location-object-viewmodel';
+import Feature from 'ol/Feature';
+import { boundingExtent } from 'ol/extent';
+import { fromExtent } from 'ol/geom/Polygon';
 
 export class MapInput {
     centerPos: GeoPosition;
     geoJson: {};
     showCounty = false;
+    locationObject: LocationObjectViewModel;
 }
 
 @Component({
@@ -25,7 +30,9 @@ export class MapComponent {
     map: Map;
     geoJsonVectorSource: VectorSource;
     showCounty = false;
+    detailedLocation: Feature;
 
+    private static readonly ZoomLevelObject = 13;
     private static readonly ZoomLevelMunicipality = 9;
     private static readonly ZoomLevelCounty = 6;
     private static readonly DefaultLatitude = 59.329324;
@@ -54,16 +61,40 @@ export class MapComponent {
         }
 
         const view = this.map.getView();
-        view.setCenter(fromLonLat([input.centerPos.lng, input.centerPos.lat]));
+        if (input.locationObject?.lat) {
+            view.setCenter(fromLonLat([input.locationObject.lon, input.locationObject.lat]));
+        } else {
+            view.setCenter(fromLonLat([input.centerPos.lng, input.centerPos.lat]));
+        }
 
-        const zoomLevel = this.showCounty ? MapComponent.ZoomLevelCounty : MapComponent.ZoomLevelMunicipality;
+        let zoomLevel = this.showCounty ? MapComponent.ZoomLevelCounty : MapComponent.ZoomLevelMunicipality;
+        if (input.locationObject) {
+            zoomLevel = MapComponent.ZoomLevelObject;
+        }
         view.setZoom(zoomLevel);
+
+        this.updateDetailedLocation(input.locationObject);
+    }
+
+    private updateDetailedLocation(locationObject: LocationObjectViewModel) {
+        this.detailedLocation.setGeometry(null);
+        if (!locationObject) return;
+
+        let bbox = locationObject.boundingBox;
+
+        let be = boundingExtent([
+            [bbox.lon1, bbox.lat1],
+            [bbox.lon2, bbox.lat2]
+        ]);
+        var locationPolygon = fromExtent(be).clone().transform('EPSG:4326', 'EPSG:3857');
+
+        this.detailedLocation.setGeometry(locationPolygon);
     }
 
     private initilizeMap(): void {
         //
         // Create a map with an OpenStreetMap-layer,
-        // a geoJson-polygon layer and a view
+        // a geoJson-polygon layer, a detailed location layer and a view
         //
         var attribution = new Attribution({
             // Attach the attribution information
@@ -84,10 +115,28 @@ export class MapComponent {
                 })
             })
         });
+
+        this.detailedLocation = new Feature();
         this.map = new Map({
             controls: defaultControls({ attribution: false }).extend([attribution]),
             target: 'map',
-            layers: [new TileLayer({ source: new OSM() }), geoJsonLayer],
+            layers: [
+                new TileLayer({ source: new OSM() }),
+                geoJsonLayer,
+                new VectorLayer({
+                    source: new VectorSource({ features: [this.detailedLocation] }),
+                    style: new Style({
+                        stroke: new Stroke({
+                            color: 'red',
+                            lineDash: [1],
+                            width: 2
+                        }),
+                        fill: new Fill({
+                            color: 'rgba(0, 0, 255, 0.1)'
+                        })
+                    })
+                })
+            ],
             view: new View({
                 center: fromLonLat([MapComponent.DefaultLongitude, MapComponent.DefaultLatitude]),
                 zoom: MapComponent.ZoomLevelMunicipality

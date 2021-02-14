@@ -29,6 +29,7 @@ export class MapSidebarComponent implements OnInit, OnDestroy {
                 const input = new MapInput();
                 input.centerPos = message.event.location.pos;
                 input.geoJson = message.geoJson;
+                input.locationObject = message.locationObject;
                 this.mapInput = input;
                 this.event = message.event;
                 if (this.event.location.name.includes(' län')) {
