@@ -1,7 +1,7 @@
 # police-events
 This repository consists of:  
 * a CollectorService that fetches the latest event data from the Open Api of the Swedish Police every 10 minutes and stores it in a local MongoDB database  
-* a .NET Core REST API that provides queries from the MongoDB database  
+* a .NET Core REST API that does queries to the MongoDB database  
 * an Angular front-end app that uses the REST API for searching and displaying nearby events (based on geolocation)   
 
 The Angular application has a map view with OpenLayers/OpenStreeMap and fetches county and municipality geoJson polygons from public.opendatasoft.com  
@@ -27,8 +27,8 @@ dotnet run
 ```
 
 # Setup and start the Angular application
-# https is required for using geolocation from browser
-# A self-signed certificate is provided in the repo but you can replace it with your own
+https is required for using geolocation from browser  
+A self-signed certificate is provided in the repo but you can replace it with your own  
 ```
 cd police-events/App
 yarn install
