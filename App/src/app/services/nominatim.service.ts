@@ -1,6 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { LocationObjectViewModel } from '../models/location-object-viewmodel';
+import { AppConfigService } from './app-config.service';
 import { LoggingService } from './logging.service';
 import { locationQueryFromTextAndAreaName } from './word-query-heuristics';
 
@@ -10,8 +11,12 @@ import { locationQueryFromTextAndAreaName } from './word-query-heuristics';
 export class NominatimService {
     private readonly BaseUrl;
 
-    constructor(private readonly http: HttpClient, private readonly logger: LoggingService) {
-        this.BaseUrl = `https://nominatim.openstreetmap.org/`;
+    constructor(
+        private readonly http: HttpClient,
+        private readonly logger: LoggingService,
+        private readonly configService: AppConfigService
+    ) {
+        this.BaseUrl = configService.nominatimUrl;
     }
 
     async searchBestMatchingLocationObject(areaname: string, text: string): Promise<LocationObjectViewModel> {

@@ -1,17 +1,21 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { AppConfigService } from './app-config.service';
 import { LoggingService } from './logging.service';
 
 @Injectable({
     providedIn: 'root'
 })
 export class AreaService {
-    constructor(private readonly http: HttpClient, private readonly logger: LoggingService) {}
+    constructor(
+        private readonly http: HttpClient,
+        private readonly logger: LoggingService,
+        private readonly configService: AppConfigService
+    ) {}
 
     async fetchGeoJsonForMunicipality(municipality: string): Promise<any> {
-        const BaseUrl =
-            'https://public.opendatasoft.com/api/records/1.0/search/?dataset=sverige-kommuner-municipalities-of-sweden';
-        let url = `${BaseUrl}&q=${municipality}`;
+        const baseUrl = this.configService.municipalityUrl;
+        let url = `${baseUrl}&q=${municipality}`;
         const res = await this.http.get<any>(`${url}`).toPromise();
         if (res.nhits !== 1) return null;
 
@@ -19,9 +23,8 @@ export class AreaService {
     }
 
     async fetchGeoJsonForCounty(county: string): Promise<any> {
-        const BaseUrl =
-            'https://public.opendatasoft.com/api/records/1.0/search/?dataset=sverige-lan-counties-of-sweden';
-        let url = `${BaseUrl}&q=${county}`;
+        const baseUrl = this.configService.countyUrl;
+        let url = `${baseUrl}&q=${county}`;
         const res = await this.http.get<any>(`${url}`).toPromise();
         if (res.nhits !== 1) return null;
 

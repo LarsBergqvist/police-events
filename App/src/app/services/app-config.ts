@@ -1,4 +1,6 @@
 export interface AppConfig {
     apiUrl: string;
-    apiPort: string;
+    nominatimUrl: string;
+    municipalityUrl: string;
+    countyUrl: string;
 }

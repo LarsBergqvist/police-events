@@ -17,7 +17,7 @@ export class PoliceEventService {
         private readonly logger: LoggingService,
         private readonly configService: AppConfigService
     ) {
-        this.BaseUrl = `${configService.apiUrl}:${configService.apiPort}/events`;
+        this.BaseUrl = `${configService.apiUrl}/events`;
     }
 
     async fetchEventsForDateWithinRadius(

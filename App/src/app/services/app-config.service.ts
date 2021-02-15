@@ -23,7 +23,16 @@ export class AppConfigService {
     get apiUrl(): string {
         return this.config.apiUrl;
     }
-    get apiPort(): string {
-        return this.config.apiPort;
+
+    get nominatimUrl(): string {
+        return this.config.nominatimUrl;
+    }
+
+    get municipalityUrl(): string {
+        return this.config.municipalityUrl;
+    }
+
+    get countyUrl(): string {
+        return this.config.countyUrl;
     }
 }
