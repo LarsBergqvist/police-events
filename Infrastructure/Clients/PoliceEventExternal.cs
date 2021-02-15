@@ -8,6 +8,10 @@ namespace Infrastructure.Clients
         public string Name { get; set; }
         public string Gps { get; set; }
     }
+
+    /// <summary>
+    /// This is the model returned from the external api
+    /// </summary>
     public class PoliceEventExternal
     {
         public int Id { get; set; }
@@ -17,14 +21,20 @@ namespace Infrastructure.Clients
         public string Type { get; set; }
         public LocationExternal Location { get; set; }
 
+        /// <summary>
+        /// Converts the external model to an internal PoliceEvent-model
+        /// </summary>
+        /// <returns>A PoliceEvent object</returns>
         public PoliceEvent GetPoliceEvent()
         {
-            var e = new PoliceEvent();
-            e.Id = Id;
-            e.UtcDateTime = DateTime.Parse(Datetime).ToUniversalTime();
-            e.Summary = Summary;
-            e.Url = Url;
-            e.Type = Type;
+            var e = new PoliceEvent
+            {
+                Id = Id,
+                UtcDateTime = DateTime.Parse(Datetime).ToUniversalTime(),
+                Summary = Summary,
+                Url = Url,
+                Type = Type
+            };
             var parts = Location.Gps.Split(",");
             e.Location = new Location
             {

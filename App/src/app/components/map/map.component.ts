@@ -45,8 +45,11 @@ export class MapComponent {
             this.initilizeMap();
         }
 
+        // Clear the previous polygons
+        this.detailedLocation.setGeometry(null);
+        this.geoJsonVectorSource.clear();
+
         if (input.geoJson) {
-            this.geoJsonVectorSource.clear();
             this.geoJsonVectorSource.addFeatures(
                 new GeoJSON().readFeatures(input.geoJson, {
                     dataProjection: 'EPSG:4326',
@@ -73,7 +76,6 @@ export class MapComponent {
     }
 
     private updateDetailedLocation(locationObject: LocationObjectViewModel) {
-        this.detailedLocation.setGeometry(null);
         if (!locationObject) return;
 
         const bbox = locationObject.boundingBox;
