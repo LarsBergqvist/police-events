@@ -33,7 +33,8 @@ export class EventComponent {
             // Make a text search for a more detailed location
             locationObject = await this.nominatimService.searchBestMatchingLocationObject(
                 event.location.name,
-                event.summary
+                event.summary,
+                event.location.pos
             );
         }
         const positions: GeoPosition[] = [];

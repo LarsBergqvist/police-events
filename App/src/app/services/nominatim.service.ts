@@ -1,6 +1,8 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { GeoPosition } from '../models/geo-position';
 import { LocationObjectViewModel } from '../models/location-object-viewmodel';
+import { calcDistanceKm } from '../utils/distance-helper';
 import { AppConfigService } from './app-config.service';
 import { LoggingService } from './logging.service';
 import { locationQueryFromTextAndAreaName } from './word-query-heuristics';
@@ -10,6 +12,7 @@ import { locationQueryFromTextAndAreaName } from './word-query-heuristics';
 })
 export class NominatimService {
     private readonly BaseUrl;
+    private readonly MaxDistToRefPointKm = 100;
 
     constructor(
         private readonly http: HttpClient,
@@ -19,14 +22,28 @@ export class NominatimService {
         this.BaseUrl = configService.nominatimUrl;
     }
 
-    async searchBestMatchingLocationObject(areaname: string, text: string): Promise<LocationObjectViewModel> {
+    async searchBestMatchingLocationObject(
+        areaname: string,
+        text: string,
+        refPoint: GeoPosition
+    ): Promise<LocationObjectViewModel> {
         const query = locationQueryFromTextAndAreaName(text, areaname);
         if (query === '') return;
 
         this.logger.logInfo(`nominatim query: ${query}`);
-        const url = `${this.BaseUrl}?q=${query}&format=json`;
+        const url = `${this.BaseUrl}?q=${query}&countrycodes=se&format=json`;
         const res = await this.http.get<any[]>(`${url}`).toPromise();
-        return this.convertToViewModel(res);
+        let vm = this.convertToViewModel(res);
+
+        if (vm) {
+            // Discard results that are too far from the reference point
+            const dist1 = calcDistanceKm(refPoint.lat, refPoint.lng, vm.boundingBox.lat1, vm.boundingBox.lng1);
+            const dist2 = calcDistanceKm(refPoint.lat, refPoint.lng, vm.boundingBox.lat2, vm.boundingBox.lng2);
+            if (dist1 > this.MaxDistToRefPointKm && dist2 > this.MaxDistToRefPointKm) {
+                vm = null;
+            }
+        }
+        return vm;
     }
 
     private convertToViewModel(data: any[]): LocationObjectViewModel {

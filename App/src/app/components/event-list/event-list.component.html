@@ -31,7 +31,7 @@
     </div>
     <div *ngIf="events">
         <div *ngFor="let e of events;">
-            <app-event *ngIf="matchesKeyword(e)" [event]=e></app-event>
+            <app-event *ngIf="matchesKeywords(e)" [event]=e></app-event>
         </div>
     </div>
 </div>

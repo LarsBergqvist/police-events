@@ -24,15 +24,22 @@ export class EventListComponent implements OnInit {
         this.keyword = '';
     }
 
-    matchesKeyword(vm: PoliceEventViewModel): boolean {
+    matchesKeywords(vm: PoliceEventViewModel): boolean {
         if (!this.keyword || this.keyword.length < 2) return true;
 
-        var re = new RegExp(this.keyword, 'gi');
-        if (vm.summary.match(re) || vm.location.name.match(re) || vm.type.match(re)) {
-            return true;
-        } else {
-            return false;
+        const keywords = this.keyword.split(' ');
+        let hasMatch = false;
+        for (let i = 0; i < keywords.length; i++) {
+            let kw = keywords[i].trim();
+            if (kw === '') continue;
+            const re = new RegExp(kw, 'gi');
+            if (vm.summary.match(re) || vm.location.name.match(re) || vm.type.match(re)) {
+                hasMatch = true;
+            } else {
+                return false;
+            }
         }
+        return hasMatch;
     }
 
     onFetchPositionVeryClose() {
