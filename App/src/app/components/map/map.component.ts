@@ -13,10 +13,12 @@ import { LocationObjectViewModel } from 'src/app/models/location-object-viewmode
 import Feature from 'ol/Feature';
 import { boundingExtent } from 'ol/extent';
 import { fromExtent } from 'ol/geom/Polygon';
+import { GeoJsonWrapper } from 'src/app/models/geojson-wrapper';
+import { BoundingBox } from 'src/app/models/boundingbox';
 
 export class MapInput {
     centerPos: GeoPosition;
-    geoJson: {};
+    geoJsonWrapper: GeoJsonWrapper;
     locationObject: LocationObjectViewModel;
 }
 
@@ -49,9 +51,9 @@ export class MapComponent {
         this.detailedLocation.setGeometry(null);
         this.geoJsonVectorSource.clear();
 
-        if (input.geoJson) {
+        if (input.geoJsonWrapper) {
             this.geoJsonVectorSource.addFeatures(
-                new GeoJSON().readFeatures(input.geoJson, {
+                new GeoJSON().readFeatures(input.geoJsonWrapper.geoJson, {
                     dataProjection: 'EPSG:4326',
                     featureProjection: 'EPSG:3857'
                 })
@@ -59,8 +61,9 @@ export class MapComponent {
         }
 
         const view = this.map.getView();
+
         if (input.locationObject?.lat) {
-            this.updateDetailedLocation(input.locationObject);
+            this.updateDetailedLocation(input?.locationObject?.boundingBox);
             var layerExtent = this.detailedVectorSource.getExtent();
             if (layerExtent) {
                 view.fit(layerExtent);
@@ -75,13 +78,13 @@ export class MapComponent {
         }
     }
 
-    private updateDetailedLocation(locationObject: LocationObjectViewModel) {
-        if (!locationObject) return;
+    private updateDetailedLocation(boundingBox: BoundingBox) {
+        if (!boundingBox) return;
 
-        const bbox = locationObject.boundingBox;
+        const bbox = boundingBox;
         const be = boundingExtent([
-            [bbox.lng1, bbox.lat1],
-            [bbox.lng2, bbox.lat2]
+            [bbox.lngMin, bbox.latMin],
+            [bbox.lngMax, bbox.latMax]
         ]);
         const locationPolygon = fromExtent(be).clone().transform('EPSG:4326', 'EPSG:3857');
         this.detailedLocation.setGeometry(locationPolygon);

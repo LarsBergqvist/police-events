@@ -1,9 +1,5 @@
-export class BoundingBox {
-    lat1: number;
-    lat2: number;
-    lng1: number;
-    lng2: number;
-}
+import { BoundingBox } from './boundingbox';
+
 export class LocationObjectViewModel {
     boundingBox: BoundingBox;
     lat: number;

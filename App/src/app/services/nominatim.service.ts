@@ -1,8 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { GeoPosition } from '../models/geo-position';
+import { BoundingBox } from '../models/boundingbox';
 import { LocationObjectViewModel } from '../models/location-object-viewmodel';
-import { calcDistanceKm } from '../utils/distance-helper';
 import { AppConfigService } from './app-config.service';
 import { LoggingService } from './logging.service';
 import { locationQueryFromTextAndAreaName } from './word-query-heuristics';
@@ -12,7 +11,6 @@ import { locationQueryFromTextAndAreaName } from './word-query-heuristics';
 })
 export class NominatimService {
     private readonly BaseUrl;
-    private readonly MaxDistToRefPointKm = 100;
 
     constructor(
         private readonly http: HttpClient,
@@ -25,24 +23,16 @@ export class NominatimService {
     async searchBestMatchingLocationObject(
         areaname: string,
         text: string,
-        refPoint: GeoPosition
+        bb: BoundingBox
     ): Promise<LocationObjectViewModel> {
         const query = locationQueryFromTextAndAreaName(text, areaname);
         if (query === '') return;
 
+        const viewbox = `${bb.lngMin},${bb.latMin},${bb.lngMax},${bb.latMax}`;
         this.logger.logInfo(`nominatim query: ${query}`);
-        const url = `${this.BaseUrl}?q=${query}&countrycodes=se&format=json`;
+        const url = `${this.BaseUrl}?q=${query}&countrycodes=se&limit=1&format=json&viewbox=${viewbox}`;
         const res = await this.http.get<any[]>(`${url}`).toPromise();
         let vm = this.convertToViewModel(res);
-
-        if (vm) {
-            // Discard results that are too far from the reference point
-            const dist1 = calcDistanceKm(refPoint.lat, refPoint.lng, vm.boundingBox.lat1, vm.boundingBox.lng1);
-            const dist2 = calcDistanceKm(refPoint.lat, refPoint.lng, vm.boundingBox.lat2, vm.boundingBox.lng2);
-            if (dist1 > this.MaxDistToRefPointKm && dist2 > this.MaxDistToRefPointKm) {
-                vm = null;
-            }
-        }
         return vm;
     }
 
@@ -54,10 +44,10 @@ export class NominatimService {
             viewModel = {
                 displayName: e.display_name,
                 boundingBox: {
-                    lat1: parseFloat(e.boundingbox[0]),
-                    lat2: parseFloat(e.boundingbox[1]),
-                    lng1: parseFloat(e.boundingbox[2]),
-                    lng2: parseFloat(e.boundingbox[3])
+                    latMin: parseFloat(e.boundingbox[0]),
+                    latMax: parseFloat(e.boundingbox[1]),
+                    lngMin: parseFloat(e.boundingbox[2]),
+                    lngMax: parseFloat(e.boundingbox[3])
                 },
                 lat: e.lat,
                 lng: e.lon
@@ -70,17 +60,17 @@ export class NominatimService {
         //
         // Make very small areas slightly larger
         //
-        let xdiff = viewModel.boundingBox.lng2 - viewModel.boundingBox.lng1;
+        let xdiff = viewModel.boundingBox.lngMax - viewModel.boundingBox.lngMin;
         const scaleUp: number = 0.005;
         const minDiff: number = 0.005;
         if (xdiff < minDiff) {
-            viewModel.boundingBox.lng1 -= scaleUp;
-            viewModel.boundingBox.lng2 += scaleUp;
+            viewModel.boundingBox.lngMin -= scaleUp;
+            viewModel.boundingBox.lngMax += scaleUp;
         }
-        let ydiff = viewModel.boundingBox.lat2 - viewModel.boundingBox.lat1;
+        let ydiff = viewModel.boundingBox.latMax - viewModel.boundingBox.latMin;
         if (ydiff < minDiff) {
-            viewModel.boundingBox.lat1 -= scaleUp;
-            viewModel.boundingBox.lat2 += scaleUp;
+            viewModel.boundingBox.latMin -= scaleUp;
+            viewModel.boundingBox.latMax += scaleUp;
         }
         return viewModel;
     }

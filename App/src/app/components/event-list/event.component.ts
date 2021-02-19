@@ -6,6 +6,7 @@ import { MessageBrokerService } from 'src/app/services/message-broker.service';
 import { GeoPosition } from 'src/app/models/geo-position';
 import { NominatimService } from 'src/app/services/nominatim.service';
 import { LocationObjectViewModel } from 'src/app/models/location-object-viewmodel';
+import { GeoJsonWrapper } from 'src/app/models/geojson-wrapper';
 
 @Component({
     selector: 'app-event',
@@ -22,7 +23,7 @@ export class EventComponent {
     ) {}
 
     async onClickMessage(event: PoliceEventViewModel) {
-        let areaResult: any;
+        let areaResult: GeoJsonWrapper;
         let locationObject: LocationObjectViewModel;
         if (event.location.name.toLowerCase().includes('län')) {
             // The location is a county
@@ -34,7 +35,7 @@ export class EventComponent {
             locationObject = await this.nominatimService.searchBestMatchingLocationObject(
                 event.location.name,
                 event.summary,
-                event.location.pos
+                areaResult.boundingBox
             );
         }
         const positions: GeoPosition[] = [];

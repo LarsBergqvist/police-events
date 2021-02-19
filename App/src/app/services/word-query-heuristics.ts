@@ -27,16 +27,15 @@ export function locationWordsFromText(text: string): string[] {
     sentencesToSkip.forEach((s: string) => {
         text = text.replace(s, '');
     });
+    let res: string[] = [];
     // Remove the first word of any secondary sentences
     text = text.replace(/\.\s*[A-ZÅÄÖ0-9].[A-Za-zÅÄÖåäö0-9]*/g, '');
-    let res: string[] = [];
     let words = text.split(/[\s,."]+/);
     for (let i = 0; i < words.length; i++) {
         let w = words[i];
         if (w === '' || w.length < 2) continue;
         if (i > 0 && startsWithUpperCase(w)) {
             res.push(w);
-            continue;
         }
     }
     return res;

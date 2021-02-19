@@ -28,7 +28,7 @@ export class MapSidebarComponent implements OnInit, OnDestroy {
             .subscribe((message: ShowMapMessage) => {
                 const input = new MapInput();
                 input.centerPos = message.event.location.pos;
-                input.geoJson = message.geoJson;
+                input.geoJsonWrapper = message.geoJsonWrapper;
                 input.locationObject = message.locationObject;
                 this.mapInput = input;
                 this.event = message.event;
