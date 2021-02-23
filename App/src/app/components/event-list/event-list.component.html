@@ -4,16 +4,17 @@
         <div class="p-grid thegrid">
             <div class="p-col-12 p-md-6 p-lg-4">
                 <button pButton class="sr-button-wide" (click)="onFetchPositionVeryClose()" icon="pi pi-compass"
-                    iconPos="right" label="Hämta händelser i ditt närområde (15km)">
+                    iconPos="right" label="Hämta händelser i ditt närområde" [disabled]="isLoading">
                 </button>
             </div>
             <div class="p-col-12 p-md-6 p-lg-4">
                 <button pButton class="sr-button-wide" (click)="onFetchPositionClose()" icon="pi pi-compass"
-                    iconPos="right" label="Hämta händelser i ett större närområde (35km)">
+                    iconPos="right" label="Hämta händelser i ett större närområde" [disabled]="isLoading">
                 </button>
             </div>
             <div class="p-col-12 p-md-6 p-lg-4">
-                <button pButton class="sr-button-wide" (click)="onFetchAll()" label="Hämta händelser i hela landet">
+                <button pButton class="sr-button-wide" (click)="onFetchAll()" label="Hämta händelser i hela landet"
+                    [disabled]="isLoading">
                 </button>
             </div>
             <div class="p-col-12 p-md-6 p-lg-6">
@@ -22,14 +23,20 @@
                         <i class="pi pi-search"></i>
                         <input type="text" pInputText placeholder="Filtrera" [(ngModel)]="keyword" />
                     </div>
-                    <span class="clear-btn">
+                    <span *ngIf="keyword && keyword.length > 0" class="clear-btn">
                         <button pButton (click)="onClear()" [disabled]="isLoading" iconPos="right" label="Töm"></button>
                     </span>
                 </div>
             </div>
         </div>
     </div>
+    <div *ngIf="isLoading" class="spinner-container">
+        <p-progressSpinner></p-progressSpinner>
+    </div>
     <div *ngIf="events">
+        <div class="no-results-container" *ngIf="events.length === 0">
+            Inga händelser
+        </div>
         <div *ngFor="let e of events;">
             <app-event *ngIf="matchesKeywords(e)" [event]=e></app-event>
         </div>

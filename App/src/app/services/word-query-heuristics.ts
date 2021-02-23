@@ -1,4 +1,4 @@
-const sentencesToSkip = ['SOS Alarm', 'Skadeläget', 'Polislagen'];
+const sentencesToSkip = ['SOS Alarm', 'SOS', 'SOS alarm', 'Skadeläget', 'Polislagen'];
 
 export function locationQueryFromTextAndAreaName(text: string, areaname: string) {
     const locationWords = locationWordsFromText(text);

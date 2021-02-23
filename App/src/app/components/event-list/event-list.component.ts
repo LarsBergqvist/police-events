@@ -51,17 +51,24 @@ export class EventListComponent implements OnInit {
     }
 
     async onFetchAll() {
-        const utcStrings = this.getUtcFromToStrings();
-        this.events = await this.service.fetchEventsForDate(utcStrings[0], utcStrings[1]);
+        try {
+            this.isLoading = true;
+            const utcStrings = this.getUtcFromToStrings();
+            this.events = await this.service.fetchEventsForDate(utcStrings[0], utcStrings[1]);
+        } catch (error) {
+        } finally {
+            this.isLoading = false;
+        }
     }
 
     fetchMessageClose(distance: number) {
-        navigator.geolocation.getCurrentPosition(
-            async (position) => {
-                const userPos: GeoPosition = {
-                    lat: position.coords.latitude,
-                    lng: position.coords.longitude
-                };
+        navigator.geolocation.getCurrentPosition(async (position) => {
+            const userPos: GeoPosition = {
+                lat: position.coords.latitude,
+                lng: position.coords.longitude
+            };
+            try {
+                this.isLoading = true;
                 const utcStrings = this.getUtcFromToStrings();
                 this.events = await this.service.fetchEventsForDateWithinRadius(
                     utcStrings[0],
@@ -69,11 +76,12 @@ export class EventListComponent implements OnInit {
                     userPos,
                     distance
                 );
-            },
-            (error) => {
+            } catch (error) {
                 this.broker.sendMessage(new ErrorOccurredMessage(error.message));
+            } finally {
+                this.isLoading = false;
             }
-        );
+        });
     }
 
     private getUtcFromToStrings(): [string, string] {

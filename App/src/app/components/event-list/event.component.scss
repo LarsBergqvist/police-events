@@ -12,16 +12,21 @@
     color: gray;
 }
 
-.open-button {
-    border: 1px;
+.map-button-ctn {
+    margin-top: 8px;
+    margin-bottom: 8px;
+    font-size: 0.7em;
+}
+
+.map-button {
+    border-radius: 10px;
+}
+
+.open-link {
     padding: 5px;
     padding-left: 10px;
-    border-style: solid;
-    border-color: gray;
-    border-radius: 10px;
     float: right;
     font-weight: bold;
-    font-size: 0.7em;
     color: gray;
 }
 
