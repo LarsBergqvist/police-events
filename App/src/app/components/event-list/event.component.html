@@ -1,17 +1,19 @@
 <div *ngIf="event" class="event-ctn">
     <div>
         <b>{{event.location.name}}, {{event.datetime | date:'d MMM HH:mm'}}, {{event.type}}</b>
-        <span class="open-link">
-            <a href={{event.url}} target="_blank" rel="noopener noreferrer"><i
-                    class="pi pi-external-link link-icon"></i>Länk</a>
-        </span>
     </div>
     <div>
         {{event.summary}}
     </div>
-    <div class="map-button-ctn">
-        <button pButton class="map-button" label="Karta" icon="pi pi-globe" iconPos="right"
-            (click)="onClickMessage(event)">
-        </button>
+    <div>
+        <div class="map-button-ctn">
+            <button pButton class="map-button" label="Karta" icon="pi pi-globe" iconPos="right"
+                (click)="onClickMessage(event)">
+            </button>
+            <div class="open-link">
+                <a href={{event.url}} target="_blank" rel="noopener noreferrer"><i
+                        class="pi pi-external-link link-icon"></i>polisen.se</a>
+            </div>
+        </div>
     </div>
 </div>
