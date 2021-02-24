@@ -8,11 +8,14 @@
     <div>
         <div class="map-button-ctn">
             <button pButton class="map-button" label="Karta" icon="pi pi-globe" iconPos="right"
-                (click)="onShowMap(event)">
+                (click)="onShowMapClicked(event)" [disabled]="isLoading">
             </button>
-            <div class="open-link">
+            <div *ngIf="!isLoading" class="open-link">
                 <a href={{event.url}} target="_blank" rel="noopener noreferrer"><i
                         class="pi pi-external-link link-icon"></i>polisen.se</a>
+            </div>
+            <div *ngIf="isLoading" class="open-link">
+                <i class="pi pi-external-link link-icon"></i>polisen.se
             </div>
         </div>
     </div>

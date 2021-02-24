@@ -17,28 +17,32 @@
                     [disabled]="isLoading">
                 </button>
             </div>
-            <div class="p-col-12 p-md-6 p-lg-6">
+            <div class="p-col-10 p-md-6 p-lg-6">
                 <div class="search-ctn">
                     <div class="p-input-icon-left">
                         <i class="pi pi-search"></i>
-                        <input type="text" pInputText placeholder="Filtrera" [(ngModel)]="keyword" />
+                        <input type="text" pInputText placeholder="Filtrera" [(ngModel)]="keyword"
+                            [disabled]="isLoading" />
                     </div>
                     <span *ngIf="keyword && keyword.length > 0" class="clear-btn">
                         <button pButton (click)="onClear()" [disabled]="isLoading" iconPos="right" label="Töm"></button>
                     </span>
                 </div>
             </div>
+            <div class="p-col-2 p-md-6 p-lg-6" *ngIf="isLoading">
+                <p-progressSpinner [style]="{width: '25px', height: '25px'}" strokeWidth="8">
+                </p-progressSpinner>
+            </div>
+
         </div>
-    </div>
-    <div *ngIf="isLoading" class="spinner-container">
-        <p-progressSpinner></p-progressSpinner>
     </div>
     <div *ngIf="events">
         <div class="no-results-container" *ngIf="events.length === 0">
             Inga händelser
         </div>
         <div *ngFor="let e of events;">
-            <app-event *ngIf="matchesKeywords(e)" [event]=e></app-event>
+            <app-event *ngIf="matchesKeywords(e)" [event]=e [isLoading]="isLoading" (onShowOnMap)="onShowOnMap($event)">
+            </app-event>
         </div>
     </div>
 </div>
