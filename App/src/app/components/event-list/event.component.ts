@@ -7,6 +7,8 @@ import { GeoPosition } from 'src/app/models/geo-position';
 import { NominatimService } from 'src/app/services/nominatim.service';
 import { LocationObjectViewModel } from 'src/app/models/location-object-viewmodel';
 import { GeoJsonWrapper } from 'src/app/models/geojson-wrapper';
+import { LoggingService } from 'src/app/services/logging.service';
+import { ErrorOccurredMessage } from 'src/app/messages/error-occurred.message';
 
 @Component({
     selector: 'app-event',
@@ -19,24 +21,32 @@ export class EventComponent {
     constructor(
         private readonly broker: MessageBrokerService,
         private readonly areaService: AreaService,
-        private readonly nominatimService: NominatimService
+        private readonly nominatimService: NominatimService,
+        private readonly logger: LoggingService
     ) {}
 
-    async onClickMessage(event: PoliceEventViewModel) {
+    async onShowMap(event: PoliceEventViewModel) {
         let areaResult: GeoJsonWrapper;
         let locationObject: LocationObjectViewModel;
-        if (event.location.name.toLowerCase().includes('län')) {
-            // The location is a county
-            areaResult = await this.areaService.fetchGeoJsonForCounty(event.location.name);
-        } else {
-            // The location is a likely municipality
-            areaResult = await this.areaService.fetchGeoJsonForMunicipality(event.location.name);
-            // Make a text search for a more detailed location
-            locationObject = await this.nominatimService.searchBestMatchingLocationObject(
-                event.location.name,
-                event.summary,
-                areaResult.boundingBox
-            );
+        try {
+            if (event.location.name.toLowerCase().includes('län')) {
+                // The location is a county
+                areaResult = await this.areaService.fetchGeoJsonForCounty(event.location.name);
+            } else {
+                // The location is a likely municipality
+                areaResult = await this.areaService.fetchGeoJsonForMunicipality(event.location.name);
+                // Make a text search for a more detailed location
+                locationObject = await this.nominatimService.searchBestMatchingLocationObject(
+                    event.location.name,
+                    event.summary,
+                    areaResult.boundingBox
+                );
+            }
+        } catch (error) {
+            this.logger.logError(error?.message);
+            const message = `Could not get map information for '${event.location.name}'`;
+            this.broker.sendMessage(new ErrorOccurredMessage(message));
+            return;
         }
         const positions: GeoPosition[] = [];
         positions.push(event.location.pos);

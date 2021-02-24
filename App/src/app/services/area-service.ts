@@ -19,7 +19,7 @@ export class AreaService {
         const baseUrl = this.configService.municipalityUrl;
         let url = `${baseUrl}&q=${municipality}`;
         const res = await this.http.get<any>(`${url}`).toPromise();
-        if (res.nhits !== 1) return null;
+        if (res.nhits < 1) throw new Error(`No GeoJson data found for '${municipality}'`);
 
         return this.createGeoJsonWrapperObject(res);
     }
@@ -28,7 +28,7 @@ export class AreaService {
         const baseUrl = this.configService.countyUrl;
         let url = `${baseUrl}&q=${county}`;
         const res = await this.http.get<any>(`${url}`).toPromise();
-        if (res.nhits !== 1) return null;
+        if (res.nhits < 1) throw new Error(`No GeoJson data found for '${county}'`);
 
         return this.createGeoJsonWrapperObject(res);
     }
