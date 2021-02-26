@@ -43,7 +43,20 @@ steps:
       ArtifactName: Api
 
   - script: yarn install
+    displayName: "yarn install"
     workingDirectory: App
 
   - script: yarn build
+    displayName: "build app"
     workingDirectory: App
+
+  - task: CopyFiles@2
+    inputs:
+      SourceFolder: "$(System.DefaultWorkingDirectory)/App/dist"
+      TargetFolder: "$(Build.ArtifactStagingDirectory)"
+
+  - task: PublishBuildArtifacts@1
+    displayName: "Publish app artifacts"
+    inputs:
+      PathtoPublish: "$(build.artifactstagingdirectory)"
+      ArtifactName: App
