@@ -41,3 +41,9 @@ steps:
     inputs:
       PathtoPublish: "$(build.artifactstagingdirectory)"
       ArtifactName: Api
+
+  - script: yarn install
+    workingDirectory: App
+
+  - script: yarn build
+    workingDirectory: App
