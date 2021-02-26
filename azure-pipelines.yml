@@ -58,5 +58,5 @@ steps:
   - task: PublishBuildArtifacts@1
     displayName: "Publish app artifacts"
     inputs:
-      PathtoPublish: "$(build.artifactstagingdirectory)/App"
+      PathtoPublish: "$(build.artifactstagingdirectory)/police-events"
       ArtifactName: App
