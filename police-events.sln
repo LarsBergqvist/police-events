@@ -19,6 +19,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		docker-compose.debug.yml = docker-compose.debug.yml
 		docker-compose.yml = docker-compose.yml
 		README.md = README.md
+		azure-pipelines.yml = azure-pipelines.yml
 	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Api", "Api\Api.csproj", "{267FB5C8-ABCB-4118-9D96-AB2715658160}"

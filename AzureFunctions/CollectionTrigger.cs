@@ -23,7 +23,7 @@ namespace AzureFunctions
             ILogger log)
         {
             log.LogInformation($"CollectionTrigger triggered at:  {DateTime.Now}");
-            await _mediator.Send(new UpsertPoliceEvents.Command());
+            await _mediator.Send(new CollectPoliceEvents.Command());
         }
     }
 }

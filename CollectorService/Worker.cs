@@ -40,7 +40,7 @@ namespace CollectorService
 
         private async void CollectData(object state)
         {
-            await _mediator.Send(new UpsertPoliceEvents.Command());
+            await _mediator.Send(new CollectPoliceEvents.Command());
         }
     }
 }

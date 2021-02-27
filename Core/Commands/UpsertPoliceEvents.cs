@@ -9,7 +9,7 @@ using Microsoft.Extensions.Options;
 
 namespace Core.Commands
 {
-    public class UpsertPoliceEvents
+    public class CollectPoliceEvents
     {
         public class Command : IRequest
         {

@@ -25,7 +25,7 @@ namespace Infrastructure.Clients
             _logger.LogInformation($"Get events from ApiUrl: {_settings.PoliceApiUrl}");
             var policeEventCollection = new List<PoliceEvent>();
             var client = new HttpClient();
-            client.DefaultRequestHeaders.Add("User-Agent", "police-event-app");
+            client.DefaultRequestHeaders.Add("User-Agent", "police-events-app");
             var res = await client.GetAsync(_settings.PoliceApiUrl);
             if (res.IsSuccessStatusCode)
             {

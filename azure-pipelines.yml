@@ -42,6 +42,21 @@ steps:
       PathtoPublish: "$(build.artifactstagingdirectory)/Api"
       ArtifactName: Api
 
+  - task: DotNetCoreCLI@2
+    displayName: Publish AzureFunctions
+    inputs:
+      command: publish
+      publishWebProjects: false
+      projects: "**/AzureFunctions.csproj"
+      arguments: "--configuration $(BuildConfiguration) --output $(build.artifactstagingdirectory) --no-build"
+      zipAfterPublish: false
+
+  - task: PublishBuildArtifacts@1
+    displayName: "Publish AzureFunctions artifacts"
+    inputs:
+      PathtoPublish: "$(build.artifactstagingdirectory)/AzureFunctions"
+      ArtifactName: AzureFunctions
+
   - script: yarn install
     displayName: "yarn install"
     workingDirectory: App
@@ -51,6 +66,7 @@ steps:
     workingDirectory: App
 
   - task: CopyFiles@2
+    displayName: "Copy app files"
     inputs:
       SourceFolder: "$(System.DefaultWorkingDirectory)/App/dist"
       TargetFolder: "$(Build.ArtifactStagingDirectory)"
