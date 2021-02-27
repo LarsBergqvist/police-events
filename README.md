@@ -46,4 +46,4 @@ You will need to provide an https certificate for the api
 
 ![Alt text](https://github.com/LarsBergqvist/police-events/blob/main/screenshot1.png?raw=true 'Police events list')
 ![Alt text](https://github.com/LarsBergqvist/police-events/blob/main/screenshot2.png?raw=true 'Map sidebar 1')
-![Alt text](https://github.com/LarsBergqvist/police-events/blob/main/screenshot3.jpg?raw=true 'Map sidebar 2')
+![Alt text](https://github.com/LarsBergqvist/police-events/blob/main/screenshot3.png?raw=true 'Map sidebar 2')
