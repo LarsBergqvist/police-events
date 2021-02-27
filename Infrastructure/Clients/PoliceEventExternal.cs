@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Globalization;
 using Core.Models;
 
 namespace Infrastructure.Clients
@@ -14,6 +15,7 @@ namespace Infrastructure.Clients
     /// </summary>
     public class PoliceEventExternal
     {
+        static CultureInfo provider = new CultureInfo("en-US");
         public int Id { get; set; }
         public string Datetime { get; set; }
         public string Summary { get; set; }
@@ -39,8 +41,8 @@ namespace Infrastructure.Clients
             e.Location = new Location
             {
                 Name = Location.Name,
-                Lat = double.Parse(parts[0]),
-                Lng = double.Parse(parts[1])
+                Lat = double.Parse(parts[0], provider),
+                Lng = double.Parse(parts[1], provider)
             };
             return e;
         }
