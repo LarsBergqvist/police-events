@@ -1,9 +1,9 @@
 using System;
 using System.Threading;
 using System.Threading.Tasks;
-using Core.Clients;
-using Core.Repositories;
+using Core.Commands;
 using Core.Settings;
+using MediatR;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
@@ -13,20 +13,17 @@ namespace CollectorService
     public class Worker : IHostedService
     {
         private readonly ILogger<Worker> _logger;
-        private readonly IPoliceApiClient _policeApiClient;
-        private readonly IPoliceEventRepository _policeEventRepository;
         private readonly PoliceApiSettings _settings;
+        private readonly IMediator _mediator;
         private Timer _timer;
 
         public Worker(ILogger<Worker> logger,
                       IOptions<PoliceApiSettings> options,
-                      IPoliceApiClient policeApiClient,
-                      IPoliceEventRepository policeEventRepository)
+                      IMediator mediator)
         {
             _logger = logger;
             _settings = options.Value;
-            _policeApiClient = policeApiClient;
-            _policeEventRepository = policeEventRepository;
+            _mediator = mediator;
         }
 
         public Task StartAsync(CancellationToken cancellationToken)
@@ -43,12 +40,7 @@ namespace CollectorService
 
         private async void CollectData(object state)
         {
-            _logger.LogInformation("Start fetching data");
-            var events = await _policeApiClient.GetLatestEvents();
-            _logger.LogInformation("Start upserting events in database");
-            await _policeEventRepository.UpsertCollection(events);
-            _logger.LogInformation("Finished upserting events in database");
+            await _mediator.Send(new UpsertPoliceEvents.Command());
         }
-
     }
 }

@@ -1,8 +1,6 @@
-using Core.Clients;
-using Core.Repositories;
+using Core.Extensions;
 using Core.Settings;
-using Infrastructure.Clients;
-using Infrastructure.Repositories;
+using Infrastructure.Extensions;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 
@@ -24,8 +22,8 @@ namespace CollectorService
                         .AddOptions()
                         .Configure<PoliceApiSettings>(hostContext.Configuration.GetSection("PoliceApiSettings"))
                         .Configure<RepositorySettings>(hostContext.Configuration.GetSection("RepositorySettings"))
-                        .AddTransient<IPoliceApiClient, PoliceApiClient>()
-                        .AddTransient<IPoliceEventRepository, PoliceEventRepository>()
+                        .AddCoreServices()
+                        .AddInfrastructureServices()
                         .AddHostedService<Worker>()
                     ;
                 });

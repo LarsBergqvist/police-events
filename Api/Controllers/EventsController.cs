@@ -30,7 +30,7 @@ namespace Api.Controllers
                 FromDate = fromDate,
                 ToDate = toDate
             };
-            return await _mediator.Send(new GetPoliceEvents.Request(queryParams));
+            return await _mediator.Send(new GetPoliceEvents.Query(queryParams));
         }
     }
 }

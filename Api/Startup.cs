@@ -1,10 +1,8 @@
-using Core.Repositories;
+using Core.Extensions;
 using Core.Settings;
-using Infrastructure.Repositories;
-using MediatR;
+using Infrastructure.Extensions;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -37,8 +35,8 @@ namespace Api
             services
                 .AddOptions()
                 .Configure<RepositorySettings>(Configuration.GetSection("RepositorySettings"))
-                .AddMediatR(typeof(Core.AssemblyClass))
-                .AddTransient<IPoliceEventRepository, PoliceEventRepository>()
+                .AddCoreServices()
+                .AddInfrastructureServices()
                 .AddControllers()
                 ;
         }
@@ -52,10 +50,7 @@ namespace Api
             }
 
             app.UseHttpsRedirection();
-            //app.UseForwardedHeaders(new ForwardedHeadersOptions
-            //{
-            //    ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto
-            //});
+
             app.UseRouting();
 
             app.UseAuthorization();

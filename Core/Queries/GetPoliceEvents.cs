@@ -17,14 +17,14 @@ namespace Core.Queries
             public string LocationName { get; set; }
         }
 
-        public class Request: IRequest<IEnumerable<PoliceEvent>>
+        public class Query: IRequest<IEnumerable<PoliceEvent>>
         {
             public QueryParameters Parameters { get; set; }
-            public Request(QueryParameters parameters) => Parameters = parameters;
+            public Query(QueryParameters parameters) => Parameters = parameters;
 
         }
 
-        public class Handler : IRequestHandler<Request, IEnumerable<PoliceEvent>>
+        public class Handler : IRequestHandler<Query, IEnumerable<PoliceEvent>>
         {
             private readonly IPoliceEventRepository _repository;
             public Handler(IPoliceEventRepository repository)
@@ -32,11 +32,11 @@ namespace Core.Queries
                 _repository = repository;
             }
 
-            public async Task<IEnumerable<PoliceEvent>> Handle(Request request, CancellationToken cancellationToken)
+            public async Task<IEnumerable<PoliceEvent>> Handle(Query query, CancellationToken cancellationToken)
             {
-                var from = GetParsedDateOrDefault(request.Parameters.FromDate);
-                var to = GetParsedDateOrDefault(request.Parameters.ToDate);
-                return await _repository.GetEventsForDate(from, to, request.Parameters.LocationName);
+                var from = GetParsedDateOrDefault(query.Parameters.FromDate);
+                var to = GetParsedDateOrDefault(query.Parameters.ToDate);
+                return await _repository.GetEventsForDate(from, to, query.Parameters.LocationName);
             }
 
             private DateTime GetParsedDateOrDefault(string dateString)
