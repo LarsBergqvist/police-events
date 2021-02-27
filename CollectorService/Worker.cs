@@ -1,7 +1,7 @@
 using System;
 using System.Threading;
 using System.Threading.Tasks;
-using Core.Commands;
+using Core.CQRS.Commands;
 using Core.Settings;
 using MediatR;
 using Microsoft.Extensions.Hosting;

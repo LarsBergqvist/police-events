@@ -3,7 +3,7 @@ using Microsoft.Azure.WebJobs;
 using Microsoft.Extensions.Logging;
 using System.Threading.Tasks;
 using MediatR;
-using Core.Commands;
+using Core.CQRS.Commands;
 
 namespace AzureFunctions
 {

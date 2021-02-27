@@ -7,7 +7,7 @@ using MediatR;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 
-namespace Core.Commands
+namespace Core.CQRS.Commands
 {
     public class CollectPoliceEvents
     {

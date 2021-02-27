@@ -9,9 +9,10 @@
     <Folder Include="Repositories\" />
     <Folder Include="Clients\" />
     <Folder Include="Settings\" />
-    <Folder Include="Queries\" />
     <Folder Include="Extensions\" />
-    <Folder Include="Commands\" />
+    <Folder Include="CQRS\" />
+    <Folder Include="CQRS\Commands\" />
+    <Folder Include="CQRS\Queries\" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="MediatR.Extensions.Microsoft.DependencyInjection" Version="9.0.0" />

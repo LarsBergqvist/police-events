@@ -6,7 +6,7 @@ using Core.Models;
 using Core.Repositories;
 using MediatR;
 
-namespace Core.Queries
+namespace Core.CQRS.Queries
 {
     public class GetPoliceEvents
     {
