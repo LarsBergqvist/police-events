@@ -3,27 +3,27 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.808.4
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CollectorService", "CollectorService\CollectorService.csproj", "{9D9B26D0-5E44-4E51-88F1-75B0F0050B2B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CollectorService", "CollectorService\CollectorService.csproj", "{9D9B26D0-5E44-4E51-88F1-75B0F0050B2B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Core", "Core\Core.csproj", "{64FC8D1B-5B6D-4573-9412-73493854FE92}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Core", "Core\Core.csproj", "{64FC8D1B-5B6D-4573-9412-73493854FE92}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Infrastructure", "Infrastructure\Infrastructure.csproj", "{10F2F9CD-542D-4258-853F-96085DCE8AA8}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Infrastructure", "Infrastructure\Infrastructure.csproj", "{10F2F9CD-542D-4258-853F-96085DCE8AA8}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{72F7E546-03D3-4856-AC4E-9C0F9F0794CC}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RepositoryTests.Console", "Tests\RepositoryTests.Console\RepositoryTests.Console.csproj", "{552FB449-CD33-4925-AF00-0CAC36E98195}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RepositoryTests.Console", "Tests\RepositoryTests.Console\RepositoryTests.Console.csproj", "{552FB449-CD33-4925-AF00-0CAC36E98195}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{2645ECBD-F9DA-4780-9535-A178C804BE31}"
 	ProjectSection(SolutionItems) = preProject
-		README.md = README.md
-		docker-compose.yml = docker-compose.yml
-		docker-compose.debug.yml = docker-compose.debug.yml
 		.dockerignore = .dockerignore
+		docker-compose.debug.yml = docker-compose.debug.yml
+		docker-compose.yml = docker-compose.yml
+		README.md = README.md
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Api", "Api\Api.csproj", "{267FB5C8-ABCB-4118-9D96-AB2715658160}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Api", "Api\Api.csproj", "{267FB5C8-ABCB-4118-9D96-AB2715658160}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AzureFunctions", "AzureFunctions\AzureFunctions.csproj", "{BC1F7324-5687-4EA3-AF31-09E28EC2C5F3}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AzureFunctions", "AzureFunctions\AzureFunctions.csproj", "{BC1F7324-5687-4EA3-AF31-09E28EC2C5F3}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -59,10 +59,10 @@ Global
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
-	GlobalSection(ExtensibilityGlobals) = postSolution
-		SolutionGuid = {F09FF577-F9E4-4ED0-A35A-CCB6B0729BA1}
-	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{552FB449-CD33-4925-AF00-0CAC36E98195} = {72F7E546-03D3-4856-AC4E-9C0F9F0794CC}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {F09FF577-F9E4-4ED0-A35A-CCB6B0729BA1}
 	EndGlobalSection
 EndGlobal

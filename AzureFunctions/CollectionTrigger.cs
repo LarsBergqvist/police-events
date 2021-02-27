@@ -1,10 +1,9 @@
 using System;
 using Microsoft.Azure.WebJobs;
-using Microsoft.Azure.WebJobs.Extensions.Http;
-using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
 using Core.Clients;
 using Core.Repositories;
+using System.Threading.Tasks;
 
 namespace AzureFunctions
 {
@@ -20,13 +19,11 @@ namespace AzureFunctions
         }
 
         [FunctionName(nameof(CollectionTrigger))]
-        public async void Run(
-            [HttpTrigger(AuthorizationLevel.Anonymous, "get", "post", Route = null)] HttpRequest req,
+        public async Task Run(
+            [TimerTrigger("0 */15 * * * *")]TimerInfo timerInfo,
             ILogger log)
         {
-            log.LogInformation("C# HTTP trigger function processed a request.");
-
-            log.LogInformation("Start fetching data");
+            log.LogInformation($"Start fetching data at:  {DateTime.Now}");
             var events = await _policeApiClient.GetLatestEvents();
             log.LogInformation("Start upserting events in database");
             await _policeEventRepository.UpsertCollection(events);
