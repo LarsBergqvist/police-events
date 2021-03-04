@@ -108,7 +108,7 @@ export class EventListComponent implements OnInit {
         let locationObject: LocationObjectViewModel;
         try {
             this.isLoading = true;
-            if (event.location.name.toLowerCase().includes('län')) {
+            if (event.location.name.toLowerCase().endsWith('län')) {
                 // The location is a county
                 areaResult = await this.areaService.fetchGeoJsonForCounty(event.location.name);
             } else {
