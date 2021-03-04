@@ -19,16 +19,13 @@ namespace Core.CQRS.Commands
         {
             private readonly IPoliceApiClient _policeApiClient;
             private readonly IPoliceEventRepository _policeEventRepository;
-            private readonly PoliceApiSettings _settings;
             private readonly ILogger<Handler> _logger;
 
             public Handler(ILogger<Handler> logger,
-                           IOptions<PoliceApiSettings> options,
                            IPoliceApiClient policeApiClient,
                            IPoliceEventRepository policeEventRepository)
             {
                 _logger = logger;
-                _settings = options.Value;
                 _policeApiClient = policeApiClient;
                 _policeEventRepository = policeEventRepository;
             }
