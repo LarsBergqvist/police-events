@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
-using System.Net.Http;
 using System.Threading.Tasks;
 using Core.Clients;
+using Core.Handlers;
 using Core.Models;
 using Core.Settings;
 using Microsoft.Extensions.Logging;
@@ -14,19 +14,20 @@ namespace Infrastructure.Clients
     {
         private readonly PoliceApiSettings _settings;
         private readonly ILogger<PoliceApiClient> _logger;
-        public PoliceApiClient(IOptions<PoliceApiSettings> options, ILogger<PoliceApiClient> logger)
+        private readonly IHttpHandler _httpHandler;
+        public PoliceApiClient(IOptions<PoliceApiSettings> options, ILogger<PoliceApiClient> logger,
+                               IHttpHandler httpHandler)
         {
             _settings = options.Value;
             _logger = logger;
+            _httpHandler = httpHandler;
         }
 
         public async Task<IEnumerable<PoliceEvent>> GetLatestEvents()
         {
             _logger.LogInformation($"Get events from ApiUrl: {_settings.PoliceApiUrl}");
             var policeEventCollection = new List<PoliceEvent>();
-            var client = new HttpClient();
-            client.DefaultRequestHeaders.Add("User-Agent", "police-events-app");
-            var res = await client.GetAsync(_settings.PoliceApiUrl);
+            var res = await _httpHandler.GetAsync(_settings.PoliceApiUrl);
             if (res.IsSuccessStatusCode)
             {
                 var result = await res.Content.ReadAsStringAsync();

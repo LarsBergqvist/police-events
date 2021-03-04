@@ -13,6 +13,7 @@
     <Folder Include="CQRS\" />
     <Folder Include="CQRS\Commands\" />
     <Folder Include="CQRS\Queries\" />
+    <Folder Include="Handlers\" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="MediatR.Extensions.Microsoft.DependencyInjection" Version="9.0.0" />
