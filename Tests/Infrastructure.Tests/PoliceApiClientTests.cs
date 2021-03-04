@@ -9,25 +9,10 @@ using System.Linq;
 using Core.Models;
 using System;
 using Microsoft.Extensions.Logging.Abstractions;
+using Moq;
 
 namespace Infrastructure.Tests
 {
-    public class MockHttpHandler : IHttpHandler
-    {
-        private readonly string _responseString;
-        public MockHttpHandler(string response)
-        {
-            _responseString = response;
-        }
-
-        public Task<HttpResponseMessage> GetAsync(string url)
-        {
-            var resp = new HttpResponseMessage(System.Net.HttpStatusCode.OK);
-            resp.Content = new StringContent(_responseString);
-            return Task.FromResult(resp);
-        }
-    }
-
     public class PoliceApiClientTests
     {
 
@@ -59,18 +44,27 @@ namespace Infrastructure.Tests
             ]"; 
 
         [Fact]
-        public async Task ClientShouldGetAsyncAndReturnConvertedData()
+        public async Task ShouldFetchEventsAndReturnConvertedData()
         {
             //
             // Arrange
             //
+            var mockHttpHandler = new Mock<IHttpHandler>();
+            mockHttpHandler.Setup(a => a.GetAsync("myurl")).ReturnsAsync(() =>
+            {
+                return new HttpResponseMessage(System.Net.HttpStatusCode.OK)
+                {
+                    Content = new StringContent(data)
+                };
+            });
+
             var settings = new PoliceApiSettings
             {
                 PoliceApiUrl = "myurl"
             };
             var logger = new NullLogger<PoliceApiClient>();
             var options = Options.Create(settings);
-            var client = new PoliceApiClient(options, logger, new MockHttpHandler(data));
+            var client = new PoliceApiClient(options, logger, mockHttpHandler.Object);
 
             //
             // Act
@@ -80,6 +74,7 @@ namespace Infrastructure.Tests
             //
             // Assert
             //
+            mockHttpHandler.Verify(m => m.GetAsync("myurl"), Times.Once);
             Assert.Equal(2, events.Count);
 
             Assert.Equal(new DateTime(2021,2,6,18,24,0), events[0].UtcDateTime);
