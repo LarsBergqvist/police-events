@@ -1,5 +1,4 @@
 using Core.Extensions;
-using Core.Settings;
 using Infrastructure.Extensions;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -33,8 +32,6 @@ namespace Api
             });
 
             services
-                .AddOptions()
-                .Configure<RepositorySettings>(Configuration.GetSection("RepositorySettings"))
                 .AddCoreServices()
                 .AddInfrastructureServices()
                 .AddControllers()

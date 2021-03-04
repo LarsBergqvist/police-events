@@ -1,5 +1,4 @@
 using Core.Extensions;
-using Core.Settings;
 using Infrastructure.Extensions;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -19,9 +18,6 @@ namespace CollectorService
                 .ConfigureServices((hostContext, services) =>
                 {
                     services
-                        .AddOptions()
-                        .Configure<PoliceApiSettings>(hostContext.Configuration.GetSection("PoliceApiSettings"))
-                        .Configure<RepositorySettings>(hostContext.Configuration.GetSection("RepositorySettings"))
                         .AddCoreServices()
                         .AddInfrastructureServices()
                         .AddHostedService<Worker>()
