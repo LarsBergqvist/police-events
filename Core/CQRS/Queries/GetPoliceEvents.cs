@@ -5,6 +5,8 @@ using System.Threading.Tasks;
 using Core.Models;
 using Core.Repositories;
 using MediatR;
+using System.Linq;
+using Core.Helpers;
 
 namespace Core.CQRS.Queries
 {
@@ -15,6 +17,9 @@ namespace Core.CQRS.Queries
             public string FromDate { get; set; }
             public string ToDate { get; set; }
             public string LocationName { get; set; }
+            public double UserLat { get; set; }
+            public double UserLng { get; set; }
+            public double MaxDistanceKm { get; set; }
         }
 
         public class Query: IRequest<IEnumerable<PoliceEvent>>
@@ -36,7 +41,14 @@ namespace Core.CQRS.Queries
             {
                 var from = GetParsedDateOrDefault(query.Parameters.FromDate);
                 var to = GetParsedDateOrDefault(query.Parameters.ToDate);
-                return await _repository.GetEventsForDate(from, to, query.Parameters.LocationName);
+                var coll = await _repository.GetEventsForDate(from, to, query.Parameters.LocationName);
+                if (query.Parameters.UserLat == 0 || query.Parameters.UserLng == 0 )
+                {
+                    return coll;
+                }
+                var filtered = coll.Where(e => DistanceCalculator.GetDistanceKm(query.Parameters.UserLat, query.Parameters.UserLng,
+                                                                           e.Location.Lat, e.Location.Lng) < query.Parameters.MaxDistanceKm);
+                return filtered;
             }
 
             private DateTime GetParsedDateOrDefault(string dateString)

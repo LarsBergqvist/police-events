@@ -9,5 +9,6 @@ namespace Core.Repositories
     {
         Task UpsertCollection(IEnumerable<PoliceEvent> policeEvents);
         Task<IEnumerable<PoliceEvent>> GetEventsForDate(DateTime fromDate, DateTime toDate, string locationName);
+        Task<PoliceEvent> GetEventById(int id);
     }
 }

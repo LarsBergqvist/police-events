@@ -2,21 +2,16 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { PoliceEvent } from '../models/police-event';
 import { PoliceEventViewModel } from '../models/police-event-viewmodel';
-import { calcPosDistanceKm } from '../utils/distance-helper';
 import { GeoPosition } from '../models/geo-position';
-import { LoggingService } from './logging.service';
 import { AppConfigService } from './app-config.service';
+
 @Injectable({
     providedIn: 'root'
 })
 export class PoliceEventService {
     private readonly BaseUrl;
 
-    constructor(
-        private readonly http: HttpClient,
-        private readonly logger: LoggingService,
-        private readonly configService: AppConfigService
-    ) {
+    constructor(private readonly http: HttpClient, configService: AppConfigService) {
         this.BaseUrl = `${configService.apiUrl}/events`;
     }
 
@@ -26,17 +21,9 @@ export class PoliceEventService {
         userPos: GeoPosition,
         radiusKm: number
     ): Promise<PoliceEventViewModel[]> {
-        const vm = await this.fetchEventsForDate(fromUtcDate, toUtcDate);
-        vm.forEach((event) => {
-            event.location.distance = calcPosDistanceKm(userPos, event.location.pos);
-        });
-
-        const withinRadius = vm.filter((event) => {
-            if (calcPosDistanceKm(userPos, event.location.pos) < radiusKm) {
-                return true;
-            }
-        });
-        return withinRadius;
+        let url = `${this.BaseUrl}?fromDate=${fromUtcDate}&toDate=${toUtcDate}&userLat=${userPos.lat}&userLng=${userPos.lng}&maxKm=${radiusKm}`;
+        const res = await this.http.get<PoliceEvent[]>(`${url}`).toPromise();
+        return this.convertToViewModel(res);
     }
 
     async fetchEventsForDate(fromUtcDate: string, toUtcDate: string): Promise<PoliceEventViewModel[]> {

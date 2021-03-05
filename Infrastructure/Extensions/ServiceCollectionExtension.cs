@@ -4,6 +4,7 @@ using Core.Repositories;
 using Core.Settings;
 using Infrastructure.Clients;
 using Infrastructure.Handlers;
+using Infrastructure.MongoDB;
 using Infrastructure.Repositories;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -24,6 +25,7 @@ namespace Infrastructure.Extensions
             });
             return services
                         .AddHttpClient()
+                        .AddTransient<IMongoDBContext,MongoDBContext>()
                         .AddTransient<IHttpHandler, HttpHandler>()
                         .AddTransient<IPoliceApiClient, PoliceApiClient>()
                         .AddTransient<IPoliceEventRepository, PoliceEventRepository>();

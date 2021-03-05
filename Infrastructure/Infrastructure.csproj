@@ -9,6 +9,7 @@
     <Folder Include="Clients\" />
     <Folder Include="Extensions\" />
     <Folder Include="Handlers\" />
+    <Folder Include="MongoDB\" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Core\Core.csproj" />
