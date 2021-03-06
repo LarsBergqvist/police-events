@@ -72,6 +72,17 @@ steps:
     displayName: "build app"
     workingDirectory: App
 
+  - script: yarn test
+    displayName: "test app"
+    workingDirectory: App
+
+  - task: PublishTestResults@2
+    displayName: 'publish unit test results'
+    condition: succeededOrFailed()
+    inputs:
+      testResultsFormat: 'JUnit'
+      testResultsFiles: '**/TESTS-*.xml'
+
   - task: CopyFiles@2
     displayName: "Copy app files"
     inputs:

@@ -6,7 +6,7 @@
         "start": "ng serve",
         "startSSL": "ng serve --host=0.0.0.0 --port=4300 --ssl --ssl-key './certificates/localhost.key'  --ssl-cert './certificates/localhost.crt'",
         "build": "ng build --prod",
-        "test": "ng test",
+        "test": "ng test --watch=false",
         "lint": "ng lint",
         "postinstall": "ngcc"
     },
@@ -47,6 +47,7 @@
         "karma-coverage-istanbul-reporter": "~3.0.2",
         "karma-jasmine": "~4.0.0",
         "karma-jasmine-html-reporter": "^1.5.0",
+        "karma-junit-reporter": "^2.0.1",
         "ts-node": "~7.0.0",
         "tslint": "~6.1.0",
         "typescript": "~4.0.2"
