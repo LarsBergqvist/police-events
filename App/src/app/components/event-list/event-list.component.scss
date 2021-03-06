@@ -1,16 +1,5 @@
 @use '../../../base.scss';
 
-.headline {
-    margin-left: auto;
-    margin-right: auto;
-    margin-top: base.$margintop;
-    margin-bottom: base.$margintop;
-    max-width: 300px;
-    font-weight: bolder;
-    font-size: 1.5em;
-    color: rgb(126, 126, 126);
-}
-
 .no-results-container {
     width: 150px;
     margin-left: auto;
@@ -39,10 +28,7 @@
     border-radius: 10px;
     width: 20px;
 }
-.outer {
-    margin-right: 8px;
-}
 
 .search-ctn {
-    margin-left: 6px;
+    margin-left: 10px;
 }

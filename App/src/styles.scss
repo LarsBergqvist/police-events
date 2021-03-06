@@ -50,17 +50,8 @@
     font-size: 1.5rem;
 }
 
-.sr-button.p-button {
-    width: 100%;
-    border-radius: 10px;
-    max-width: 100%;
-    margin-left: base.$marginlr;
-    margin-right: base.$marginlr;
-}
 .sr-button-wide.p-button {
     width: 100%;
     border-radius: 10px;
     max-width: base.$ctlwidth-wide;
-    margin-left: base.$marginlr;
-    margin-right: base.$marginlr;
 }
