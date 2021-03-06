@@ -39,33 +39,18 @@ namespace Core.CQRS.Queries
 
             public async Task<IEnumerable<PoliceEvent>> Handle(Query query, CancellationToken cancellationToken)
             {
-                var from = GetParsedDateOrDefault(query.Parameters.FromDate);
-                var to = GetParsedDateOrDefault(query.Parameters.ToDate);
+                var defaultDate = DateTime.Now.Date;
+                var from = DateHelper.GetParsedDateOrDefault(query.Parameters.FromDate, defaultDate);
+                var to = DateHelper.GetParsedDateOrDefault(query.Parameters.ToDate, defaultDate);
                 var coll = await _repository.GetEventsForDate(from, to, query.Parameters.LocationName);
                 if (query.Parameters.UserLat == 0 || query.Parameters.UserLng == 0 )
                 {
                     return coll;
                 }
-                var filtered = coll.Where(e => DistanceCalculator.GetDistanceKm(query.Parameters.UserLat, query.Parameters.UserLng,
-                                                                           e.Location.Lat, e.Location.Lng) < query.Parameters.MaxDistanceKm);
+                var filtered =
+                    coll.Where(e => DistanceCalculator.GetDistanceKm(query.Parameters.UserLat, query.Parameters.UserLng,
+                                                                     e.Location.Lat, e.Location.Lng) < query.Parameters.MaxDistanceKm);
                 return filtered;
-            }
-
-            private DateTime GetParsedDateOrDefault(string dateString)
-            {
-                var date = DateTime.Now.Date;
-                if (!string.IsNullOrEmpty(dateString))
-                {
-                    if (DateTime.TryParseExact(dateString,
-                               "yyyy-MM-dd",
-                               System.Globalization.CultureInfo.InvariantCulture,
-                               System.Globalization.DateTimeStyles.None,
-                               out var parsedDate))
-                    {
-                        date = parsedDate;
-                    }
-                }
-                return date;
             }
         }
     }
