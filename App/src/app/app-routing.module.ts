@@ -1,8 +1,12 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
-import { EventListComponent } from './components/event-list/event-list.component';
+import { EventViewComponent } from './components/events/event-view.component';
+import { SearchEventsComponent } from './components/events/search.component';
 
-const routes: Routes = [{ path: '**', component: EventListComponent }];
+const routes: Routes = [
+    { path: 'event/:id', component: EventViewComponent },
+    { path: '**', component: SearchEventsComponent }
+];
 
 @NgModule({
     imports: [RouterModule.forRoot(routes, { relativeLinkResolution: 'legacy' })],

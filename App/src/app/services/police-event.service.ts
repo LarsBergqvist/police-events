@@ -15,6 +15,12 @@ export class PoliceEventService {
         this.BaseUrl = `${configService.apiUrl}/events`;
     }
 
+    async fetchEventById(id: string): Promise<PoliceEventViewModel> {
+        let url = `${this.BaseUrl}/${id}`;
+        const res = await this.http.get<PoliceEvent>(`${url}`).toPromise();
+        return this.convertToViewModel(res);
+    }
+
     async fetchEventsForDateWithinRadius(
         fromUtcDate: string,
         toUtcDate: string,
@@ -23,37 +29,43 @@ export class PoliceEventService {
     ): Promise<PoliceEventViewModel[]> {
         let url = `${this.BaseUrl}?fromDate=${fromUtcDate}&toDate=${toUtcDate}&userLat=${userPos.lat}&userLng=${userPos.lng}&maxKm=${radiusKm}`;
         const res = await this.http.get<PoliceEvent[]>(`${url}`).toPromise();
-        return this.convertToViewModel(res);
+        return this.convertCollectionToViewModel(res);
     }
 
     async fetchEventsForDate(fromUtcDate: string, toUtcDate: string): Promise<PoliceEventViewModel[]> {
         let url = `${this.BaseUrl}?fromDate=${fromUtcDate}&toDate=${toUtcDate}`;
         const res = await this.http.get<PoliceEvent[]>(`${url}`).toPromise();
-        return this.convertToViewModel(res);
+        return this.convertCollectionToViewModel(res);
     }
 
-    private convertToViewModel(policeEvents: PoliceEvent[]): PoliceEventViewModel[] {
+    private convertToViewModel(e: PoliceEvent): PoliceEventViewModel {
+        var geoPos: GeoPosition = {
+            lat: e.location.lat,
+            lng: e.location.lng,
+            id: e.id,
+            info: e.summary
+        };
+
+        let viewModel: PoliceEventViewModel = {
+            id: e.id,
+            datetime: new Date(e.utcDateTime),
+            summary: e.summary,
+            url: e.url,
+            type: e.type,
+            location: {
+                name: e.location.name,
+                pos: geoPos,
+                distance: undefined
+            }
+        };
+
+        return viewModel;
+    }
+
+    private convertCollectionToViewModel(policeEvents: PoliceEvent[]): PoliceEventViewModel[] {
         let viewModels: PoliceEventViewModel[] = [];
         policeEvents.forEach((e) => {
-            var geoPos: GeoPosition = {
-                lat: e.location.lat,
-                lng: e.location.lng,
-                id: e.id,
-                info: e.summary
-            };
-
-            let viewModel: PoliceEventViewModel = {
-                id: e.id,
-                datetime: new Date(e.utcDateTime),
-                summary: e.summary,
-                url: e.url,
-                type: e.type,
-                location: {
-                    name: e.location.name,
-                    pos: geoPos,
-                    distance: undefined
-                }
-            };
+            let viewModel = this.convertToViewModel(e);
             viewModels.push(viewModel);
         });
 

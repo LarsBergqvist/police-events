@@ -13,11 +13,11 @@ import { LoggingService } from 'src/app/services/logging.service';
 import { ShowMapMessage } from 'src/app/messages/show-map.message';
 
 @Component({
-    selector: 'app-event-list',
-    templateUrl: './event-list.component.html',
-    styleUrls: ['event-list.component.scss']
+    selector: 'app-search-events',
+    templateUrl: './search-events.component.html',
+    styleUrls: ['search-events.component.scss']
 })
-export class EventListComponent implements OnInit {
+export class SearchEventsComponent implements OnInit {
     events: PoliceEventViewModel[];
     keyword: string = '';
     isLoading = false;

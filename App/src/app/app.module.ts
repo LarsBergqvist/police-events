@@ -14,14 +14,15 @@ import { ToolbarModule } from 'primeng/toolbar';
 import { environment } from '../environments/environment';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { EventListComponent } from './components/event-list/event-list.component';
-import { EventComponent } from './components/event-list/event.component';
+import { EventViewComponent } from './components/events/event-view.component';
+import { EventComponent } from './components/events/event.component';
 import { MapSidebarComponent } from './components/map/map-sidebar.component';
 import { MapComponent } from './components/map/map.component';
 import { AppConfigService } from './services/app-config.service';
 import { HttpInterceptorService } from './services/http-interceptor.service';
 import { LoggingService } from './services/logging.service';
 import { MessageBrokerService } from './services/message-broker.service';
+import { SearchEventsComponent } from './components/events/search.component';
 
 export function appConfigInit(configService: AppConfigService, logging: LoggingService) {
     return () => {
@@ -34,7 +35,14 @@ export function appConfigInit(configService: AppConfigService, logging: LoggingS
 }
 
 @NgModule({
-    declarations: [MapComponent, AppComponent, MapSidebarComponent, EventListComponent, EventComponent],
+    declarations: [
+        MapComponent,
+        AppComponent,
+        MapSidebarComponent,
+        SearchEventsComponent,
+        EventComponent,
+        EventViewComponent
+    ],
     imports: [
         BrowserModule,
         AppRoutingModule,
