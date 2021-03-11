@@ -1,10 +1,6 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { Component } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { PoliceEventViewModel } from 'src/app/models/police-event-viewmodel';
-import { AreaService } from 'src/app/services/area-service';
-import { LoggingService } from 'src/app/services/logging.service';
-import { MessageBrokerService } from 'src/app/services/message-broker.service';
-import { NominatimService } from 'src/app/services/nominatim.service';
 import { PoliceEventService } from 'src/app/services/police-event.service';
 import { MapDataHelper } from './map-data-helper';
 

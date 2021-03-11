@@ -4,6 +4,7 @@ export interface PoliceEvent {
     summary: string;
     url: string;
     type: string;
+    details: string;
     location: {
         name: string;
         lat: number;

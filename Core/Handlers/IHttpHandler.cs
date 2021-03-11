@@ -6,5 +6,6 @@ namespace Core.Handlers
     public interface IHttpHandler
     {
         Task<HttpResponseMessage> GetAsync(string url);
+        Task<string> GetStringAsync(string url);
     }
 }

@@ -43,7 +43,7 @@ namespace Api.Controllers
         [HttpGet("{id}")]
         [ProducesResponseType((int)HttpStatusCode.OK)]
         [ProducesResponseType((int)HttpStatusCode.NotFound)]
-        public async Task<ActionResult<PoliceEvent>> GetById(int id)
+        public async Task<ActionResult<PoliceEventDetails>> GetById(int id)
         {
             _logger.LogInformation($"Get request for id: {id}");
             var policeEvent = await _mediator.Send(new GetPoliceEventById.Query(id));

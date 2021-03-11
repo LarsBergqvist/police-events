@@ -19,4 +19,9 @@
             </div>
         </div>
     </div>
+    <p-accordion (onOpen)="onShowDetails($event)">
+        <p-accordionTab header="Detaljer">
+            <div [innerHTML]="event.details"></div>
+        </p-accordionTab>
+    </p-accordion>
 </div>

@@ -22,7 +22,8 @@ import { AppConfigService } from './services/app-config.service';
 import { HttpInterceptorService } from './services/http-interceptor.service';
 import { LoggingService } from './services/logging.service';
 import { MessageBrokerService } from './services/message-broker.service';
-import { SearchEventsComponent } from './components/events/search.component';
+import { SearchEventsComponent } from './components/events/search-events.component';
+import { AccordionModule } from 'primeng/accordion';
 
 export function appConfigInit(configService: AppConfigService, logging: LoggingService) {
     return () => {
@@ -55,6 +56,7 @@ export function appConfigInit(configService: AppConfigService, logging: LoggingS
         FormsModule,
         InputTextModule,
         ProgressSpinnerModule,
+        AccordionModule,
         ServiceWorkerModule.register('ngsw-worker.js', {
             enabled: environment.production
         })

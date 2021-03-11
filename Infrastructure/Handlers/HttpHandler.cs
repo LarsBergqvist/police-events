@@ -18,5 +18,10 @@ namespace Infrastructure.Handlers
         {
             return await _client.GetAsync(url);
         }
+
+        public async Task<string> GetStringAsync(string url)
+        {
+            return await _client.GetStringAsync(url);
+        }
     }
 }

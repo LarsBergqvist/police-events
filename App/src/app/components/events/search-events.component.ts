@@ -5,8 +5,6 @@ import { MessageBrokerService } from 'src/app/services/message-broker.service';
 import { PoliceEventService } from 'src/app/services/police-event.service';
 import { getDateTimeNDaysFromNow, getUTCDateStringFromLocalDateTime } from 'src/app/utils/date-helper';
 import { GeoPosition } from 'src/app/models/geo-position';
-import { AreaService } from 'src/app/services/area-service';
-import { NominatimService } from 'src/app/services/nominatim.service';
 import { LoggingService } from 'src/app/services/logging.service';
 import { MapDataHelper } from './map-data-helper';
 

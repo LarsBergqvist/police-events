@@ -19,5 +19,9 @@ namespace Core.Models
         public Location Location { get; set; }
     }
 
+    public class PoliceEventDetails : PoliceEvent
+    {
+        public string Details { get; set; }
+    }
 
 }
