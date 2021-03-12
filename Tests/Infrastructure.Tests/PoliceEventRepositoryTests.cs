@@ -1,18 +1,18 @@
-﻿using System.Threading.Tasks;
-using Core.Settings;
-using Microsoft.Extensions.Options;
-using Xunit;
-using Core.Models;
-using Microsoft.Extensions.Logging.Abstractions;
-using Moq;
-using MongoDB.Driver;
-using Infrastructure.MongoDB;
-using System.Threading;
-using Infrastructure.Repositories;
-using System.Collections.Generic;
-using System;
-using System.Linq;
+﻿using Core.Models;
 using Core.Repositories;
+using Core.Settings;
+using Infrastructure.MongoDB;
+using Infrastructure.Repositories;
+using Microsoft.Extensions.Logging.Abstractions;
+using Microsoft.Extensions.Options;
+using MongoDB.Driver;
+using Moq;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading;
+using System.Threading.Tasks;
+using Xunit;
 
 namespace Infrastructure.Tests
 {

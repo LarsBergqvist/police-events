@@ -1,13 +1,13 @@
-﻿using System.Collections.Generic;
-using System.Threading.Tasks;
-using Core.Clients;
+﻿using Core.Clients;
+using Core.CQRS.Commands;
 using Core.Models;
 using Core.Repositories;
 using Microsoft.Extensions.Logging;
 using Moq;
-using Xunit;
+using System.Collections.Generic;
 using System.Linq;
-using Core.CQRS.Commands;
+using System.Threading.Tasks;
+using Xunit;
 
 namespace Core.Tests
 {

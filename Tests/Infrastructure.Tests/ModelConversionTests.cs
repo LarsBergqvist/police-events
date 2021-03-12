@@ -1,5 +1,5 @@
-using System;
 using Infrastructure.Clients;
+using System;
 using Xunit;
 
 namespace Infrastructure.Tests

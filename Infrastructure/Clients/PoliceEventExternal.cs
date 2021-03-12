@@ -1,6 +1,6 @@
-﻿using System;
+﻿using Core.Models;
+using System;
 using System.Globalization;
-using Core.Models;
 
 namespace Infrastructure.Clients
 {

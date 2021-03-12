@@ -1,11 +1,9 @@
-﻿using System.Threading;
-using System.Threading.Tasks;
-using Core.Clients;
+﻿using Core.Clients;
 using Core.Repositories;
-using Core.Settings;
 using MediatR;
 using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Options;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace Core.CQRS.Commands
 {
@@ -45,4 +43,3 @@ namespace Core.CQRS.Commands
     }
 }
 
-   

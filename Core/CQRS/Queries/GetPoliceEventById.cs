@@ -1,18 +1,18 @@
-﻿using System;
-using System.Text.RegularExpressions;
-using System.Threading;
-using System.Threading.Tasks;
-using Core.Handlers;
+﻿using Core.Handlers;
 using Core.Models;
 using Core.Repositories;
 using MediatR;
 using Microsoft.Extensions.Logging;
+using System;
+using System.Text.RegularExpressions;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace Core.CQRS.Queries
 {
     public class GetPoliceEventById
     {
-        public class Query: IRequest<PoliceEventDetails>
+        public class Query : IRequest<PoliceEventDetails>
         {
             public int Id { get; set; }
             public Query(int id) => Id = id;
@@ -50,7 +50,7 @@ namespace Core.CQRS.Queries
                     // Web-scrape the referred html page and try to find additional details
                     //
                     var page = await _httpHandler.GetStringAsync(@event.Url);
-                    var regex = new Regex(@"(?<=(<div class=""text-body editorial-html"">))(.|\n)*?(?=(<\/div>))",RegexOptions.Multiline);
+                    var regex = new Regex(@"(?<=(<div class=""text-body editorial-html"">))(.|\n)*?(?=(<\/div>))", RegexOptions.Multiline);
                     var matches = regex.Match(page);
                     if (matches.Length > 0)
                     {

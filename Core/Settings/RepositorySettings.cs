@@ -1,5 +1,4 @@
-﻿using System;
-namespace Core.Settings
+﻿namespace Core.Settings
 {
     public class RepositorySettings
     {

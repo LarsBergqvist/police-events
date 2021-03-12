@@ -1,15 +1,15 @@
-﻿using System.Net.Http;
-using System.Threading.Tasks;
-using Core.Handlers;
+﻿using Core.Handlers;
+using Core.Models;
 using Core.Settings;
 using Infrastructure.Clients;
-using Microsoft.Extensions.Options;
-using Xunit;
-using System.Linq;
-using Core.Models;
-using System;
 using Microsoft.Extensions.Logging.Abstractions;
+using Microsoft.Extensions.Options;
 using Moq;
+using System;
+using System.Linq;
+using System.Net.Http;
+using System.Threading.Tasks;
+using Xunit;
 
 namespace Infrastructure.Tests
 {
@@ -41,7 +41,7 @@ namespace Infrastructure.Tests
                     'gps': '59.329334,18.068591'
                 }
             }
-            ]"; 
+            ]";
 
         [Fact]
         public async Task ShouldFetchEventsAndReturnConvertedData()
@@ -77,7 +77,7 @@ namespace Infrastructure.Tests
             mockHttpHandler.Verify(m => m.GetAsync("myurl"), Times.Once);
             Assert.Equal(2, events.Count);
 
-            Assert.Equal(new DateTime(2021,2,6,18,24,0), events[0].UtcDateTime);
+            Assert.Equal(new DateTime(2021, 2, 6, 18, 24, 0), events[0].UtcDateTime);
             Assert.Equal("Stockholm", events[0].Location.Name);
             Assert.Equal(59.329324, events[0].Location.Lat);
             Assert.Equal(18.068581, events[0].Location.Lng);

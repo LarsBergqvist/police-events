@@ -1,5 +1,4 @@
-﻿using Core.Models;
-using Core.Settings;
+﻿using Core.Settings;
 using Microsoft.Extensions.Options;
 using MongoDB.Driver;
 

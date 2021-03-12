@@ -1,11 +1,11 @@
-﻿using System;
-using System.IO;
-using System.Threading.Tasks;
-using Core.Repositories;
+﻿using Core.Repositories;
 using Infrastructure.Repositories;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using System;
+using System.IO;
+using System.Threading.Tasks;
 
 namespace RepositoryTests.Console
 {
@@ -28,7 +28,7 @@ namespace RepositoryTests.Console
             var fromDate = new DateTime(2021, 02, 06);
             var toDate = new DateTime(2021, 02, 06);
             var res = await repo.GetEventsForDate(fromDate, toDate, "Uppsala");
-            foreach(var pe in res)
+            foreach (var pe in res)
             {
                 System.Console.WriteLine($"{pe.UtcDateTime}: {pe.Summary}");
             }

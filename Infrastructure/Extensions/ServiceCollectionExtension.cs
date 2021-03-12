@@ -25,7 +25,7 @@ namespace Infrastructure.Extensions
             });
             return services
                         .AddHttpClient()
-                        .AddTransient<IMongoDBContext,MongoDBContext>()
+                        .AddTransient<IMongoDBContext, MongoDBContext>()
                         .AddTransient<IHttpHandler, HttpHandler>()
                         .AddTransient<IPoliceApiClient, PoliceApiClient>()
                         .AddTransient<IPoliceEventRepository, PoliceEventRepository>();

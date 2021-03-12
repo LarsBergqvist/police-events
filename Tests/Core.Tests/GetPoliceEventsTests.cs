@@ -1,11 +1,11 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Core.CQRS.Queries;
 using Core.Models;
 using Core.Repositories;
 using Moq;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 using Xunit;
 
 namespace Core.Tests
@@ -72,7 +72,7 @@ namespace Core.Tests
         {
             var repositoryMock = new Mock<IPoliceEventRepository>();
             repositoryMock.SetReturnsDefault(Task.FromResult(ResponseData()));
-           
+
             var handler = new GetPoliceEvents.Handler(repositoryMock.Object);
             var query = new GetPoliceEvents.Query(
                 new GetPoliceEvents.QueryParameters

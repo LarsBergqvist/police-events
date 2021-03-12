@@ -1,11 +1,11 @@
-﻿using System.Collections.Generic;
-using System.Threading.Tasks;
+﻿using Core.CQRS.Queries;
 using Core.Models;
-using Core.CQRS.Queries;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using System.Collections.Generic;
 using System.Net;
+using System.Threading.Tasks;
 
 namespace Api.Controllers
 {
@@ -26,7 +26,7 @@ namespace Api.Controllers
         [ProducesResponseType((int)HttpStatusCode.OK)]
         public async Task<ActionResult<IEnumerable<PoliceEvent>>>
             Get([FromQuery] string fromDate = "", [FromQuery] string toDate = "",
-                [FromQuery] double userLat=0, [FromQuery] double userLng=0, [FromQuery] double maxKm = 0)
+                [FromQuery] double userLat = 0, [FromQuery] double userLng = 0, [FromQuery] double maxKm = 0)
         {
             _logger.LogInformation($"Get request: fromDate {fromDate}, toDate: {toDate}, userLat: {userLat}, userLng: {userLng}");
             var queryParams = new GetPoliceEvents.QueryParameters

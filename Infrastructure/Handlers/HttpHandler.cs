@@ -1,10 +1,10 @@
-﻿using System.Net.Http;
+﻿using Core.Handlers;
+using System.Net.Http;
 using System.Threading.Tasks;
-using Core.Handlers;
 
 namespace Infrastructure.Handlers
 {
-    public class HttpHandler: IHttpHandler
+    public class HttpHandler : IHttpHandler
     {
         private readonly HttpClient _client;
 

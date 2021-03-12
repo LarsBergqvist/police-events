@@ -1,9 +1,9 @@
-using System;
+using Core.CQRS.Commands;
+using MediatR;
 using Microsoft.Azure.WebJobs;
 using Microsoft.Extensions.Logging;
+using System;
 using System.Threading.Tasks;
-using MediatR;
-using Core.CQRS.Commands;
 
 namespace AzureFunctions
 {

@@ -1,12 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Threading;
-using System.Threading.Tasks;
+﻿using Core.Helpers;
 using Core.Models;
 using Core.Repositories;
 using MediatR;
+using System;
+using System.Collections.Generic;
 using System.Linq;
-using Core.Helpers;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace Core.CQRS.Queries
 {
@@ -22,7 +22,7 @@ namespace Core.CQRS.Queries
             public double MaxDistanceKm { get; set; }
         }
 
-        public class Query: IRequest<IEnumerable<PoliceEvent>>
+        public class Query : IRequest<IEnumerable<PoliceEvent>>
         {
             public QueryParameters Parameters { get; set; }
             public Query(QueryParameters parameters) => Parameters = parameters;
@@ -43,7 +43,7 @@ namespace Core.CQRS.Queries
                 var from = DateHelper.GetParsedDateOrDefault(query.Parameters.FromDate, defaultDate);
                 var to = DateHelper.GetParsedDateOrDefault(query.Parameters.ToDate, defaultDate);
                 var coll = await _repository.GetEventsForDate(from, to, query.Parameters.LocationName);
-                if (query.Parameters.UserLat == 0 || query.Parameters.UserLng == 0 )
+                if (query.Parameters.UserLat == 0 || query.Parameters.UserLng == 0)
                 {
                     return coll;
                 }

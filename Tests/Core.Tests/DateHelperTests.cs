@@ -1,5 +1,5 @@
-﻿using System;
-using Core.Helpers;
+﻿using Core.Helpers;
+using System;
 using Xunit;
 
 namespace Core.Tests
