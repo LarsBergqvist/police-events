@@ -20,7 +20,7 @@
         </div>
     </div>
     <p-accordion (onOpen)="onShowDetails($event)">
-        <p-accordionTab header="Detaljer">
+        <p-accordionTab header="Detaljer" [disabled]="isLoading">
             <div [innerHTML]="event.details"></div>
         </p-accordionTab>
     </p-accordion>
