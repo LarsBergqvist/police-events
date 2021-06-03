@@ -6,15 +6,22 @@
     
         public static string CompleteEventUrl(string url)
         {
-            if (!string.IsNullOrEmpty(url) && !url.ToLower().Contains(EventDetailsUrlPrefix))
+            if (string.IsNullOrEmpty(url))
             {
-                if (url.Length > 0 && url[0] != '/')
-                {
-                    url = "/" + url;                    
-                }
-                return string.Format($"{EventDetailsUrlPrefix}{url}");
+                return EventDetailsUrlPrefix;
             }
-            return url;
+
+            if (url.ToLower().StartsWith(EventDetailsUrlPrefix))
+            {
+                return url;
+            }
+
+            if (url.Length > 0 && url[0] != '/')
+            {
+                url = "/" + url;                    
+            }
+
+            return string.Format($"{EventDetailsUrlPrefix}{url}");
         }
     }
 }
