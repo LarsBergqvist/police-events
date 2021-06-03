@@ -1,4 +1,5 @@
-﻿using Core.Models;
+﻿using Core.Helpers;
+using Core.Models;
 using Core.Repositories;
 using Core.Settings;
 using Infrastructure.MongoDB;
@@ -8,6 +9,7 @@ using MongoDB.Bson;
 using MongoDB.Driver;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace Infrastructure.Repositories
@@ -37,6 +39,7 @@ namespace Infrastructure.Repositories
                 {
                     return null;
                 }
+                events[0].Url = UrlHelper.CompleteEventUrl(events[0].Url);
                 return events[0];
             }
             catch (Exception e)
@@ -61,8 +64,9 @@ namespace Infrastructure.Repositories
                     filter &= Builders<PoliceEvent>.Filter.Eq("Location.Name", locationName);
                 }
                 var asyncCursor = await collection.FindAsync<PoliceEvent>(filter);
-                var events = asyncCursor.ToList();
-                return events;
+                var events = asyncCursor.ToEnumerable();
+                var returnedEvents = events.Select(c => { c.Url = UrlHelper.CompleteEventUrl(c.Url); return c; });
+                return returnedEvents;
             }
             catch (Exception e)
             {
