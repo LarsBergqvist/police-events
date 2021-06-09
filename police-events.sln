@@ -5,7 +5,7 @@ VisualStudioVersion = 16.0.808.4
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CollectorService", "CollectorService\CollectorService.csproj", "{9D9B26D0-5E44-4E51-88F1-75B0F0050B2B}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Core", "Core\Core.csproj", "{64FC8D1B-5B6D-4573-9412-73493854FE92}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Core", "Core\Core.csproj", "{64FC8D1B-5B6D-4573-9412-73493854FE92}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Infrastructure", "Infrastructure\Infrastructure.csproj", "{10F2F9CD-542D-4258-853F-96085DCE8AA8}"
 EndProject
