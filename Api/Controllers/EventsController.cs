@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 
 namespace Api.Controllers
 {
+    [Produces("application/json")]
     [ApiController]
     [Route("[controller]")]
     public class EventsController : ControllerBase
@@ -22,6 +23,15 @@ namespace Api.Controllers
             _mediator = mediator;
         }
 
+        /// <summary>
+        /// Fetches event data within a certain date interval and optionally within a particular radius from a position
+        /// </summary>
+        /// <param name="fromDate">Will use todays date if omitted</param>
+        /// <param name="toDate">Will use todays date if omitted</param>
+        /// <param name="userLat">Latitude center from where to calculate the radius</param>
+        /// <param name="userLng">Longitude center from where to calculate the radius</param>
+        /// <param name="maxKm">Include events within this radius from userLat/Lng</param>
+        /// <returns>A collection of police event objects</returns>
         [HttpGet]
         [ProducesResponseType((int)HttpStatusCode.OK)]
         public async Task<ActionResult<IEnumerable<PoliceEvent>>>
@@ -40,8 +50,13 @@ namespace Api.Controllers
             return Ok(await _mediator.Send(new GetPoliceEvents.Query(queryParams)));
         }
 
+        /// <summary>
+        /// Fetches the details of a specific police event
+        /// </summary>
+        /// <param name="id">The id of the police event to fetch details for</param>
+        /// <returns>A detailed police event object</returns>
         [HttpGet("{id}")]
-        [ProducesResponseType((int)HttpStatusCode.OK)]
+        [ProducesResponseType(typeof(PoliceEventDetails), (int)HttpStatusCode.OK)]
         [ProducesResponseType((int)HttpStatusCode.NotFound)]
         public async Task<ActionResult<PoliceEventDetails>> GetById(int id)
         {
