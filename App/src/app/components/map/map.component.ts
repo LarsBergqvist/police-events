@@ -33,7 +33,6 @@ export class MapComponent implements AfterViewInit {
     detailedVectorSource: VectorSource;
     detailedLocation: Feature;
 
-    private mapInput: MapInput;
     private viewIsInitialized = false;
 
     private static readonly DefaultZoomLevel = 9;
@@ -41,25 +40,24 @@ export class MapComponent implements AfterViewInit {
     private static readonly DefaultLongitude = 18.068581;
 
     ngAfterViewInit(): void {
-        if (this.mapInput) {
-            this.updateMap(this.mapInput);
+        if (!this.map) {
+            console.log('call init map');
+            this.initilizeMap();
         }
         this.viewIsInitialized = true;
     }
 
     @Input('mapInput') set setInputData(input: MapInput) {
         if (!input) return;
-        this.mapInput = input;
         if (this.viewIsInitialized) {
+            console.log('call updatemap');
             this.updateMap(input);
+        } else {
+            console.log('view is not initialied');
         }
     }
 
     private updateMap(input: MapInput) {
-        if (!this.map) {
-            this.initilizeMap();
-        }
-
         // Clear the previous polygons
         this.detailedLocation.setGeometry(null);
         this.geoJsonVectorSource.clear();
