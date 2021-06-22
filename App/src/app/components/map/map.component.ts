@@ -1,60 +1,56 @@
-import { AfterViewInit, Component, Input } from '@angular/core';
-import GeoJSON from 'ol/format/GeoJSON';
+import { AfterViewInit, Component, OnDestroy } from '@angular/core';
 import { Attribution, defaults as defaultControls } from 'ol/control';
+import { boundingExtent } from 'ol/extent';
+import Feature from 'ol/Feature';
+import GeoJSON from 'ol/format/GeoJSON';
+import { fromExtent } from 'ol/geom/Polygon';
 import { Tile as TileLayer, Vector as VectorLayer } from 'ol/layer';
 import Map from 'ol/Map';
 import { fromLonLat } from 'ol/proj.js';
 import OSM from 'ol/source/OSM';
 import VectorSource from 'ol/source/Vector';
-import View from 'ol/View';
-import { GeoPosition } from 'src/app/models/geo-position';
 import { Fill, Stroke, Style } from 'ol/style';
-import { LocationObjectViewModel } from 'src/app/models/location-object-viewmodel';
-import Feature from 'ol/Feature';
-import { boundingExtent } from 'ol/extent';
-import { fromExtent } from 'ol/geom/Polygon';
-import { GeoJsonWrapper } from 'src/app/models/geojson-wrapper';
+import View from 'ol/View';
+import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 import { BoundingBox } from 'src/app/models/boundingbox';
-
-export class MapInput {
-    centerPos: GeoPosition;
-    geoJsonWrapper: GeoJsonWrapper;
-    locationObject: LocationObjectViewModel;
-}
+import { MapInput } from 'src/app/models/map-input';
+import { MapDataService } from 'src/app/services/map-data.service';
 
 @Component({
     selector: 'app-map',
     templateUrl: './map.component.html',
     styleUrls: ['./map.component.scss']
 })
-export class MapComponent implements AfterViewInit {
+export class MapComponent implements AfterViewInit, OnDestroy {
     map: Map;
     geoJsonVectorSource: VectorSource;
     detailedVectorSource: VectorSource;
     detailedLocation: Feature;
 
-    private viewIsInitialized = false;
-
     private static readonly DefaultZoomLevel = 9;
     private static readonly DefaultLatitude = 59.329324;
     private static readonly DefaultLongitude = 18.068581;
 
+    private unsubscribe$ = new Subject();
+
+    constructor(private readonly mapDataService: MapDataService) {}
+
     ngAfterViewInit(): void {
         if (!this.map) {
-            console.log('call init map');
             this.initilizeMap();
         }
-        this.viewIsInitialized = true;
+
+        this.mapDataService.mapInput$.pipe(takeUntil(this.unsubscribe$)).subscribe((value: MapInput) => {
+            if (value) {
+                this.updateMap(value);
+            }
+        });
     }
 
-    @Input('mapInput') set setInputData(input: MapInput) {
-        if (!input) return;
-        if (this.viewIsInitialized) {
-            console.log('call updatemap');
-            this.updateMap(input);
-        } else {
-            console.log('view is not initialied');
-        }
+    ngOnDestroy() {
+        this.unsubscribe$.next();
+        this.unsubscribe$.complete();
     }
 
     private updateMap(input: MapInput) {

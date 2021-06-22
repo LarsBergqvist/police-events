@@ -2,9 +2,10 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Subject } from 'rxjs';
 import { filter, takeUntil } from 'rxjs/operators';
 import { ShowMapMessage } from 'src/app/messages/show-map.message';
+import { MapInput } from 'src/app/models/map-input';
 import { PoliceEventViewModel } from 'src/app/models/police-event-viewmodel';
+import { MapDataService } from 'src/app/services/map-data.service';
 import { MessageBrokerService } from 'src/app/services/message-broker.service';
-import { MapInput } from './map.component';
 
 @Component({
     selector: 'app-map-sidebar',
@@ -14,9 +15,8 @@ export class MapSidebarComponent implements OnInit, OnDestroy {
     private unsubscribe$ = new Subject();
     event: PoliceEventViewModel;
     isVisible = false;
-    mapInput: MapInput = null;
 
-    constructor(private readonly broker: MessageBrokerService) {}
+    constructor(private readonly broker: MessageBrokerService, private readonly mapDataService: MapDataService) {}
 
     ngOnInit() {
         this.broker
@@ -30,9 +30,9 @@ export class MapSidebarComponent implements OnInit, OnDestroy {
                 input.centerPos = message.event.location.pos;
                 input.geoJsonWrapper = message.geoJsonWrapper;
                 input.locationObject = message.locationObject;
-                this.mapInput = input;
                 this.event = message.event;
                 this.isVisible = true;
+                this.mapDataService.addNewMapInput(input);
             });
     }
 
