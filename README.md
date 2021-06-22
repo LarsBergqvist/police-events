@@ -1,4 +1,7 @@
 # police-events
+
+[![Build Status](https://larsbq.visualstudio.com/PoliceEvents/_apis/build/status/LarsBergqvist.police-events?branchName=main)](https://larsbq.visualstudio.com/PoliceEvents/_build/latest?definitionId=4&branchName=main)
+
 This repository consists of:  
 * a CollectorService that fetches the latest event data from the Open Api of the Swedish Police every 10 minutes and stores it in a local MongoDB database  
 * a .NET Core REST API that does queries to the MongoDB database  
