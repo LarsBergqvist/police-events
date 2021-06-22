@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { AfterViewInit, Component, Input } from '@angular/core';
 import GeoJSON from 'ol/format/GeoJSON';
 import { Attribution, defaults as defaultControls } from 'ol/control';
 import { Tile as TileLayer, Vector as VectorLayer } from 'ol/layer';
@@ -27,19 +27,32 @@ export class MapInput {
     templateUrl: './map.component.html',
     styleUrls: ['./map.component.scss']
 })
-export class MapComponent {
+export class MapComponent implements AfterViewInit {
     map: Map;
     geoJsonVectorSource: VectorSource;
     detailedVectorSource: VectorSource;
     detailedLocation: Feature;
 
+    private mapInput: MapInput;
+    private viewIsInitialized = false;
+
     private static readonly DefaultZoomLevel = 9;
     private static readonly DefaultLatitude = 59.329324;
     private static readonly DefaultLongitude = 18.068581;
 
+    ngAfterViewInit(): void {
+        if (this.mapInput) {
+            this.updateMap(this.mapInput);
+        }
+        this.viewIsInitialized = true;
+    }
+
     @Input('mapInput') set setInputData(input: MapInput) {
         if (!input) return;
-        this.updateMap(input);
+        this.mapInput = input;
+        if (this.viewIsInitialized) {
+            this.updateMap(input);
+        }
     }
 
     private updateMap(input: MapInput) {
