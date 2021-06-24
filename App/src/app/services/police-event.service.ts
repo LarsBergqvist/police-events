@@ -53,6 +53,7 @@ export class PoliceEventService {
             url: e.url,
             type: e.type,
             details: e.details,
+            description: e.description,
             location: {
                 name: e.location.name,
                 pos: geoPos,

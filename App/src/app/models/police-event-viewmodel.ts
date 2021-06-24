@@ -7,6 +7,7 @@ export interface PoliceEventViewModel {
     url: string;
     type: string;
     details: string;
+    description: string;
     location: {
         name: string;
         pos: GeoPosition;

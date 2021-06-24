@@ -56,6 +56,13 @@ namespace Core.CQRS.Queries
                     {
                         ext.Details = matches.Value;
                     }
+                    regex = new Regex(@"(?<=(<p class=""preamble"">))(.|\n)*?(?=(<\/p>))", RegexOptions.Multiline);
+                    matches = regex.Match(page);
+                    if (matches.Length > 0)
+                    {
+                        ext.Description = matches.Value;
+                    }
+
                 }
                 catch (Exception exc)
                 {

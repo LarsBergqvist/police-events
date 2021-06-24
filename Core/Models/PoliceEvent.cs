@@ -21,6 +21,7 @@ namespace Core.Models
 
     public class PoliceEventDetails : PoliceEvent
     {
+        public string Description { get; set; }
         public string Details { get; set; }
     }
 
