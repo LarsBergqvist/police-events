@@ -17,6 +17,7 @@ export class SearchEventsComponent implements OnInit {
     events: PoliceEventViewModel[];
     keyword: string = '';
     isLoading = false;
+    geolocationAvailable = false;
 
     constructor(
         private readonly service: PoliceEventService,
@@ -25,7 +26,9 @@ export class SearchEventsComponent implements OnInit {
         private readonly mapDataHelper: MapDataHelper
     ) {}
 
-    async ngOnInit() {}
+    async ngOnInit() {
+        this.geolocationAvailable = 'geolocation' in navigator;
+    }
 
     onClear() {
         this.keyword = '';

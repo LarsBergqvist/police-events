@@ -2,12 +2,13 @@
     <div class="p-grid thegrid">
         <div class="p-col-12 p-md-6 p-lg-4">
             <button pButton class="sr-button-wide" (click)="onFetchPositionVeryClose()" icon="pi pi-compass"
-                iconPos="right" label="Hämta händelser i ditt närområde" [disabled]="isLoading">
+                iconPos="right" label="Hämta händelser i ditt närområde"
+                [disabled]="isLoading || !geolocationAvailable">
             </button>
         </div>
         <div class="p-col-12 p-md-6 p-lg-4">
             <button pButton class="sr-button-wide" (click)="onFetchPositionClose()" icon="pi pi-compass" iconPos="right"
-                label="Hämta händelser i ett större närområde" [disabled]="isLoading">
+                label="Hämta händelser i ett större närområde" [disabled]="isLoading || !geolocationAvailable">
             </button>
         </div>
         <div class="p-col-12 p-md-6 p-lg-4">
@@ -30,7 +31,6 @@
             <p-progressSpinner [style]="{width: '25px', height: '25px'}" strokeWidth="8">
             </p-progressSpinner>
         </div>
-
     </div>
 </div>
 <div *ngIf="events">
