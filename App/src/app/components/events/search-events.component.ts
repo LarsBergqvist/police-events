@@ -71,34 +71,41 @@ export class SearchEventsComponent implements OnInit {
         }
     }
 
-    fetchMessageClose(radiusKm: number) {
-        this.isLoading = true;
-        navigator.geolocation.getCurrentPosition(
-            async (position) => {
-                const userPos: GeoPosition = {
-                    lat: position.coords.latitude,
-                    lng: position.coords.longitude
-                };
-                try {
-                    const utcStrings = this.getUtcFromToStrings();
-                    this.events = await this.service.fetchEventsForDateWithinRadius(
-                        utcStrings[0],
-                        utcStrings[1],
-                        userPos,
-                        radiusKm
-                    );
-                } catch (error) {
-                    this.broker.sendMessage(new ErrorOccurredMessage(error.message));
-                } finally {
+    async fetchMessageClose(radiusKm: number) {
+        try {
+            this.isLoading = true;
+            navigator.geolocation.getCurrentPosition(
+                async (position) => {
+                    const userPos: GeoPosition = {
+                        lat: position.coords.latitude,
+                        lng: position.coords.longitude
+                    };
+                    try {
+                        const utcStrings = this.getUtcFromToStrings();
+                        this.events = await this.service.fetchEventsForDateWithinRadius(
+                            utcStrings[0],
+                            utcStrings[1],
+                            userPos,
+                            radiusKm
+                        );
+                    } catch (error) {
+                        this.broker.sendMessage(new ErrorOccurredMessage(error.message));
+                    } finally {
+                        this.isLoading = false;
+                    }
+                },
+                (error) => {
                     this.isLoading = false;
+                    this.logger.logError(error.message);
+                    this.broker.sendMessage(new ErrorOccurredMessage(error.message));
                 }
-            },
-            (error) => {
-                this.isLoading = false;
-                this.logger.logError(error.message);
-                this.broker.sendMessage(new ErrorOccurredMessage(error.message));
-            }
-        );
+            );
+        } catch (error) {
+            this.broker.sendMessage(new ErrorOccurredMessage('Geolocation is not available'));
+            await this.onFetchAll();
+        } finally {
+            this.isLoading = false;
+        }
     }
 
     async onShowOnMap(event: PoliceEventViewModel) {
