@@ -1,0 +1,117 @@
+﻿@page "/"
+@using Core.Models
+@inject HttpClient _http
+@using System.Timers;
+@implements IDisposable;
+<h1>Search Police events</h1>
+
+
+@if (_policeEvents == null)
+{
+    <p><em>Loading...</em></p>
+}
+else
+{
+<div style="margin: 5px;">
+    <input type="text" @bind-value="_query" @bind-value:event="oninput"
+           @onkeyup="@HandleKeyUp" placeholder="Search string" />
+
+    <input type="text" @bind-value="_location" @bind-value:event="oninput"
+           @onkeyup="@HandleKeyUp" placeholder="Location" />
+</div>
+<div style="margin: 5px;">
+    <EditForm Model="@this" OnValidSubmit="@HandleValidSubmit">
+        <InputDate @bind-Value="_fromDate" />
+        <InputDate @bind-Value="_toDate" />
+        <button type="submit">Apply</button>
+    </EditForm>
+</div>
+
+<div style="margin: 5px;">
+    <Pagination GetPage="GetPage" TotalPages="_totalPages" CurrentPage="_currentPage" />
+
+</div>
+    <EventsTable PoliceEvents="_policeEvents" />
+}
+
+@code {
+    private const int PageSize = 5;
+    private IList<PoliceEvent> _policeEvents;
+    private long _totalPages;
+    private long _currentPage;
+    private string _query;
+    private string _location;
+    private Timer _debounceTimer;
+    private DateTime _fromDate;
+    private DateTime _toDate;
+
+    protected override async Task OnInitializedAsync()
+    {
+        _toDate = DateTime.Now;
+        _fromDate = DateTime.Now.AddDays(-7);
+        await GetData(1, PageSize, _query, _location);
+
+        _debounceTimer = new Timer(1000);
+        _debounceTimer.Elapsed += OnInputFinished;
+        _debounceTimer.AutoReset = false;
+    }
+
+    void HandleKeyUp(KeyboardEventArgs e)
+    {
+        _debounceTimer.Stop();
+        _debounceTimer.Start();
+    }
+
+    private async Task HandleValidSubmit()
+    {
+        await GetData(1, PageSize, _query, _location);
+    }
+
+    private void OnInputFinished(Object source, ElapsedEventArgs e)
+    {
+        Task.Run(async () =>
+        {
+            await GetData(1, PageSize, _query, _location);
+            await InvokeAsync(StateHasChanged);
+        });
+    }
+
+    void IDisposable.Dispose()
+    {
+        _debounceTimer?.Dispose();
+    }
+
+    private async Task GetPage(long requestedPage)
+    {
+        if (requestedPage <= _totalPages && requestedPage > 0)
+        {
+            await GetData(requestedPage, PageSize, _query, _location);
+        }
+    }
+
+    private async Task GetData(long pageNumber, long pageSize, string query, string location)
+    {
+        query ??= "";
+        var freeTextParam = "";
+        if (query.Length > 0)
+        {
+            freeTextParam = $"&freeText={query}";
+        }
+        location ??= "";
+        var locationParam = "";
+        if (location.Length > 0)
+        {
+            locationParam = $"&location={location}";
+        }
+
+        var fromDateStr = _fromDate.ToString("yyyy-MM-dd");
+        var toDateStr = _toDate.ToString("yyyy-MM-dd");
+        var dateParams = $"&fromDate={fromDateStr}&toDate{toDateStr}";
+        var policeEventsResult =
+            await _http.GetFromJsonAsync<PoliceEventsResult>
+                    ($"events?page={pageNumber}&pageSize={pageSize}{freeTextParam}{dateParams}{locationParam}");
+        _policeEvents = policeEventsResult.Events;
+        _totalPages = policeEventsResult.TotalPages;
+        _currentPage = policeEventsResult.Page;
+    }
+}

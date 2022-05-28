@@ -1,0 +1,1 @@
+db.police_events.find( {"UtcDateTime":{ "$gte": new Date("2021-02-06"), "$lt": new Date("2021-02-07")}} ).sort({ UtcDateTime: -1 }).pretty()

@@ -1,0 +1,6 @@
+{
+    "apiUrl": "https://192.168.1.181:5331",
+    "nominatimUrl": "https://nominatim.openstreetmap.org/",
+    "municipalityUrl": "https://public.opendatasoft.com/api/records/1.0/search/?dataset=sverige-kommuner-municipalities-of-sweden",
+    "countyUrl": "https://public.opendatasoft.com/api/records/1.0/search/?dataset=sverige-lan-counties-of-sweden"
+}

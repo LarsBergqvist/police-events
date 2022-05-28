@@ -1,0 +1,67 @@
+# ASP.NET
+# Build and test ASP.NET projects.
+# Add steps that publish symbols, save build artifacts, deploy, and more:
+# https://docs.microsoft.com/azure/devops/pipelines/apps/aspnet/build-aspnet-4
+
+trigger:
+  - '*'
+
+pool:
+  vmImage: "windows-latest"
+
+variables:
+  solution: "**/*.sln"
+  buildPlatform: "Any CPU"
+  buildConfiguration: "Release"
+
+steps:
+  - task: NuGetToolInstaller@1
+
+  - task: NuGetCommand@2
+    inputs:
+      restoreSolution: "$(solution)"
+
+  - task: DotNetCoreCLI@2
+    displayName: Build solution
+    inputs:
+      command: "build"
+      arguments: "-c $(buildConfiguration)"
+
+  - task: DotNetCoreCLI@2
+    displayName: Run unit tests
+    inputs:
+      command: test
+      projects: '**/*Tests.csproj'
+      arguments: '--configuration $(buildConfiguration)'
+
+  - task: DotNetCoreCLI@2
+    displayName: Publish API
+    inputs:
+      command: publish
+      publishWebProjects: false
+      projects: "**/Api.csproj"
+      arguments: "--configuration $(BuildConfiguration) --output $(build.artifactstagingdirectory) --no-build"
+      zipAfterPublish: false
+
+  - task: PublishBuildArtifacts@1
+    displayName: "Publish api artifacts"
+    inputs:
+      PathtoPublish: "$(build.artifactstagingdirectory)/Api"
+      ArtifactName: Api
+
+  - task: DotNetCoreCLI@2
+    displayName: Publish AzureFunctions
+    inputs:
+      command: publish
+      publishWebProjects: false
+      projects: "**/AzureFunctions.csproj"
+      arguments: "--configuration $(BuildConfiguration) --output $(build.artifactstagingdirectory) --no-build"
+      zipAfterPublish: false
+
+  - task: PublishBuildArtifacts@1
+    displayName: "Publish AzureFunctions artifacts"
+    inputs:
+      PathtoPublish: "$(build.artifactstagingdirectory)/AzureFunctions"
+      ArtifactName: AzureFunctions
+
+  - template: App/build-and-test.yml

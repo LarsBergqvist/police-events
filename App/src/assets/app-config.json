@@ -1,0 +1,6 @@
+{
+    "apiUrl": "https://localhost:5001",
+    "nominatimUrl": "https://nominatim.openstreetmap.org/",
+    "municipalityUrl": "https://public.opendatasoft.com/api/records/1.0/search/?dataset=georef-sweden-kommun",
+    "countyUrl": "https://public.opendatasoft.com/api/records/1.0/search/?dataset=georef-sweden-lan"
+}

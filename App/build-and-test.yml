@@ -1,0 +1,31 @@
+steps:
+    - script: yarn install
+      displayName: 'yarn install'
+      workingDirectory: App
+
+    - script: yarn build
+      displayName: 'Build app'
+      workingDirectory: App
+
+    - script: yarn test
+      displayName: 'Test app'
+      workingDirectory: App
+
+    - task: PublishTestResults@2
+      displayName: 'Publish unit test results'
+      condition: succeededOrFailed()
+      inputs:
+          testResultsFormat: 'JUnit'
+          testResultsFiles: '**/TESTS-*.xml'
+
+    - task: CopyFiles@2
+      displayName: 'Copy app files'
+      inputs:
+          SourceFolder: '$(System.DefaultWorkingDirectory)/App/dist'
+          TargetFolder: '$(Build.ArtifactStagingDirectory)'
+
+    - task: PublishBuildArtifacts@1
+      displayName: 'Publish app artifacts'
+      inputs:
+          PathtoPublish: '$(build.artifactstagingdirectory)/police-events'
+          ArtifactName: App

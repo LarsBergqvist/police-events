@@ -1,0 +1,22 @@
+<p-sidebar *ngIf="isVisible && event" [(visible)]="isVisible" position="right" styleClass="map-sidebar"
+    [showCloseIcon]="false">
+
+    <div class="details-header-text">
+        <i (click)="close()" class="pi pi-chevron-left close-button clickable"></i>
+        <b>{{event.location.name}}, {{event.datetime | date:'d MMM HH:mm'}}, {{event.type}}</b>
+    </div>
+    <div>
+        <b>
+            <div *ngIf="!description">
+                {{event.summary}}
+            </div>
+            <div *ngIf="description" [innerHTML]="description"></div>
+        </b>
+        <div *ngIf="details" [innerHTML]="details"></div>
+    </div>
+    <div *ngIf="canShare" (click)="share()" class="clickable">
+        <b>Dela <i class="pi pi-upload"></i></b>
+    </div>
+    <hr>
+    <app-map></app-map>
+</p-sidebar>

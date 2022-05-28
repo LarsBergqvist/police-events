@@ -1,0 +1,27 @@
+<div *ngIf="event" class="event-ctn">
+    <div>
+        <b>{{event.location.name}}, {{event.datetime | date:'d MMM HH:mm'}}, {{event.type}}</b>
+    </div>
+    <div>
+        {{event.summary}}
+    </div>
+    <div>
+        <div class="map-button-ctn">
+            <button pButton class="map-button" label="Karta" icon="pi pi-globe" iconPos="right"
+                (click)="onShowMapClicked(event)" [disabled]="isLoading">
+            </button>
+            <div *ngIf="!isLoading" class="open-link">
+                <a href={{event.url}} target="_blank" rel="noopener noreferrer"><i
+                        class="pi pi-external-link link-icon"></i>polisen.se</a>
+            </div>
+            <div *ngIf="isLoading" class="open-link">
+                <i class="pi pi-external-link link-icon"></i>polisen.se
+            </div>
+        </div>
+    </div>
+    <p-accordion (onOpen)="onShowDetails($event)">
+        <p-accordionTab header="Detaljer" [disabled]="isLoading">
+            <div [innerHTML]="event.details"></div>
+        </p-accordionTab>
+    </p-accordion>
+</div>

@@ -1,0 +1,31 @@
+﻿@using Core.Models
+
+<div class="table-responsive">
+    <table class="table table-striped">
+        <tbody>
+            @foreach (var pe in PoliceEvents)
+            {
+                <tr>
+                    <td>
+                        <div>
+                            <b>
+                                @pe.Location.Name,
+                                @pe.UtcDateTime.ToLocalTime().ToString("dd MMM HH:mm"),
+                                @pe.Type
+                            </b>
+                        </div>
+                        <div>
+                            @pe.Summary
+                            <a href="@pe.Url" rel="noopener noreferrer" target="_blank">polisen.se</a>
+                        </div>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+
+@code {
+    [Parameter]
+    public IList<PoliceEvent> PoliceEvents { get; set; }
+}

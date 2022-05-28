@@ -1,0 +1,13 @@
+{
+  "IsEncrypted": false,
+  "Values": {
+    "AzureWebJobsStorage": "UseDevelopmentStorage=true",
+    "FUNCTIONS_WORKER_RUNTIME": "dotnet",
+
+    "PoliceApiSettings:PoliceApiUrl": "https://polisen.se/api/events",
+    "PoliceApiSettings:PollingIntervalMinutes": 10,
+    "RepositorySettings:ConnectionString": "mongodb://192.168.1.186:27017",
+    "RepositorySettings:PoliceDBName": "Police",
+    "RepositorySettings:PoliceEventCollectionName": "police_events"
+  }
+}

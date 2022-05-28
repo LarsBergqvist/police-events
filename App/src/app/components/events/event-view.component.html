@@ -1,0 +1,10 @@
+<div *ngIf="isLoading">
+    <p-progressSpinner [style]="{width: '25px', height: '25px'}" strokeWidth="8">
+    </p-progressSpinner>
+</div>
+<div *ngIf="event && id">
+    <i (click)="onBackToStart()" class="pi pi-chevron-left close-button clickable"></i>
+    Händelse-id: {{id}}
+    <app-event [event]="event" [isLoading]="isLoading" (onShowOnMap)="onShowOnMap($event)">
+    </app-event>
+</div>

@@ -1,0 +1,44 @@
+#map {
+    height: 90vh;
+    width: 100%;
+}
+
+:host::ng-deep {
+    .ol-zoom-in,
+    .ol-zoom-out,
+    .ol-rotate-reset {
+        width: 1.8em;
+        height: 1.8em;
+        font-size: 1.5em;
+        font-weight: bold;
+        opacity: 0.8;
+        margin: 5px;
+        padding: 0;
+        border: 2;
+        border-radius: 0;
+        background-color: lightgray;
+    }
+    .ol-zoom {
+        max-width: 60px;
+    }
+    .ol-hidden {
+        display: none;
+    }
+    .ol-attribution > button {
+        display: none;
+    }
+    .ol-attribution {
+        ul {
+            list-style-type: none;
+            padding: 0;
+            margin: 0;
+        }
+    }
+    .ol-attribution {
+        font-size: 0.7em;
+        padding-bottom: 5px;
+    }
+    .ol-compass {
+        margin-left: -3px;
+    }
+}
