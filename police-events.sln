@@ -1,11 +1,11 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 16
-VisualStudioVersion = 16.0.808.4
+# Visual Studio Version 17
+VisualStudioVersion = 17.0.31903.59
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CollectorService", "CollectorService\CollectorService.csproj", "{9D9B26D0-5E44-4E51-88F1-75B0F0050B2B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Core", "Core\Core.csproj", "{64FC8D1B-5B6D-4573-9412-73493854FE92}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Core", "Core\Core.csproj", "{64FC8D1B-5B6D-4573-9412-73493854FE92}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Infrastructure", "Infrastructure\Infrastructure.csproj", "{10F2F9CD-542D-4258-853F-96085DCE8AA8}"
 EndProject
@@ -16,22 +16,22 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{2645ECBD-F9DA-4780-9535-A178C804BE31}"
 	ProjectSection(SolutionItems) = preProject
 		.dockerignore = .dockerignore
+		.gitignore = .gitignore
+		azure-pipelines.yml = azure-pipelines.yml
 		docker-compose.debug.yml = docker-compose.debug.yml
 		docker-compose.yml = docker-compose.yml
 		README.md = README.md
-		azure-pipelines.yml = azure-pipelines.yml
-		.gitignore = .gitignore
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Api", "Api\Api.csproj", "{267FB5C8-ABCB-4118-9D96-AB2715658160}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Api", "Api\Api.csproj", "{267FB5C8-ABCB-4118-9D96-AB2715658160}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AzureFunctions", "AzureFunctions\AzureFunctions.csproj", "{BC1F7324-5687-4EA3-AF31-09E28EC2C5F3}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Core.Tests", "Tests\Core.Tests\Core.Tests.csproj", "{C759BE3B-ABD4-4520-9088-C91E9B54C424}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Core.Tests", "Tests\Core.Tests\Core.Tests.csproj", "{C759BE3B-ABD4-4520-9088-C91E9B54C424}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Infrastructure.Tests", "Tests\Infrastructure.Tests\Infrastructure.Tests.csproj", "{58E61761-9E67-4F70-B4BE-2D7B33D07E13}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Infrastructure.Tests", "Tests\Infrastructure.Tests\Infrastructure.Tests.csproj", "{58E61761-9E67-4F70-B4BE-2D7B33D07E13}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BlazorApp.Client", "BlazorApp\Client\BlazorApp.Client.csproj", "{123F9815-1A06-40D9-AD26-A6CE4AEF54BB}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BlazorApp.Client", "BlazorApp\Client\BlazorApp.Client.csproj", "{123F9815-1A06-40D9-AD26-A6CE4AEF54BB}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AzureFunctions", "AzureFunctions\AzureFunctions.csproj", "{20783F4B-36F1-434C-8B0B-AB461FBE2A58}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -59,10 +59,6 @@ Global
 		{267FB5C8-ABCB-4118-9D96-AB2715658160}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{267FB5C8-ABCB-4118-9D96-AB2715658160}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{267FB5C8-ABCB-4118-9D96-AB2715658160}.Release|Any CPU.Build.0 = Release|Any CPU
-		{BC1F7324-5687-4EA3-AF31-09E28EC2C5F3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{BC1F7324-5687-4EA3-AF31-09E28EC2C5F3}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{BC1F7324-5687-4EA3-AF31-09E28EC2C5F3}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{BC1F7324-5687-4EA3-AF31-09E28EC2C5F3}.Release|Any CPU.Build.0 = Release|Any CPU
 		{C759BE3B-ABD4-4520-9088-C91E9B54C424}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{C759BE3B-ABD4-4520-9088-C91E9B54C424}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C759BE3B-ABD4-4520-9088-C91E9B54C424}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -75,6 +71,10 @@ Global
 		{123F9815-1A06-40D9-AD26-A6CE4AEF54BB}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{123F9815-1A06-40D9-AD26-A6CE4AEF54BB}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{123F9815-1A06-40D9-AD26-A6CE4AEF54BB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{20783F4B-36F1-434C-8B0B-AB461FBE2A58}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{20783F4B-36F1-434C-8B0B-AB461FBE2A58}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{20783F4B-36F1-434C-8B0B-AB461FBE2A58}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{20783F4B-36F1-434C-8B0B-AB461FBE2A58}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
