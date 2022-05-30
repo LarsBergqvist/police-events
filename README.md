@@ -1,6 +1,6 @@
 # police-events
 
-[![Build Status](https://larsbq.visualstudio.com/PoliceEvents/_apis/build/status/LarsBergqvist.police-events?branchName=main)](https://larsbq.visualstudio.com/PoliceEvents/_build/latest?definitionId=4&branchName=main)
+[![Build Status](https://larsbq.visualstudio.com/PoliceEvents/_apis/build/status/LarsBergqvist.police-events?branchName=main)](https://larsbq.visualstudio.com/PoliceEvents/_build/latest?definitionId=16&branchName=main)
 
 This repository consists of:  
 * a <b>CollectorService</b> that fetches the latest event data from the Open Api of the Swedish Police every 10 minutes and stores it in a MongoDB database. When hosted in Azure, the service is an <b>Azure function with a timer trigger</b>    
