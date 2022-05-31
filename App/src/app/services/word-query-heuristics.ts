@@ -30,14 +30,25 @@ export function locationWordsFromText(text: string): string[] {
     let res: string[] = [];
     // Remove the first word of any secondary sentences
     text = text.replace(/\.\s*[A-ZÅÄÖ0-9].[A-Za-zÅÄÖåäö0-9]*/g, '');
-    let words = text.split(/[\s,."]+/);
+    // Split words concatenated with /
+    text = text.replace('/', ', ');
+    let words = text.split(/[\s"]+/);
     for (let i = 0; i < words.length; i++) {
         let w = words[i];
         if (w === '' || w.length < 2) continue;
-        if (i > 0 && startsWithUpperCase(w)) {
-            res.push(w);
+        if (i === 0) {
+            // Use first word in first sentence if it ends with a comma
+            if (w.endsWith(',') && startsWithUpperCase(w)) {
+                res.push(w.slice(0, -1));
+            }
+        } else {
+            w = w.replace(/[\s,."]+/, '');
+            if (startsWithUpperCase(w)) {
+                res.push(w);
+            }
         }
     }
+
     return res;
 }
 
