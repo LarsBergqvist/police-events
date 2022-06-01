@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { AppConfig } from './app-config.js';
 import { LoggingService } from './logging.service';
+import { lastValueFrom } from 'rxjs';
 
 @Injectable()
 export class AppConfigService {
@@ -13,7 +14,7 @@ export class AppConfigService {
     async load(): Promise<any> {
         const configPath = this.configFile;
         return new Promise<void>(async (resolve) => {
-            let res = await this.http.get<AppConfig>(configPath).toPromise();
+            let res = await lastValueFrom<AppConfig>(this.http.get<AppConfig>(configPath));
             this.logging.logInfo('loaded app-config.json');
             this.config = res;
             resolve();

@@ -1,5 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { lastValueFrom } from 'rxjs';
 import { BoundingBox } from '../models/boundingbox';
 import { GeoJsonWrapper } from '../models/geojson-wrapper';
 import { AppConfigService } from './app-config.service';
@@ -18,7 +19,7 @@ export class AreaService {
     async fetchGeoJsonForMunicipality(municipality: string): Promise<GeoJsonWrapper> {
         const baseUrl = this.configService.municipalityUrl;
         let url = `${baseUrl}&q=${municipality}`;
-        const res = await this.http.get<any>(`${url}`).toPromise();
+        const res = await lastValueFrom(this.http.get<any>(`${url}`));
         if (res.nhits < 1) throw new Error(`No GeoJson data found for '${municipality}'`);
 
         return this.createGeoJsonWrapperObject(res);
@@ -27,7 +28,7 @@ export class AreaService {
     async fetchGeoJsonForCounty(county: string): Promise<GeoJsonWrapper> {
         const baseUrl = this.configService.countyUrl;
         let url = `${baseUrl}&q=${county}`;
-        const res = await this.http.get<any>(`${url}`).toPromise();
+        const res = await lastValueFrom(this.http.get<any>(`${url}`));
         if (res.nhits < 1) throw new Error(`No GeoJson data found for '${county}'`);
 
         return this.createGeoJsonWrapperObject(res);

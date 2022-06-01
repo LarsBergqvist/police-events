@@ -1,5 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { lastValueFrom } from 'rxjs';
 import { BoundingBox } from '../models/boundingbox';
 import { LocationObjectViewModel } from '../models/location-object-viewmodel';
 import { AppConfigService } from './app-config.service';
@@ -31,7 +32,7 @@ export class NominatimService {
         const viewbox = `${bb.lngMin},${bb.latMin},${bb.lngMax},${bb.latMax}`;
         this.logger.logInfo(`nominatim query: ${query}`);
         const url = `${this.BaseUrl}?q=${query}&countrycodes=se&limit=1&format=json&viewbox=${viewbox}`;
-        const res = await this.http.get<any[]>(`${url}`).toPromise();
+        const res = await lastValueFrom(this.http.get<any[]>(`${url}`));
         let vm = this.convertToViewModel(res);
         return vm;
     }

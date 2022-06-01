@@ -5,6 +5,7 @@ import { PoliceEventViewModel } from '../models/police-event-viewmodel';
 import { GeoPosition } from '../models/geo-position';
 import { AppConfigService } from './app-config.service';
 import { PoliceEventsResult } from '../models/police-event-results';
+import { lastValueFrom } from 'rxjs';
 
 @Injectable({
     providedIn: 'root'
@@ -18,7 +19,7 @@ export class PoliceEventService {
 
     async fetchEventById(id: string): Promise<PoliceEventViewModel> {
         let url = `${this.BaseUrl}/${id}`;
-        const res = await this.http.get<PoliceEvent>(`${url}`).toPromise();
+        const res = await lastValueFrom<PoliceEvent>(this.http.get<PoliceEvent>(`${url}`));
         return this.convertToViewModel(res);
     }
 
@@ -29,13 +30,13 @@ export class PoliceEventService {
         radiusKm: number
     ): Promise<PoliceEventViewModel[]> {
         let url = `${this.BaseUrl}?fromDate=${fromUtcDate}&toDate=${toUtcDate}&userLat=${userPos.lat}&userLng=${userPos.lng}&maxKm=${radiusKm}&page=1&pageSize=100`;
-        const res = await this.http.get<PoliceEventsResult>(`${url}`).toPromise();
+        const res = await lastValueFrom<PoliceEventsResult>(this.http.get<PoliceEventsResult>(`${url}`));
         return this.convertCollectionToViewModel(res.events);
     }
 
     async fetchEventsForDate(fromUtcDate: string, toUtcDate: string): Promise<PoliceEventViewModel[]> {
         let url = `${this.BaseUrl}?fromDate=${fromUtcDate}&toDate=${toUtcDate}&page=1&pageSize=100`;
-        const res = await this.http.get<PoliceEventsResult>(`${url}`).toPromise();
+        const res = await lastValueFrom<PoliceEventsResult>(this.http.get<PoliceEventsResult>(`${url}`));
         return this.convertCollectionToViewModel(res.events);
     }
 
