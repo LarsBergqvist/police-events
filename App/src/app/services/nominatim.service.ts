@@ -16,7 +16,7 @@ export class NominatimService {
     constructor(
         private readonly http: HttpClient,
         private readonly logger: LoggingService,
-        private readonly configService: AppConfigService
+        configService: AppConfigService
     ) {
         this.BaseUrl = configService.nominatimUrl;
     }

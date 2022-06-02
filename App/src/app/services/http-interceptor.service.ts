@@ -13,7 +13,9 @@ function delayedRetry(delayMs: number, maxRetries: number) {
             retryWhen((errors: Observable<any>) =>
                 errors.pipe(
                     delay(delayMs),
-                    mergeMap((error) => (retries-- > 0 ? of(error) : throwError('Network problem, try again.')))
+                    mergeMap((error) =>
+                        retries-- > 0 ? of(error) : throwError(() => new Error('Network problem, try again.'))
+                    )
                 )
             )
         );
@@ -45,6 +47,6 @@ export class HttpInterceptorService implements HttpInterceptor {
                 messageService.sendMessage(new ErrorOccurredMessage('An error has occurred.'));
             }
         }
-        return throwError(error);
+        return throwError(() => new Error(error.message || 'An error has occurred'));
     }
 }
