@@ -1,4 +1,4 @@
-import { HttpErrorResponse, HttpEvent, HttpHandler, HttpInterceptor, HttpRequest } from '@angular/common/http';
+import { HttpEvent, HttpHandler, HttpInterceptor, HttpRequest } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable, of, throwError } from 'rxjs';
 import { catchError, delay, mergeMap, retryWhen } from 'rxjs/operators';
@@ -34,18 +34,13 @@ export class HttpInterceptorService implements HttpInterceptor {
         );
     }
 
-    private handleError(error: HttpErrorResponse, messageService: MessageBrokerService) {
-        if (error && typeof error === 'string') {
-            this.logging.logError('err: ' + error);
-            messageService.sendMessage(new ErrorOccurredMessage(error));
-        } else if (error) {
-            if (error.status === 0) {
-                this.logging.logError('Connection error.');
-                messageService.sendMessage(new ErrorOccurredMessage('Connection error.'));
-            } else {
-                this.logging.logError('An error has occurred.');
-                messageService.sendMessage(new ErrorOccurredMessage('An error has occurred.'));
-            }
+    private handleError(error: Error, messageService: MessageBrokerService) {
+        if (error) {
+            this.logging.logError(error.message);
+            messageService.sendMessage(new ErrorOccurredMessage(error.message));
+        } else {
+            this.logging.logError('An error has occurred.');
+            messageService.sendMessage(new ErrorOccurredMessage('An error has occurred'));
         }
         return throwError(() => new Error(error.message || 'An error has occurred'));
     }
