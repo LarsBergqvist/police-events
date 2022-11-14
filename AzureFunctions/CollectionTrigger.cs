@@ -9,10 +9,10 @@ namespace AzureFunctions
 {
     public class CollectionTrigger
     {
-        private readonly IMediator _mediator;
+        private readonly ISender _mediator;
 
 
-        public CollectionTrigger(IMediator mediator)
+        public CollectionTrigger(ISender mediator)
         {
             _mediator = mediator;
         }
@@ -22,7 +22,7 @@ namespace AzureFunctions
             [TimerTrigger("0 */15 * * * *")] TimerInfo timerInfo,
             ILogger log)
         {
-            log.LogInformation($"CollectionTrigger triggered at:  {DateTime.Now}");
+            log.LogInformation("CollectionTrigger triggered at:  {Now}", DateTime.Now);
             await _mediator.Send(new CollectPoliceEvents.Command());
         }
     }

@@ -31,6 +31,7 @@ namespace Core.CQRS.Queries
 
             public async Task<PoliceEventDetails> Handle(Query query, CancellationToken cancellationToken)
             {
+                _logger.LogDebug("Fetching details for police event with id: {Id}", query.Id);
                 var @event = await _repository.GetEventById(query.Id);
                 var ext = new PoliceEventDetails
                 {

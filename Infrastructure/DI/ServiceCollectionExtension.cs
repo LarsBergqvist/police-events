@@ -7,7 +7,7 @@ using Infrastructure.Repositories;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace Infrastructure.Extensions
+namespace Infrastructure.DI
 {
     public static class ServiceCollectionExtension
     {

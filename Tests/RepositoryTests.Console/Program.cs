@@ -1,12 +1,12 @@
-﻿using Core.Extensions;
-using Core.Repositories;
-using Infrastructure.Extensions;
+﻿using Core.Repositories;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using System;
 using System.IO;
 using System.Threading.Tasks;
+using Core.DI;
+using Infrastructure.DI;
 
 namespace RepositoryTests.Console
 {

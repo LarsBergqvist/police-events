@@ -7,7 +7,7 @@
   <ItemGroup>
     <Folder Include="Repositories\" />
     <Folder Include="Clients\" />
-    <Folder Include="Extensions\" />
+    <Folder Include="DI\" />
     <Folder Include="MongoDB\" />
   </ItemGroup>
   <ItemGroup>

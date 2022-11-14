@@ -45,7 +45,7 @@ namespace Infrastructure.Repositories
             }
             catch (Exception e)
             {
-                _logger.LogError(e.ToString());
+                _logger.LogError("Exception: {Exc}",e.ToString());
                 throw;
             }
         }
@@ -93,7 +93,7 @@ namespace Infrastructure.Repositories
             }
             catch (Exception e)
             {
-                _logger.LogError(e.ToString());
+                _logger.LogError("Exception: {Exc}",e.ToString());
                 throw;
             }
         }
@@ -141,11 +141,11 @@ namespace Infrastructure.Repositories
                     await collection.ReplaceOneAsync(filter, entity, replaceOptions);
                     count++;
                 }
-                _logger.LogInformation($"Upserted {count} police events to the MongoDB database");
+                _logger.LogInformation("Upserted {Count} police events to the MongoDB database", count);
             }
             catch (Exception e)
             {
-                _logger.LogError(e.ToString());
+                _logger.LogError("Exception: {Exc}",e.ToString());
                 throw;
             }
         }

@@ -26,19 +26,21 @@ namespace Infrastructure.Clients
 
         public async Task<IEnumerable<PoliceEvent>> GetLatestEvents()
         {
-            _logger.LogInformation($"Get events from ApiUrl: {_settings.PoliceApiUrl}");
+            _logger.LogInformation("Get events from ApiUrl: {SettingsPoliceApiUrl}", _settings.PoliceApiUrl);
             var policeEventCollection = new List<PoliceEvent>();
             var res = await _policeHttpClient.GetAsync(_settings.PoliceApiUrl);
-            if (res.IsSuccessStatusCode)
+            if (!res.IsSuccessStatusCode) return policeEventCollection;
+            
+            var result = await res.Content.ReadAsStringAsync();
+            var externalData = JsonConvert.DeserializeObject<PoliceEventExternal[]>(result);
+            if (externalData == null) return policeEventCollection;
+            
+            foreach (var ext in externalData)
             {
-                var result = await res.Content.ReadAsStringAsync();
-                var externalData = JsonConvert.DeserializeObject<PoliceEventExternal[]>(result);
-                foreach (var ext in externalData)
-                {
-                    var policeEvent = ext.GetPoliceEvent();
-                    policeEventCollection.Add(policeEvent);
-                }
+                var policeEvent = ext.GetPoliceEvent();
+                policeEventCollection.Add(policeEvent);
             }
+
             return policeEventCollection;
         }
 
@@ -66,7 +68,7 @@ namespace Infrastructure.Clients
             }
             catch (Exception exc)
             {
-                _logger.LogError(exc.ToString());
+                _logger.LogError("Exception: {Exc}", exc.ToString());
             }
 
             return result;

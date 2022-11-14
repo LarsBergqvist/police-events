@@ -1,5 +1,5 @@
-﻿using Core.Extensions;
-using Infrastructure.Extensions;
+﻿using Core.DI;
+using Infrastructure.DI;
 using Microsoft.Azure.Functions.Extensions.DependencyInjection;
 
 [assembly: FunctionsStartup(typeof(AzureFunctions.Startup))]

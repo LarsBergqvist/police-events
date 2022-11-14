@@ -8,7 +8,7 @@
     <Folder Include="Repositories\" />
     <Folder Include="Clients\" />
     <Folder Include="Settings\" />
-    <Folder Include="Extensions\" />
+    <Folder Include="DI\" />
     <Folder Include="CQRS\Commands\" />
     <Folder Include="Helpers\" />
   </ItemGroup>

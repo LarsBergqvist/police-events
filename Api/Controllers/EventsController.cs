@@ -14,9 +14,9 @@ namespace Api.Controllers
     public class EventsController : ControllerBase
     {
         private readonly ILogger<EventsController> _logger;
-        private readonly IMediator _mediator;
+        private readonly ISender _mediator;
 
-        public EventsController(ILogger<EventsController> logger, IMediator mediator)
+        public EventsController(ILogger<EventsController> logger, ISender mediator)
         {
             _logger = logger;
             _mediator = mediator;
@@ -44,7 +44,7 @@ namespace Api.Controllers
                 [FromQuery] string location = null
             )
         {
-            _logger.LogInformation($"Get request: fromDate {fromDate}, toDate: {toDate}, userLat: {userLat}, userLng: {userLng}");
+            _logger.LogInformation("Get request: fromDate {FromDate}, toDate: {Date}, userLat: {UserLat}, userLng: {UserLng}", fromDate, toDate, userLat, userLng);
             var queryParams = new GetPoliceEvents.QueryParameters
             {
                 FromDate = fromDate,
@@ -65,12 +65,12 @@ namespace Api.Controllers
         /// </summary>
         /// <param name="id">The id of the police event to fetch details for</param>
         /// <returns>A detailed police event object</returns>
-        [HttpGet("{id}")]
+        [HttpGet("{id:int}")]
         [ProducesResponseType(typeof(PoliceEventDetails), (int)HttpStatusCode.OK)]
         [ProducesResponseType((int)HttpStatusCode.NotFound)]
         public async Task<ActionResult<PoliceEventDetails>> GetById(int id)
         {
-            _logger.LogInformation($"Get request for id: {id}");
+            _logger.LogInformation("Get request for id: {Id}", id);
             var policeEvent = await _mediator.Send(new GetPoliceEventById.Query(id));
             if (policeEvent == null)
             {

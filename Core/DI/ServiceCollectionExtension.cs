@@ -1,7 +1,7 @@
 ﻿using MediatR;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace Core.Extensions
+namespace Core.DI
 {
     public static class ServiceCollectionExtension
     {

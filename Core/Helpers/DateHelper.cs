@@ -6,16 +6,14 @@ namespace Core.Helpers
         public static DateTime GetParsedDateOrDefault(string dateString, DateTime defaultDate)
         {
             var date = defaultDate.Date;
-            if (!string.IsNullOrEmpty(dateString))
+            if (string.IsNullOrEmpty(dateString)) return date;
+            if (DateTime.TryParseExact(dateString,
+                    "yyyy-MM-dd",
+                    System.Globalization.CultureInfo.InvariantCulture,
+                    System.Globalization.DateTimeStyles.None,
+                    out var parsedDate))
             {
-                if (DateTime.TryParseExact(dateString,
-                           "yyyy-MM-dd",
-                           System.Globalization.CultureInfo.InvariantCulture,
-                           System.Globalization.DateTimeStyles.None,
-                           out var parsedDate))
-                {
-                    date = parsedDate;
-                }
+                date = parsedDate;
             }
             return date;
         }
