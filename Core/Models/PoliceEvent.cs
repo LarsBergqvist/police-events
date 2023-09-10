@@ -13,6 +13,7 @@ namespace Core.Models
     {
         public int Id { get; set; }
         public DateTime UtcDateTime { get; set; }
+        public string Name { get; set; }
         public string Summary { get; set; }
         public string Url { get; set; }
         public string Type { get; set; }

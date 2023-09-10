@@ -8,11 +8,20 @@
                 <tr>
                     <td>
                         <div>
-                            <b>
-                                @pe.Location.Name,
-                                @pe.UtcDateTime.ToLocalTime().ToString("dd MMM HH:mm"),
-                                @pe.Type
-                            </b>
+                            @if (!string.IsNullOrEmpty(pe.Name))
+                            {
+                                <b>
+                                    @pe.Name
+                                </b> 
+                            }
+                            else
+                            {
+                                <b>
+                                    @pe.Location.Name,
+                                    @pe.UtcDateTime.ToLocalTime().ToString("dd MMM HH:mm"),
+                                    @pe.Type 
+                                </b>
+                            }
                         </div>
                         <div>
                             @pe.Summary

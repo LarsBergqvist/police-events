@@ -17,6 +17,7 @@ namespace Infrastructure.Clients
     {
         static readonly CultureInfo Provider = new CultureInfo("en-US");
         public int Id { get; set; }
+        public string Name { get; set; }
         public string Datetime { get; set; }
         public string Summary { get; set; }
         public string Url { get; set; }
@@ -32,6 +33,7 @@ namespace Infrastructure.Clients
             var e = new PoliceEvent
             {
                 Id = Id,
+                Name = Name,
                 UtcDateTime = DateTime.Parse(Datetime).ToUniversalTime(),
                 Summary = Summary,
                 Url = Url,

@@ -2,6 +2,7 @@ import { GeoPosition } from './geo-position';
 
 export interface PoliceEventViewModel {
     id: number;
+    name: string;
     datetime: Date;
     summary: string;
     url: string;

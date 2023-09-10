@@ -50,6 +50,7 @@ export class PoliceEventService {
 
         let viewModel: PoliceEventViewModel = {
             id: e.id,
+            name: e.name,
             datetime: new Date(e.utcDateTime),
             summary: e.summary,
             url: e.url,

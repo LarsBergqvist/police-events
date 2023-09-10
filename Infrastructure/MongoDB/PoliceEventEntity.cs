@@ -24,6 +24,7 @@ namespace Infrastructure.MongoDB
         public PoliceEventEntity(PoliceEvent pe)
         {
             Id = pe.Id;
+            Name = pe.Name;
             UtcDateTime = pe.UtcDateTime;
             Summary = pe.Summary;
             Url = pe.Url;
@@ -40,6 +41,7 @@ namespace Infrastructure.MongoDB
             return new PoliceEvent
             {
                 Id = Id,
+                Name = Name,
                 UtcDateTime = UtcDateTime,
                 Summary = Summary,
                 Url = UrlHelper.CompleteEventUrl(Url),

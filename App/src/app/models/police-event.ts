@@ -1,5 +1,6 @@
 export interface PoliceEvent {
     id: number;
+    name: string;
     utcDateTime: Date;
     summary: string;
     url: string;
