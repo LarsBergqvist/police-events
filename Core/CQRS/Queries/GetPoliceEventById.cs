@@ -36,6 +36,7 @@ namespace Core.CQRS.Queries
                 var ext = new PoliceEventDetails
                 {
                     Id = @event.Id,
+                    Name = @event.Name,
                     Location = @event.Location,
                     Summary = @event.Summary,
                     Type = @event.Type,

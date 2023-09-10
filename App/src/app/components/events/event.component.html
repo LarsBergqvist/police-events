@@ -1,6 +1,7 @@
 <div *ngIf="event" class="event-ctn">
     <div>
-        <b>{{event.location.name}}, {{event.datetime | date:'d MMM HH:mm'}}, {{event.type}}</b>
+        <b *ngIf="event.name">{{event.name}}</b>
+        <b *ngIf="!event.name">{{event.location.name}}, {{event.datetime | date:'d MMM HH:mm'}}, {{event.type}}</b>
     </div>
     <div>
         {{event.summary}}

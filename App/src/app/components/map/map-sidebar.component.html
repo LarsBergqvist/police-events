@@ -3,7 +3,8 @@
 
     <div class="details-header-text">
         <i (click)="close()" class="pi pi-chevron-left close-button clickable"></i>
-        <b>{{event.location.name}}, {{event.datetime | date:'d MMM HH:mm'}}, {{event.type}}</b>
+        <b *ngIf="event.name">{{event.name}}</b>
+        <b *ngIf="!event.name">{{event.location.name}}, {{event.datetime | date:'d MMM HH:mm'}}, {{event.type}}</b>
     </div>
     <div>
         <b>
