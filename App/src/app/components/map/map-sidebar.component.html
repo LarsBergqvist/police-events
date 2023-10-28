@@ -15,6 +15,9 @@
         </b>
         <div *ngIf="details" [innerHTML]="details"></div>
     </div>
+    <div class="publicerad">
+        Publicerad {{event.datetime | date:'d MMM HH:mm'}}
+    </div>        
     <div *ngIf="canShare" (click)="share()" class="clickable">
         <b>Dela <i class="pi pi-upload"></i></b>
     </div>

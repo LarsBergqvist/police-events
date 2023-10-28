@@ -6,6 +6,9 @@
     <div>
         {{event.summary}}
     </div>
+    <div class="publicerad">
+        Publicerad {{event.datetime | date:'d MMM HH:mm'}}
+    </div>
     <div>
         <div class="map-button-ctn">
             <button pButton class="map-button" label="Karta" icon="pi pi-globe" iconPos="right"

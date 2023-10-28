@@ -24,6 +24,8 @@ import { AppConfigService } from './services/app-config.service';
 import { HttpInterceptorService } from './services/http-interceptor.service';
 import { LoggingService } from './services/logging.service';
 import { MessageBrokerService } from './services/message-broker.service';
+import { LOCALE_ID } from '@angular/core';
+import '@angular/common/locales/global/sv';
 
 export function appConfigInit(configService: AppConfigService, logging: LoggingService) {
     return () => {
@@ -71,6 +73,7 @@ export function appConfigInit(configService: AppConfigService, logging: LoggingS
         MessageService,
         LoggingService,
         AppConfigService,
+        { provide: LOCALE_ID, useValue: 'sv' },
         {
             provide: APP_INITIALIZER,
             useFactory: appConfigInit,
