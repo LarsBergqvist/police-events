@@ -8,11 +8,11 @@ using System.Threading.Tasks;
 
 namespace Core.CQRS.Queries
 {
-    public class GetPoliceEventById
+    public abstract class GetPoliceEventById
     {
         public class Query : IRequest<PoliceEventDetails>
         {
-            public int Id { get; set; }
+            public int Id { get; }
             public Query(int id) => Id = id;
 
         }

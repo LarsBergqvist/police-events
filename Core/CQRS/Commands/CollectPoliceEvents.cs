@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Core.CQRS.Commands
 {
-    public class CollectPoliceEvents
+    public abstract class CollectPoliceEvents
     {
         public class Command : IRequest
         {

@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace Core.CQRS.Queries
 {
-    public class GetPoliceEvents
+    public abstract class GetPoliceEvents
     {
         public const int DefaultPage = 1;
         public const int DefaultPageSize = 5;
@@ -28,7 +28,7 @@ namespace Core.CQRS.Queries
 
         public class Query : IRequest<PoliceEventsResult>
         {
-            public QueryParameters Parameters { get; set; }
+            public QueryParameters Parameters { get; }
             public Query(QueryParameters parameters) => Parameters = parameters;
 
         }
