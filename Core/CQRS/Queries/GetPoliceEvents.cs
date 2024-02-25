@@ -46,7 +46,8 @@ namespace Core.CQRS.Queries
                 var defaultDate = DateTime.Now.Date;
                 var from = DateHelper.GetParsedDateOrDefault(query.Parameters.FromDate, defaultDate);
                 var to = DateHelper.GetParsedDateOrDefault(query.Parameters.ToDate, defaultDate);
-                var pagedResult = await _repository.GetEvents(from, to,
+                var pagedResult = await _repository.GetEvents(cancellationToken,
+                    from, to,
                     query.Parameters.Page == 0 ? DefaultPage : query.Parameters.Page,
                     query.Parameters.PageSize == 0 ? DefaultPageSize : query.Parameters.PageSize,
                     query.Parameters.UserLat,

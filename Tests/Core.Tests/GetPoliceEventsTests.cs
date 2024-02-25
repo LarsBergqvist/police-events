@@ -2,6 +2,7 @@ using Core.CQRS.Queries;
 using Core.Repositories;
 using Moq;
 using System;
+using System.Threading;
 using System.Threading.Tasks;
 using Xunit;
 
@@ -42,7 +43,7 @@ namespace Core.Tests
             var expFromDate = new DateTime(2020, 1, 1).Date;
             var expToDate = new DateTime(2020, 1, 2).Date;
             var expLocation = "Place";
-            repositoryMock.Verify(a => a.GetEvents(expFromDate, expToDate,
+            repositoryMock.Verify(a => a.GetEvents(new CancellationToken(), expFromDate, expToDate,
                 3, 7,
                 123.456, 456.123, 17.1,
                 expLocation, null), Times.Once);
@@ -69,7 +70,7 @@ namespace Core.Tests
             // Assert
             //
             var expDefaultDate = DateTime.Now.Date;
-            repositoryMock.Verify(a => a.GetEvents(expDefaultDate, expDefaultDate,
+            repositoryMock.Verify(a => a.GetEvents(new CancellationToken(), expDefaultDate, expDefaultDate,
                 GetPoliceEvents.DefaultPage, GetPoliceEvents.DefaultPageSize,
                 0, 0, GetPoliceEvents.DefaultMaxDistKm,
                 null, null), Times.Once);

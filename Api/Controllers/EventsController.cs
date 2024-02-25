@@ -4,6 +4,7 @@ using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using System.Net;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace Api.Controllers
@@ -25,6 +26,7 @@ namespace Api.Controllers
         /// <summary>
         /// Fetches event data within a certain date interval and optionally within a particular radius from a position
         /// </summary>
+        /// <param name="cancellationToken"></param>
         /// <param name="fromDate">Will use todays date if omitted</param>
         /// <param name="toDate">Will use todays date if omitted</param>
         /// <param name="userLat">Latitude center from where to calculate the radius (optional)</param>
@@ -38,7 +40,7 @@ namespace Api.Controllers
         [HttpGet]
         [ProducesResponseType((int)HttpStatusCode.OK)]
         public async Task<ActionResult<PoliceEventsResult>>
-            Get([FromQuery] string fromDate = "", [FromQuery] string toDate = "",
+            Get(CancellationToken cancellationToken, [FromQuery] string fromDate = "", [FromQuery] string toDate = "",
                 [FromQuery] double userLat = 0, [FromQuery] double userLng = 0, [FromQuery] double maxKm = 0,
                 [FromQuery] int page = 1, [FromQuery] int pageSize = 5, [FromQuery] string freeText = null,
                 [FromQuery] string location = null
@@ -57,7 +59,7 @@ namespace Api.Controllers
                 FreeText = freeText,
                 LocationName = location
             };
-            return Ok(await _mediator.Send(new GetPoliceEvents.Query(queryParams)));
+            return Ok(await _mediator.Send(new GetPoliceEvents.Query(queryParams), cancellationToken));
         }
 
         /// <summary>

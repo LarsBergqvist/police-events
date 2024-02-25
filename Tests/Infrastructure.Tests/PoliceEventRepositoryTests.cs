@@ -55,7 +55,7 @@ namespace Infrastructure.Tests
             //
             // Act & Assert
             //
-            await Assert.ThrowsAsync<ArgumentException>(() => repo.GetEvents(DateTime.Now, DateTime.Now, 1, 0, 0, 0, 1));
+            await Assert.ThrowsAsync<ArgumentException>(() => repo.GetEvents(new CancellationToken(), DateTime.Now, DateTime.Now, 1, 0, 0, 0, 1));
         }
 
         [Fact]
@@ -71,7 +71,8 @@ namespace Infrastructure.Tests
             //
             // Act & Assert
             //
-            await Assert.ThrowsAsync<ArgumentException>(() => repo.GetEvents(DateTime.Now, DateTime.Now, 0, 1, 0, 0, 1));
+            await Assert.ThrowsAsync<ArgumentException>(() => repo.GetEvents(new CancellationToken(),
+                DateTime.Now, DateTime.Now, 0, 1, 0, 0, 1));
         }
 
         /*

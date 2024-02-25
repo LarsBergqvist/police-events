@@ -11,6 +11,7 @@ using MongoDB.Driver.GeoJsonObjectModel;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace Infrastructure.Repositories
@@ -51,7 +52,7 @@ namespace Infrastructure.Repositories
         }
 
 
-        public async Task<PoliceEventsResult> GetEvents(DateTime fromDate,
+        public async Task<PoliceEventsResult> GetEvents(CancellationToken cancellationToken, DateTime fromDate,
             DateTime toDate,
             int page, int pageSize,
             double userLat, double userLng, double maxDistanceKm,
@@ -66,13 +67,14 @@ namespace Infrastructure.Repositories
                 var collection = GetCollection<PoliceEventEntity>();
 
                 var filter =
-                    GetFilters<PoliceEventEntity>(fromDate, toDate, userLat, userLng, maxDistanceKm, locationName, freeText);
+                    GetFilters<PoliceEventEntity>(fromDate, toDate, userLat, userLng, maxDistanceKm, locationName,
+                        freeText);
 
                 var data = await collection.Find(filter)
                     .SortByDescending(x => x.UtcDateTime)
                     .Skip((page - 1) * pageSize)
                     .Limit(pageSize)
-                    .ToListAsync();
+                    .ToListAsync(cancellationToken);
 
                 //
                 // Additional query for getting the total count
@@ -81,7 +83,8 @@ namespace Infrastructure.Repositories
                 //
                 var simpleProjection = Builders<PoliceEventEntity>.Projection
                     .Include(u => u.Id);
-                var count = (await collection.Find(filter).Project(simpleProjection).ToListAsync()).Count;
+                var count = (await collection.Find(filter)
+                    .Project(simpleProjection).ToListAsync(cancellationToken)).Count;
 
                 var pagedResult = new PoliceEventsResult
                 {
@@ -90,6 +93,11 @@ namespace Infrastructure.Repositories
                     Events = data.Select(pe => pe.ToPoliceEvent()).ToList()
                 };
                 return pagedResult;
+            }
+            catch (OperationCanceledException)
+            {
+                _logger.LogInformation("Operation was cancelled");
+                return null;
             }
             catch (Exception e)
             {
