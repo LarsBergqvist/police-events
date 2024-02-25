@@ -4,6 +4,8 @@ using Moq;
 using System;
 using System.Threading;
 using System.Threading.Tasks;
+using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Logging.Abstractions;
 using Xunit;
 
 namespace Core.Tests
@@ -17,7 +19,7 @@ namespace Core.Tests
             // Arrange
             //
             var repositoryMock = new Mock<IPoliceEventRepository>();
-            var handler = new GetPoliceEvents.Handler(repositoryMock.Object);
+            var handler = new GetPoliceEvents.Handler(NullLogger<GetPoliceEvents.Handler>.Instance, repositoryMock.Object);
             var query = new GetPoliceEvents.Query(
                 new GetPoliceEvents.QueryParameters
                 {
@@ -56,7 +58,7 @@ namespace Core.Tests
             // Arrange
             //
             var repositoryMock = new Mock<IPoliceEventRepository>();
-            var handler = new GetPoliceEvents.Handler(repositoryMock.Object);
+            var handler = new GetPoliceEvents.Handler(NullLogger<GetPoliceEvents.Handler>.Instance, repositoryMock.Object);
             var query = new GetPoliceEvents.Query(
                 new GetPoliceEvents.QueryParameters()
              );

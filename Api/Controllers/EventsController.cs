@@ -46,7 +46,6 @@ namespace Api.Controllers
                 [FromQuery] string location = null
             )
         {
-            _logger.LogInformation("Get request: fromDate {FromDate}, toDate: {Date}, userLat: {UserLat}, userLng: {UserLng}", fromDate, toDate, userLat, userLng);
             var queryParams = new GetPoliceEvents.QueryParameters
             {
                 FromDate = fromDate,

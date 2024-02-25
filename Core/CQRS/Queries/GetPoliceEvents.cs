@@ -5,6 +5,7 @@ using MediatR;
 using System;
 using System.Threading;
 using System.Threading.Tasks;
+using Microsoft.Extensions.Logging;
 
 namespace Core.CQRS.Queries
 {
@@ -35,9 +36,11 @@ namespace Core.CQRS.Queries
 
         public class Handler : IRequestHandler<Query, PoliceEventsResult>
         {
+            private readonly ILogger<Handler> _logger;
             private readonly IPoliceEventRepository _repository;
-            public Handler(IPoliceEventRepository repository)
+            public Handler(ILogger<Handler> logger, IPoliceEventRepository repository)
             {
+                _logger = logger;
                 _repository = repository;
             }
 
@@ -46,6 +49,10 @@ namespace Core.CQRS.Queries
                 var defaultDate = DateTime.Now.Date;
                 var from = DateHelper.GetParsedDateOrDefault(query.Parameters.FromDate, defaultDate);
                 var to = DateHelper.GetParsedDateOrDefault(query.Parameters.ToDate, defaultDate);
+                _logger.LogInformation(
+                    "Get request: fromDate {FromDate}, toDate: {Date}, userLat: {UserLat}, userLng: {UserLng}",
+                    from, to, query.Parameters.UserLat, query.Parameters.UserLng);
+
                 var pagedResult = await _repository.GetEvents(cancellationToken,
                     from, to,
                     query.Parameters.Page == 0 ? DefaultPage : query.Parameters.Page,
