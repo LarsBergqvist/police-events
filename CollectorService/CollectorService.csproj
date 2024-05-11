@@ -1,7 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk.Worker">
 
   <PropertyGroup>
-    <TargetFramework>net6.0</TargetFramework>
+    <TargetFramework>net8.0</TargetFramework>
     <UserSecretsId>dotnet-CollectorService-9385F2AD-2374-42D7-A8EB-BD38D75A3F2A</UserSecretsId>
   </PropertyGroup>
 
