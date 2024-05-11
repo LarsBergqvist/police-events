@@ -9,10 +9,10 @@ namespace AzureFunctions
     public class CollectionTrigger
     {
         private readonly ISender _mediator;
-        private readonly Logger<CollectionTrigger> _logger;
+        private readonly ILogger<CollectionTrigger> _logger;
 
 
-        public CollectionTrigger(ISender mediator, Logger<CollectionTrigger> logger)
+        public CollectionTrigger(ISender mediator, ILogger<CollectionTrigger> logger)
         {
             _mediator = mediator;
             _logger = logger;
