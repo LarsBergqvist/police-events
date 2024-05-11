@@ -34,7 +34,7 @@ namespace Core.Tests
             //
             // Act
             //
-            _ = await handler.Handle(command, new System.Threading.CancellationToken());
+            await handler.Handle(command, new System.Threading.CancellationToken());
 
             //
             // Assert
