@@ -8,8 +8,10 @@ namespace Core.DI
         public static IServiceCollection AddCoreServices(this IServiceCollection services)
         {
             return services
-                      .AddMediatR(typeof(AssemblyClass))
-                  ;
+                .AddMediatR(config =>
+                {
+                    config.RegisterServicesFromAssembly(typeof(AssemblyClass).Assembly);
+                });
         }
     }
 }

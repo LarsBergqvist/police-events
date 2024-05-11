@@ -28,7 +28,7 @@ namespace Core.CQRS.Commands
                 _policeEventRepository = policeEventRepository;
             }
 
-            public async Task<Unit> Handle(Command command, CancellationToken cancellationToken)
+            public async Task Handle(Command command, CancellationToken cancellationToken)
             {
                 _logger.LogInformation("Start fetching data");
                 var events = await _policeApiClient.GetLatestEvents();
@@ -36,8 +36,6 @@ namespace Core.CQRS.Commands
                 _logger.LogInformation("Start upserting events in database");
                 await _policeEventRepository.UpsertCollection(events);
                 _logger.LogInformation("Finished upserting events in database");
-
-                return new Unit();
             }
         }
     }

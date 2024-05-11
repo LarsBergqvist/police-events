@@ -1,28 +1,28 @@
 using Core.CQRS.Commands;
 using MediatR;
-using Microsoft.Azure.WebJobs;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Threading.Tasks;
-
+using Microsoft.Azure.Functions.Worker;
 namespace AzureFunctions
 {
     public class CollectionTrigger
     {
         private readonly ISender _mediator;
+        private readonly ILogger<CollectionTrigger> _logger;
 
 
-        public CollectionTrigger(ISender mediator)
+        public CollectionTrigger(ISender mediator, ILogger<CollectionTrigger> logger)
         {
             _mediator = mediator;
+            _logger = logger;
         }
 
-        [FunctionName(nameof(CollectionTrigger))]
+        [Function(nameof(CollectionTrigger))]
         public async Task Run(
-            [TimerTrigger("0 */15 * * * *")] TimerInfo timerInfo,
-            ILogger log)
+            [TimerTrigger("*/15 * * * * *")] TimerInfo timerInfo)
         {
-            log.LogInformation("CollectionTrigger triggered at:  {Now}", DateTime.Now);
+            _logger.LogInformation("CollectionTrigger triggered at:  {Now}", DateTime.Now);
             await _mediator.Send(new CollectPoliceEvents.Command());
         }
     }
