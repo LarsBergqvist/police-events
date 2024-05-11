@@ -1,10 +1,9 @@
 using Core.CQRS.Commands;
 using MediatR;
-using Microsoft.Azure.WebJobs;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Threading.Tasks;
-
+using Microsoft.Azure.Functions.Worker;
 namespace AzureFunctions
 {
     public class CollectionTrigger
@@ -17,7 +16,7 @@ namespace AzureFunctions
             _mediator = mediator;
         }
 
-        [FunctionName(nameof(CollectionTrigger))]
+        [Function(nameof(CollectionTrigger))]
         public async Task Run(
             [TimerTrigger("0 */15 * * * *")] TimerInfo timerInfo,
             ILogger log)
