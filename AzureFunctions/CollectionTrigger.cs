@@ -20,7 +20,7 @@ namespace AzureFunctions
 
         [Function(nameof(CollectionTrigger))]
         public async Task Run(
-            [TimerTrigger("0 */15 * * * *")] TimerInfo timerInfo)
+            [TimerTrigger("*/15 * * * * *")] TimerInfo timerInfo)
         {
             _logger.LogInformation("CollectionTrigger triggered at:  {Now}", DateTime.Now);
             await _mediator.Send(new CollectPoliceEvents.Command());
