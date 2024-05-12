@@ -4,7 +4,7 @@
 
 This repository consists of:  
 * a <b>CollectorService</b> that fetches the latest event data from the Open Api of the Swedish Police every 10 minutes and stores it in a MongoDB database. When hosted in Azure, the service is an <b>Azure function with a timer trigger</b>    
-* a <b>.NET 6 REST API</b> that dispatches queries to the to the MongoDB database   
+* a <b>.NET 8 REST API</b> that dispatches queries to the to the MongoDB database   
 * a mobile-friendly <b>Angular front-end app</b> that uses the REST API for searching and displaying nearby events (based on geolocation). The Angular application has a map view with overlays for Swedish counties and municipalities   
 * a <b>Blazor web-assembly application</b> for searching among old police events. This app is hosted by the api-service   
 
