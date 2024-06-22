@@ -1,4 +1,4 @@
-import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
+import { HTTP_INTERCEPTORS, provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 import { APP_INITIALIZER, NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { BrowserModule } from '@angular/platform-browser';
@@ -37,8 +37,7 @@ export function appConfigInit(configService: AppConfigService, logging: LoggingS
     };
 }
 
-@NgModule({
-    declarations: [
+@NgModule({ declarations: [
         MapComponent,
         AppComponent,
         MapSidebarComponent,
@@ -46,10 +45,8 @@ export function appConfigInit(configService: AppConfigService, logging: LoggingS
         EventComponent,
         EventViewComponent
     ],
-    imports: [
-        BrowserModule,
+    bootstrap: [AppComponent], imports: [BrowserModule,
         AppRoutingModule,
-        HttpClientModule,
         ToolbarModule,
         BrowserAnimationsModule,
         SidebarModule,
@@ -63,13 +60,11 @@ export function appConfigInit(configService: AppConfigService, logging: LoggingS
             enabled: environment.production
         }),
         ServiceWorkerModule.register('ngsw-worker.js', {
-          enabled: environment.production,
-          // Register the ServiceWorker as soon as the app is stable
-          // or after 30 seconds (whichever comes first).
-          registrationStrategy: 'registerWhenStable:30000'
-        })
-    ],
-    providers: [
+            enabled: environment.production,
+            // Register the ServiceWorker as soon as the app is stable
+            // or after 30 seconds (whichever comes first).
+            registrationStrategy: 'registerWhenStable:30000'
+        })], providers: [
         MessageService,
         LoggingService,
         AppConfigService,
@@ -85,8 +80,7 @@ export function appConfigInit(configService: AppConfigService, logging: LoggingS
             useClass: HttpInterceptorService,
             multi: true,
             deps: [MessageBrokerService, LoggingService]
-        }
-    ],
-    bootstrap: [AppComponent]
-})
+        },
+        provideHttpClient(withInterceptorsFromDi())
+    ] })
 export class AppModule {}
