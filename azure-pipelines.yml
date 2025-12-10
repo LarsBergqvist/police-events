@@ -13,6 +13,7 @@ variables:
   solution: "**/*.sln"
   buildPlatform: "Any CPU"
   buildConfiguration: "Release"
+  BuildConfiguration: "$(buildConfiguration)"
 
 steps:
   - task: NuGetToolInstaller@1
@@ -20,6 +21,13 @@ steps:
   - task: NuGetCommand@2
     inputs:
       restoreSolution: "$(solution)"
+
+  - task: UseDotNet@2
+    displayName: 'Install .NET SDK 8.x'
+    inputs:
+      packageType: 'sdk'
+      version: '8.0.x'
+      includePreview: false
 
   - task: DotNetCoreCLI@2
     displayName: Build solution
@@ -40,7 +48,7 @@ steps:
       command: publish
       publishWebProjects: false
       projects: "**/Api.csproj"
-      arguments: "--configuration $(BuildConfiguration) --output $(build.artifactstagingdirectory) --no-build"
+      arguments: "--configuration $(buildConfiguration) --output $(build.artifactstagingdirectory) --no-build"
       zipAfterPublish: false
 
   - task: PublishBuildArtifacts@1
@@ -55,7 +63,7 @@ steps:
       command: publish
       publishWebProjects: false
       projects: "**/AzureFunctions.csproj"
-      arguments: "--configuration $(BuildConfiguration) --output $(build.artifactstagingdirectory) --no-build"
+      arguments: "--configuration $(buildConfiguration) --output $(build.artifactstagingdirectory) --no-build"
       zipAfterPublish: false
 
   - task: PublishBuildArtifacts@1
