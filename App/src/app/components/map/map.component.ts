@@ -20,13 +20,14 @@ import { MapDataService } from 'src/app/services/map-data.service';
 @Component({
     selector: 'app-map',
     templateUrl: './map.component.html',
-    styleUrls: ['./map.component.scss']
+    styleUrls: ['./map.component.scss'],
+    standalone: false
 })
 export class MapComponent implements AfterViewInit, OnDestroy {
-    map: Map;
-    geoJsonVectorSource: VectorSource;
-    detailedVectorSource: VectorSource;
-    detailedLocation: Feature;
+    map!: Map;
+    geoJsonVectorSource!: VectorSource;
+    detailedVectorSource!: VectorSource;
+    detailedLocation!: Feature;
 
     private static readonly DefaultZoomLevel = 9;
     private static readonly DefaultLatitude = 59.329324;
@@ -41,7 +42,7 @@ export class MapComponent implements AfterViewInit, OnDestroy {
             this.initilizeMap();
         }
 
-        this.mapDataService.mapInput$.pipe(takeUntil(this.unsubscribe$)).subscribe((value: MapInput) => {
+        this.mapDataService.mapInput$.pipe(takeUntil(this.unsubscribe$)).subscribe((value: MapInput | null) => {
             if (value) {
                 this.updateMap(value);
             }
@@ -55,7 +56,7 @@ export class MapComponent implements AfterViewInit, OnDestroy {
 
     private updateMap(input: MapInput) {
         // Clear the previous polygons
-        this.detailedLocation.setGeometry(null);
+        this.detailedLocation.setGeometry(undefined);
         this.geoJsonVectorSource.clear();
 
         if (input.geoJsonWrapper) {

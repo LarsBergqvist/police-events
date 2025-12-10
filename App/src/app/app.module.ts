@@ -1,5 +1,6 @@
 import { HTTP_INTERCEPTORS, provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 import { APP_INITIALIZER, NgModule } from '@angular/core';
+import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -9,7 +10,7 @@ import { MessageService } from 'primeng/api';
 import { ButtonModule } from 'primeng/button';
 import { InputTextModule } from 'primeng/inputtext';
 import { ProgressSpinnerModule } from 'primeng/progressspinner';
-import { SidebarModule } from 'primeng/sidebar';
+import { DrawerModule } from 'primeng/drawer';
 import { ToastModule } from 'primeng/toast';
 import { ToolbarModule } from 'primeng/toolbar';
 import { environment } from '../environments/environment';
@@ -37,7 +38,8 @@ export function appConfigInit(configService: AppConfigService, logging: LoggingS
     };
 }
 
-@NgModule({ declarations: [
+@NgModule({
+    declarations: [
         MapComponent,
         AppComponent,
         MapSidebarComponent,
@@ -45,11 +47,14 @@ export function appConfigInit(configService: AppConfigService, logging: LoggingS
         EventComponent,
         EventViewComponent
     ],
-    bootstrap: [AppComponent], imports: [BrowserModule,
+    bootstrap: [AppComponent],
+    imports: [
+        BrowserModule,
+        CommonModule,
         AppRoutingModule,
         ToolbarModule,
         BrowserAnimationsModule,
-        SidebarModule,
+        DrawerModule,
         ToastModule,
         ButtonModule,
         FormsModule,
@@ -57,14 +62,13 @@ export function appConfigInit(configService: AppConfigService, logging: LoggingS
         ProgressSpinnerModule,
         AccordionModule,
         ServiceWorkerModule.register('ngsw-worker.js', {
-            enabled: environment.production
-        }),
-        ServiceWorkerModule.register('ngsw-worker.js', {
             enabled: environment.production,
             // Register the ServiceWorker as soon as the app is stable
             // or after 30 seconds (whichever comes first).
             registrationStrategy: 'registerWhenStable:30000'
-        })], providers: [
+        })
+    ],
+    providers: [
         MessageService,
         LoggingService,
         AppConfigService,
@@ -82,5 +86,6 @@ export function appConfigInit(configService: AppConfigService, logging: LoggingS
             deps: [MessageBrokerService, LoggingService]
         },
         provideHttpClient(withInterceptorsFromDi())
-    ] })
+    ]
+})
 export class AppModule {}

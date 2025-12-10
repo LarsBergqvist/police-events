@@ -57,4 +57,5 @@ export function startsWithUpperCase(w: string): boolean {
     if (w[0] === w[0].toUpperCase()) {
         return true;
     }
+    return false;
 }

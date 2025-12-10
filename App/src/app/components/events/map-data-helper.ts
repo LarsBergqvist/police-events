@@ -23,7 +23,7 @@ export class MapDataHelper {
 
     async openMapWithGeoData(event: PoliceEventViewModel) {
         let areaResult: GeoJsonWrapper;
-        let locationObject: LocationObjectViewModel;
+        let locationObject: LocationObjectViewModel | undefined;
         try {
             if (event.location.name.toLowerCase().endsWith('län')) {
                 // The location is a county
@@ -39,7 +39,8 @@ export class MapDataHelper {
                 );
             }
         } catch (error) {
-            this.logger.logError(error?.message);
+            const errorMessage = error instanceof Error ? error.message : String(error);
+            this.logger.logError(errorMessage);
             const message = `Could not get map information for '${event.location.name}'`;
             this.broker.sendMessage(new ErrorOccurredMessage(message));
             return;

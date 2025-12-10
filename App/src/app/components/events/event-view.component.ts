@@ -6,12 +6,13 @@ import { MapDataHelper } from './map-data-helper';
 
 @Component({
     selector: 'app-event-view',
-    templateUrl: './event-view.component.html'
+    templateUrl: './event-view.component.html',
+    standalone: false
 })
 export class EventViewComponent {
-    id: string;
-    event: PoliceEventViewModel;
-    isLoading: boolean;
+    id!: string;
+    event!: PoliceEventViewModel;
+    isLoading!: boolean;
 
     constructor(
         private readonly route: ActivatedRoute,
@@ -21,7 +22,8 @@ export class EventViewComponent {
     ) {}
 
     async ngOnInit() {
-        this.id = this.route.snapshot.paramMap.get('id');
+        const idParam = this.route.snapshot.paramMap.get('id');
+        this.id = idParam || '';
         this.isLoading = true;
         this.event = await this.service.fetchEventById(this.id);
         this.isLoading = false;

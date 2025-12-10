@@ -5,11 +5,12 @@ import { PoliceEventService } from 'src/app/services/police-event.service';
 @Component({
     selector: 'app-event',
     templateUrl: './event.component.html',
-    styleUrls: ['./event.component.scss']
+    styleUrls: ['./event.component.scss'],
+    standalone: false
 })
 export class EventComponent {
-    @Input('event') event: PoliceEventViewModel;
-    @Input('isLoading') isLoading: boolean;
+    @Input('event') event!: PoliceEventViewModel;
+    @Input('isLoading') isLoading!: boolean;
     @Output() onShowOnMap = new EventEmitter<PoliceEventViewModel>();
 
     constructor(private readonly service: PoliceEventService) {}

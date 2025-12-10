@@ -11,14 +11,15 @@ import { PoliceEventService } from 'src/app/services/police-event.service';
 
 @Component({
     selector: 'app-map-sidebar',
-    templateUrl: './map-sidebar.component.html'
+    templateUrl: './map-sidebar.component.html',
+    standalone: false
 })
 export class MapSidebarComponent implements OnInit, OnDestroy {
     private unsubscribe$ = new Subject();
-    event: PoliceEventViewModel;
+    event!: PoliceEventViewModel;
     isVisible = false;
-    details: string = null;
-    description: string = null;
+    details: string | null = null;
+    description: string | null = null;
 
     constructor(
         private readonly broker: MessageBrokerService,
@@ -42,7 +43,7 @@ export class MapSidebarComponent implements OnInit, OnDestroy {
                 this.event = message.event;
                 this.details = null;
                 this.description = null;
-                this.service.fetchEventById(input.centerPos.id.toString()).then((e) => {
+                this.service.fetchEventById(input.centerPos.id?.toString() || '').then((e) => {
                     this.details = e.details;
                     this.description = e.description;
                 });

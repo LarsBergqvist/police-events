@@ -7,7 +7,7 @@ import { lastValueFrom } from 'rxjs';
 @Injectable()
 export class AppConfigService {
     readonly configFile = 'assets/app-config.json';
-    config: AppConfig;
+    config!: AppConfig;
 
     constructor(private readonly http: HttpClient, private readonly logging: LoggingService) {}
 

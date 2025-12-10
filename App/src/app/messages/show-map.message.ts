@@ -5,8 +5,8 @@ import { Message } from './message';
 
 export class ShowMapMessage extends Message {
     event: PoliceEventViewModel;
-    geoJsonWrapper: GeoJsonWrapper;
-    locationObject: LocationObjectViewModel;
+    geoJsonWrapper?: GeoJsonWrapper;
+    locationObject?: LocationObjectViewModel;
     constructor(
         event: PoliceEventViewModel,
         geoJsonWrapper?: GeoJsonWrapper,

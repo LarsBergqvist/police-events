@@ -11,10 +11,11 @@ import { MapDataHelper } from './map-data-helper';
 @Component({
     selector: 'app-search-events',
     templateUrl: './search-events.component.html',
-    styleUrls: ['search-events.component.scss']
+    styleUrls: ['search-events.component.scss'],
+    standalone: false
 })
 export class SearchEventsComponent implements OnInit {
-    events: PoliceEventViewModel[];
+    events!: PoliceEventViewModel[];
     keyword: string = '';
     isLoading = false;
     geolocationAvailable = false;
@@ -101,7 +102,8 @@ export class SearchEventsComponent implements OnInit {
                         );
                     }
                 } catch (error) {
-                    this.broker.sendMessage(new ErrorOccurredMessage(error.message));
+                    const errorMessage = error instanceof Error ? error.message : String(error);
+                    this.broker.sendMessage(new ErrorOccurredMessage(errorMessage));
                 } finally {
                     this.isLoading = false;
                 }

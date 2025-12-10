@@ -25,9 +25,9 @@ export class NominatimService {
         areaname: string,
         text: string,
         bb: BoundingBox
-    ): Promise<LocationObjectViewModel> {
+    ): Promise<LocationObjectViewModel | undefined> {
         const query = locationQueryFromTextAndAreaName(text, areaname);
-        if (query === '') return;
+        if (query === '') return undefined;
 
         const viewbox = `${bb.lngMin},${bb.latMin},${bb.lngMax},${bb.latMax}`;
         this.logger.logInfo(`nominatim query: ${query}`);
@@ -37,8 +37,8 @@ export class NominatimService {
         return vm;
     }
 
-    private convertToViewModel(data: any[]): LocationObjectViewModel {
-        if (data.length === 0) return;
+    private convertToViewModel(data: any[]): LocationObjectViewModel | undefined {
+        if (data.length === 0) return undefined;
         let viewModel: LocationObjectViewModel;
         const e = data[0];
         if (e.boundingbox && e.display_name) {
@@ -55,6 +55,7 @@ export class NominatimService {
             };
             return this.scaleUpSmallArea(viewModel);
         }
+        return undefined;
     }
 
     private scaleUpSmallArea(viewModel: LocationObjectViewModel): LocationObjectViewModel {

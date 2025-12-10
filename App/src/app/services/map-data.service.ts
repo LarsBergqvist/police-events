@@ -6,8 +6,8 @@ import { MapInput } from '../models/map-input';
     providedIn: 'root'
 })
 export class MapDataService {
-    private mapInput: MapInput;
-    mapInput$ = new BehaviorSubject<MapInput>(null);
+    private mapInput: MapInput | null = null;
+    mapInput$ = new BehaviorSubject<MapInput | null>(null);
 
     addNewMapInput(mapInput: MapInput) {
         this.mapInput = mapInput;
